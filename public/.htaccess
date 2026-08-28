@@ -1,0 +1,6 @@
+# Redirection racine — l'export statique n'a pas de middleware Next.js.
+RewriteEngine On
+RewriteRule ^$ /fr/ [R=301,L]
+
+# Pages d'erreur localisées
+ErrorDocument 404 /fr/404.html
