@@ -1,0 +1,30 @@
+# dépendances
+node_modules/
+.pnp
+.pnp.js
+
+# build
+.next/
+out/
+dist/
+build/
+
+# environnement — jamais commité
+.env
+.env.*
+!.env.example
+
+# système
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-error.log*
+
+# éditeur
+.vscode/
+.idea/
+
+# tests / outils
+coverage/
+.turbo/
+*.tsbuildinfo
