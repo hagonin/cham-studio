@@ -25,6 +25,16 @@ export function isPublished(locale: Locale): boolean {
   return PUBLISHED.includes(locale);
 }
 
+/**
+ * La copie des dictionnaires est-elle la copie définitive ?
+ *
+ * `false` : les textes en place tiennent la forme et la mise en page, mais les
+ * 132 chaînes rédigées dans le prototype n'ont pas encore été reprises. Ce
+ * drapeau ne casse pas le build — il rend l'état visible et sert de garde à la
+ * relecture avant la mise en ligne.
+ */
+export const COPY_CONFIRMED = false;
+
 export const SITE_URL = 'https://cham-studio.fr';
 
 /** URL absolue d'une route dans une locale. Slugs identiques d'une locale à

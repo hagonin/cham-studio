@@ -1,0 +1,25 @@
+.hero {
+  padding: clamp(3rem, 8vw, 7rem) 0;
+  max-width: 26ch;
+}
+
+.title {
+  font-family: var(--font-display-stack);
+  font-size: var(--step-4);
+  line-height: 1.02;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.lead {
+  max-width: 46ch;
+  font-size: var(--step-1);
+  color: var(--ink-2);
+}
+
+.cta {
+  font-family: var(--font-mono-stack);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}

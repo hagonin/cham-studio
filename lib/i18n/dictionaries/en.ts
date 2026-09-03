@@ -39,6 +39,50 @@ export const en = {
     fr: 'Français',
     en: 'English',
   },
+  home: {
+    status: {
+      availability: 'Available for new projects',
+      replyTime: 'Reply within 24h',
+      clockLabel: 'Local time in Montpellier',
+    },
+    hero: {
+      title: 'Sites and tools that make people want to write to you.',
+      lead: 'Independent studio in Montpellier, France. I design and I build — same person from the first sketch to launch.',
+      cta: 'Talk about your project',
+    },
+    situations: {
+      title: 'Where are you?',
+      items: [
+        { text: 'I have nothing online and I am losing clients.', service: 'vitrine' },
+        { text: 'My business has no recognisable image.', service: 'identite' },
+        {
+          text: 'I run my business on a spreadsheet that is buckling.',
+          service: 'application',
+        },
+        { text: 'My site exists but it no longer converts.', service: 'refonte' },
+      ],
+    },
+    services: {
+      title: 'Services',
+      deliverablesLabel: 'What you get',
+      // « Sur devis » : « on request » plutôt que « quotation », qui sonne
+      // administratif à un lecteur anglophone.
+      quoteOnRequest: 'On request',
+      open: 'Expand',
+      close: 'Collapse',
+    },
+    approach: {
+      problem: 'Problem',
+      solution: 'Solution',
+      title: 'One person, from the first sketch to launch',
+      body: 'No handover between a design studio and a development agency: the hand that draws is the hand that codes. What is promised is what ships, because nobody else has to interpret it.',
+    },
+    contact: {
+      title: 'Let us talk about your project',
+      body: 'Describe in a few lines what you want to build. I reply within 24 hours, in English or in French.',
+      cta: 'Write to the studio',
+    },
+  },
   pricing: {
     indicative: 'Indicative 2026 rates',
     from: 'From',

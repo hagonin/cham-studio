@@ -1,0 +1,43 @@
+.block {
+  padding: clamp(3rem, 8vw, 6rem) 0;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono-stack);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--mute);
+}
+
+.end {
+  flex: none;
+}
+
+.rule {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Le point reprend celui du ContactMarker. Il ne redéclare pas --seal :
+   l'assertion « exactement deux références » tient sur globals.css, et une
+   troisième ici viderait la règle de son sens. */
+.dot {
+  composes: contact-marker__dot from global;
+}
+
+.title {
+  font-family: var(--font-display-stack);
+  font-size: var(--step-2);
+  max-width: 20ch;
+  margin: 2rem 0 1rem;
+}
+
+.body {
+  max-width: 58ch;
+  color: var(--ink-2);
+}

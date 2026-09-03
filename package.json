@@ -12,7 +12,8 @@
     "verify": "pnpm lint && pnpm typecheck && pnpm test",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "vitest run"
+    "test": "vitest run",
+    "check:html": "node scripts/check-html.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

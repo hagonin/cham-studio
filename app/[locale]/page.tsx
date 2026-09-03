@@ -1,17 +1,62 @@
-import { ContactMarker } from '@/components/ContactMarker';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { isLocale } from '@/lib/i18n/config';
+import { getDictionary } from '@/lib/i18n/getDictionary';
+import { metadataFor } from '@/lib/i18n/metadata';
+import { StatusBar } from '@/components/StatusBar';
+import { Hero } from '@/components/Hero';
+import { Situations } from '@/components/Situations';
+import { ServiceList } from '@/components/ServiceList';
+import { ContactLine } from '@/components/ContactLine';
+import { ContactBlock } from '@/components/ContactBlock';
+import styles from './page.module.css';
 
-export default function Home() {
-  // Contenu réel en Phase 4. Le marqueur est ici pour que la primitive de la
-  // Phase 2 soit exercée par le build dès maintenant.
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const dict = getDictionary(locale);
+
+  return {
+    ...metadataFor(locale, '', dict.meta),
+    openGraph: {
+      type: 'website',
+      locale: locale === 'fr' ? 'fr_FR' : 'en_GB',
+      title: dict.meta.title,
+      description: dict.meta.description,
+      siteName: 'Chạm Studio',
+    },
+  };
+}
+
+/**
+ * L'offre est à la racine. Un site de deux pages n'a pas à mettre sa page qui
+ * rapporte derrière un clic : chaque visite entrante et chaque lien retour
+ * arrivent directement dessus.
+ *
+ * Ordre : barre d'état → hero → situations → prestations → approche → contact.
+ * L'estimateur s'insère entre prestations et approche en Phase 6.
+ */
+export default async function ServicesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  if (!isLocale(locale)) notFound();
+  const dict = getDictionary(locale);
+
   return (
-    <main>
-      <h1
-        style={{ fontFamily: 'var(--font-display-stack)', fontSize: 'var(--step-5)' }}
-      >
-        Chạm
-      </h1>
-      <ContactMarker label="Chạm" />
-      <p>Phase 4 — offre et estimateur à composer.</p>
+    <main className={styles.page}>
+      <StatusBar locale={locale} dict={dict} />
+      <Hero dict={dict} />
+      <Situations dict={dict} />
+      <ServiceList locale={locale} dict={dict} />
+      <ContactLine dict={dict} />
+      <ContactBlock dict={dict} />
     </main>
   );
 }

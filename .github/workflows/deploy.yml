@@ -29,6 +29,11 @@ jobs:
       - run: pnpm test
       - run: pnpm build
 
+      # Règles qui ne se vérifient que sur le HTML exporté : ordre des titres,
+      # majuscules hors des libellés, accordéon accessible, contenu présent
+      # sans JavaScript.
+      - run: pnpm check:html
+
       # Garde-fous : ce qui ne doit jamais atteindre la production.
       - name: Forbidden strings gate
         run: |
