@@ -1,0 +1,14 @@
+/* Les règles vivent dans app/globals.css (classes .contact-marker*) afin que
+   l'assertion « --seal exactement deux fois » porte sur une seule feuille. */
+.marker {
+  composes: contact-marker from global;
+}
+.line {
+  composes: contact-marker__line from global;
+}
+.dot {
+  composes: contact-marker__dot from global;
+}
+.label {
+  composes: contact-marker__label from global;
+}

@@ -1,3 +1,178 @@
-/* Les tokens réels arrivent en Phase 2. */
-:root { color-scheme: light; }
-body { margin: 0; background: #F5F3F0; color: #121110; }
+/* ---------------------------------------------------------------------------
+   Chạm Studio — jetons de conception.
+   THÈME UNIQUE, PAR CHOIX. Pas de mode sombre : `--seal` ne se lit
+   correctement que sur ce fond clair, et le tableau de contraste testé dans
+   tests/contrast.test.ts ne vaut que pour ce fond. Ajouter un thème sombre
+   invaliderait silencieusement tout l'ensemble — c'est une décision de design,
+   pas un oubli.
+   Les valeurs hexadécimales sont dupliquées dans lib/tokens.ts pour les tests ;
+   les deux doivent bouger ensemble (assertion dans tests/tokens.test.ts).
+--------------------------------------------------------------------------- */
+
+:root {
+  color-scheme: light;
+
+  /* Fonds */
+  --paper: #f5f3f0;
+  --panel: #eae7e2;
+  --panel-2: #dfdbd4;
+
+  /* Textes */
+  --ink: #121110;
+  --ink-2: #4a4642;
+  --mute: #666059;
+
+  /* Filets.
+     --rule (1.43:1) est DÉCORATIF : séparateurs uniquement, jamais une bordure
+     que l'on doit percevoir pour utiliser un composant.
+     --rule-s (3.29:1 sur --paper) est la bordure INTERACTIVE. Les deux ne sont
+     pas interchangeables ; ne pas les fusionner.
+     --rule-s ne tient le 3:1 que sur --paper (2.96:1 sur --panel) : pas de
+     bordure interactive sur les fonds --panel / --panel-2. */
+  --rule: #d2cdc5;
+  --rule-s: #8c857c;
+
+  /* Marque. Marque le contact, jamais du texte. Exactement deux références
+     dans cette feuille : le point du ContactMarker et l'état de contact
+     interactif. Une troisième fait échouer tests/tokens.test.ts. */
+  --seal: #d93a2b;
+
+  /* Familles — chargées par next/font (lib/fonts.ts) */
+  --font-display-stack: var(--font-display), 'Archivo Narrow', system-ui, sans-serif;
+  --font-sans-stack: var(--font-sans), 'Archivo', system-ui, sans-serif;
+  --font-mono-stack: var(--font-mono), 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Échelle typographique. Le plancher de chaque clamp est ≥ 0.75rem (12px) —
+     vérifié par tests/tokens.test.ts. */
+  --step--1: clamp(0.75rem, 0.72rem + 0.15vw, 0.875rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --step-2: clamp(1.5rem, 1.3rem + 1vw, 2.25rem);
+  --step-3: clamp(2rem, 1.6rem + 2vw, 3.5rem);
+  --step-4: clamp(2.75rem, 1.8rem + 4.75vw, 6rem);
+  --step-5: clamp(3.5rem, 1.5rem + 10vw, 9rem);
+
+  /* Le geste : deux bords qui se rejoignent. */
+  --contact: cubic-bezier(0.85, 0, 0.15, 1);
+  --contact-duration: 620ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans-stack);
+  font-size: var(--step-0);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base de focus : visible partout, jamais supprimée.
+   `cursor: none` est interdit dans cette feuille et vérifié en CI — masquer le
+   curseur système écrase les réglages de taille et de contraste du système
+   d'exploitation dont certaines personnes dépendent. */
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+/* --- Primitive « contact » ------------------------------------------------
+   Deux bords qui se rejoignent. L'état de REPOS est l'état FINAL : le contenu
+   est complet et lisible sans JavaScript et sans animation. L'animation ne
+   révèle jamais de contenu. */
+.contact {
+  animation: contact-in var(--contact-duration) var(--contact) both;
+}
+
+.contact-up {
+  animation: contact-in-up var(--contact-duration) var(--contact) both;
+}
+
+@keyframes contact-in {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes contact-in-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact,
+  .contact-up {
+    animation: none;
+    clip-path: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* --- ContactMarker --------------------------------------------------------
+   ──────●────── CHẠM. Le point de contact de la marque dans sa forme la plus
+   simple : CSS seul, identique au doigt et à la souris, vivant sans JS. */
+.contact-marker {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono-stack);
+  font-size: var(--step--1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.contact-marker__line {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.contact-marker__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  /* Référence 1/2 à --seal. */
+  background: var(--seal);
+  flex: none;
+}
+
+.contact-marker__label {
+  flex: none;
+}
+
+/* --- État de contact interactif -------------------------------------------
+   Référence 2/2 à --seal : la couleur marque le contact, ici celui du pointeur
+   ou du clavier avec un élément actionnable. */
+.contact-link {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  transition: box-shadow 180ms var(--contact);
+}
+
+.contact-link:hover,
+.contact-link:focus-visible {
+  box-shadow: inset 0 -0.45em 0 color-mix(in srgb, var(--seal) 22%, transparent);
+}
