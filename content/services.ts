@@ -1,0 +1,66 @@
+import { type Service } from './types';
+
+/**
+ * PLANCHERS TARIFAIRES NON ARRÊTÉS. `from: null` partout tant que les quatre
+ * chiffres ne sont pas fournis. La Phase 6 ajoute le drapeau
+ * `PRICES_CONFIRMED` qui fait échouer le build sur des tarifs provisoires ;
+ * `null` est ici l'état honnête en attendant.
+ */
+export const services: Service[] = [
+  {
+    key: 'vitrine',
+    title: { fr: 'Site vitrine', en: 'Marketing site' },
+    summary: {
+      fr: 'Un site qui présente une activité et donne envie de vous écrire.',
+      en: 'A site that presents the business and makes people want to write to you.',
+    },
+    deliverables: [
+      { fr: 'Arborescence et contenus', en: 'Structure and content' },
+      { fr: 'Design sur mesure', en: 'Bespoke design' },
+      { fr: 'Développement et mise en ligne', en: 'Build and launch' },
+    ],
+    from: null,
+  },
+  {
+    key: 'identite',
+    title: { fr: 'Identité', en: 'Brand identity' },
+    summary: {
+      fr: 'Un nom, une typographie, une palette : de quoi être reconnaissable.',
+      en: 'A name, a typeface, a palette — enough to be recognisable.',
+    },
+    deliverables: [
+      { fr: 'Recherche et direction', en: 'Research and direction' },
+      { fr: 'Logotype et déclinaisons', en: 'Logotype and variants' },
+      { fr: 'Guide d’usage', en: 'Usage guide' },
+    ],
+    from: null,
+  },
+  {
+    key: 'application',
+    title: { fr: 'Application web', en: 'Web application' },
+    summary: {
+      fr: 'Un outil métier sur mesure, pensé pour les gens qui s’en servent.',
+      en: 'A bespoke internal tool, designed around the people who use it.',
+    },
+    deliverables: [
+      { fr: 'Cadrage fonctionnel', en: 'Scoping' },
+      { fr: 'Interface et parcours', en: 'Interface and flows' },
+      { fr: 'Développement et reprise', en: 'Build and handover' },
+    ],
+    from: null,
+  },
+  {
+    key: 'refonte',
+    title: { fr: 'Refonte', en: 'Redesign' },
+    summary: {
+      fr: 'Un site existant remis d’aplomb : lisibilité, vitesse, conversion.',
+      en: 'An existing site set straight: legibility, speed, conversion.',
+    },
+    deliverables: [
+      { fr: 'Audit de l’existant', en: 'Audit of what exists' },
+      { fr: 'Reprise du contenu', en: 'Content migration' },
+      { fr: 'Refonte et bascule', en: 'Rebuild and switchover' },
+    ],
+    from: null,
+  },
+];

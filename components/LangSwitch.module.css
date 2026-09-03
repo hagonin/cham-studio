@@ -1,0 +1,6 @@
+.switch {
+  display: flex;
+  gap: 1rem;
+  font-family: var(--font-mono-stack);
+  font-size: var(--step--1);
+}
