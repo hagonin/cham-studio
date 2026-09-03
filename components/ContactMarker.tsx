@@ -17,8 +17,8 @@ export function ContactMarker({ label }: Props) {
     <div className={styles.marker} role="presentation">
       <span className={styles.line} />
       <span className={styles.dot} />
-      {label ? <span className={styles.label}>{label}</span> : null}
       <span className={styles.line} />
+      {label ? <span className={styles.label}>{label}</span> : null}
     </div>
   );
 }
