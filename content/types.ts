@@ -26,7 +26,7 @@ export type Service = {
 export type Project = {
   slug: string;
   year: number;
-  /** Chemin sous /public. Aucune image trouvée ailleurs : une carte de travaux
+  /** Chemin sous /public. Aucune image trouvée ailleurs : une carte de projects
    *  affirme un résultat, une image non possédée la dément. */
   cover: string;
   title: L10n;

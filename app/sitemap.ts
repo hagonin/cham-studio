@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { PUBLISHED, SITE_URL, localeHref } from '@/lib/i18n/config';
 
 /** Les routes du site, hors préfixe de locale (slugs identiques, F7). */
-const ROUTES = ['', 'travaux'];
+const ROUTES = ['', 'projects'];
 
 // L'export statique n'a pas de runtime : la route doit être déclarée figée,
 // sinon Next la traite comme dynamique et refuse de l'exporter.

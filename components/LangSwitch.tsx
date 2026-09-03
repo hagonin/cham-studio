@@ -7,8 +7,8 @@ import type { Dictionary } from '@/lib/i18n/getDictionary';
 import styles from './LangSwitch.module.css';
 
 /**
- * Le sélecteur préserve la route : depuis /fr/travaux/ on arrive sur
- * /en/travaux/, pas sur l'accueil. Les slugs sont identiques d'une locale à
+ * Le sélecteur préserve la route : depuis /fr/projects/ on arrive sur
+ * /en/projects/, pas sur l'accueil. Les slugs sont identiques d'une locale à
  * l'autre (F7), donc l'échange se fait sur le premier segment.
  *
  * Aucune redirection selon l'IP : elle piège les moteurs et les personnes en

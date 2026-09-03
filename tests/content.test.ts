@@ -38,7 +38,7 @@ describe('services', () => {
   });
 });
 
-describe('travaux', () => {
+describe('projects', () => {
   it('ne publie la section qu’à partir de deux projets réels (F4)', () => {
     expect(workSectionIsReady()).toBe(projects.length >= MIN_PROJECTS_TO_PUBLISH);
   });

@@ -37,24 +37,24 @@ describe('hreflang', () => {
   // Un couple réciproque pointant vers une page noindex fait écarter la grappe
   // entière par Google. Tant qu'une seule locale est publiée, on n'annote pas.
   it('n’émet aucune alternative avec une seule locale publiée', () => {
-    const alternates = buildAlternates(['fr'], 'fr', 'travaux');
+    const alternates = buildAlternates(['fr'], 'fr', 'projects');
     expect(alternates?.languages).toBeUndefined();
-    expect(alternates?.canonical).toBe('/fr/travaux/');
+    expect(alternates?.canonical).toBe('/fr/projects/');
   });
 
   it('émet des couples réciproques dès que deux locales sont publiées', () => {
-    const frSide = buildAlternates(['fr', 'en'], 'fr', 'travaux');
-    const enSide = buildAlternates(['fr', 'en'], 'en', 'travaux');
+    const frSide = buildAlternates(['fr', 'en'], 'fr', 'projects');
+    const enSide = buildAlternates(['fr', 'en'], 'en', 'projects');
 
     // Réciprocité : chaque côté annonce exactement les mêmes cibles.
     expect(frSide?.languages).toEqual(enSide?.languages);
     expect(frSide?.languages).toEqual({
-      fr: '/fr/travaux/',
-      en: '/en/travaux/',
-      'x-default': '/fr/travaux/',
+      fr: '/fr/projects/',
+      en: '/en/projects/',
+      'x-default': '/fr/projects/',
     });
-    expect(frSide?.canonical).toBe('/fr/travaux/');
-    expect(enSide?.canonical).toBe('/en/travaux/');
+    expect(frSide?.canonical).toBe('/fr/projects/');
+    expect(enSide?.canonical).toBe('/en/projects/');
   });
 
   it('prend le français comme x-default', () => {
@@ -64,8 +64,8 @@ describe('hreflang', () => {
 
 describe('routes', () => {
   it('garde le même slug dans les deux locales (F7)', () => {
-    expect(localeHref('fr', 'travaux')).toBe('/fr/travaux/');
-    expect(localeHref('en', 'travaux')).toBe('/en/travaux/');
+    expect(localeHref('fr', 'projects')).toBe('/fr/projects/');
+    expect(localeHref('en', 'projects')).toBe('/en/projects/');
   });
 
   it('ramène la racine d’une locale à son segment', () => {
@@ -73,15 +73,15 @@ describe('routes', () => {
   });
 
   it('conserve la page courante au changement de langue', () => {
-    // Le critère de la Phase 3 : depuis /fr/travaux on arrive sur /en/travaux,
+    // Le critère de la Phase 3 : depuis /fr/projects on arrive sur /en/projects,
     // pas sur l'accueil.
-    expect(swapLocale('/fr/travaux/', 'en')).toBe('/en/travaux/');
+    expect(swapLocale('/fr/projects/', 'en')).toBe('/en/projects/');
     expect(swapLocale('/fr/', 'en')).toBe('/en/');
     expect(swapLocale('/fr/mentions-legales/', 'en')).toBe('/en/mentions-legales/');
   });
 
   it('préfixe un chemin sans locale plutôt que d’écraser un segment', () => {
-    expect(swapLocale('/travaux/', 'fr')).toBe('/fr/travaux/');
+    expect(swapLocale('/projects/', 'fr')).toBe('/fr/projects/');
   });
 });
 
