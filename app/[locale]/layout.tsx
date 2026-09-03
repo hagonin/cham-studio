@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { locales, isLocale, type Locale } from '@/lib/i18n';
+import { fontVariables } from '@/lib/fonts';
 import '../globals.css';
 
 export function generateStaticParams() {
@@ -25,7 +26,7 @@ export default async function LocaleLayout({
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={locale satisfies Locale}>
+    <html lang={locale satisfies Locale} className={fontVariables}>
       <body>{children}</body>
     </html>
   );

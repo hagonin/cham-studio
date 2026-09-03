@@ -29,12 +29,12 @@ Le transfert utilise `lftp` en FTPS — aucune action tierce.
 
 Dans **Settings → Secrets and variables → Actions**, ajoutez :
 
-| Secret | Contenu |
-|---|---|
-| `OVH_FTP_HOST` | hôte FTP fourni par OVH |
-| `OVH_FTP_USER` | identifiant FTP |
-| `OVH_FTP_PASSWORD` | mot de passe FTP |
-| `OVH_FTP_PATH` | chemin de la racine web, ex. `/www` |
+| Secret             | Contenu                             |
+| ------------------ | ----------------------------------- |
+| `OVH_FTP_HOST`     | hôte FTP fourni par OVH             |
+| `OVH_FTP_USER`     | identifiant FTP                     |
+| `OVH_FTP_PASSWORD` | mot de passe FTP                    |
+| `OVH_FTP_PATH`     | chemin de la racine web, ex. `/www` |
 
 Ces valeurs se récupèrent dans l'espace client OVH → Hébergements → FTP-SSH.
 **Ne les mettez jamais dans un fichier du dépôt.**

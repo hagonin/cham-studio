@@ -23,7 +23,9 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
       - run: pnpm typecheck
+      - run: pnpm test
       - run: pnpm build
 
       # Garde-fous : ce qui ne doit jamais atteindre la production.
@@ -36,6 +38,15 @@ jobs:
           grep -rIl '000 000 000 00000' out/ && fail "SIRET fictif dans le build" || true
           grep -rIl 'ph-label' out/ && fail "réserve d'image (placeholder) dans le build" || true
           echo "Aucune chaîne interdite trouvée."
+
+      # Sans le sous-ensemble vietnamien, le dấu nặng de « Chạm » retombe sur
+      # une police système et la marque se lit faux. La plage u+1ea0-1ef9 le
+      # couvre ; son absence est une régression silencieuse.
+      - name: Vietnamese subset gate
+        run: |
+          grep -rq 'u+1ea0-1ef9' out/_next/static/css/ \
+            || { echo "::error::sous-ensemble vietnamien absent des polices"; exit 1; }
+          echo "Sous-ensemble vietnamien présent."
 
       - uses: actions/upload-artifact@v4
         if: github.ref == 'refs/heads/main'
