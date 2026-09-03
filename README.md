@@ -45,5 +45,4 @@ Ces valeurs se récupèrent dans l'espace client OVH → Hébergements → FTP-S
 
 ## Plan d'implémentation
 
-Voir [`plans/260828-1537-cham-studio-prestations/`](./plans/260828-1537-cham-studio-prestations/) —
-9 phases, revue adverse incluse.
+Le plan de build (9 phases, revue adverse incluse) vit dans `plans/`, hors dépôt.
