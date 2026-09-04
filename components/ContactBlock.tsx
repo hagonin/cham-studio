@@ -15,13 +15,17 @@ export function ContactBlock({ dict, locale }: { dict: Dictionary; locale: Local
   const { portrait } = site;
 
   return (
-    <section className={styles.block} aria-labelledby="contact-title">
+    <section data-reveal className={styles.block} aria-labelledby="contact-title">
       <ContactMarker label={dict.brand.name} />
       <h2 id="contact-title" className={styles.title}>
         {contact.title}
       </h2>
       <p className={styles.body}>{contact.body}</p>
-      <a className={`${styles.cta} contact-link`} href={`mailto:${site.email}`}>
+      <a
+        className={`${styles.cta} contact-link`}
+        href={`mailto:${site.email}`}
+        data-magnetic
+      >
         {contact.cta} — {site.email}
       </a>
       {/* Rien à afficher tant que la photo n'existe pas : pas de cadre vide,

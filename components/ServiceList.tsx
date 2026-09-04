@@ -7,7 +7,7 @@ import styles from './ServiceList.module.css';
 /** Composant serveur : seuls les accordéons descendent côté client. */
 export function ServiceList({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
-    <section className={styles.block} aria-labelledby="services-title">
+    <section data-reveal className={styles.block} aria-labelledby="services-title">
       <h2 id="services-title" className={styles.title}>
         {dict.home.services.title}
       </h2>

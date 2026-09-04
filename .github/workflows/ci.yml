@@ -48,6 +48,20 @@ jobs:
           grep -rIl 'ph-label' .next/server/app/ && fail "réserve d'image (placeholder) dans le build" || true
           echo "Aucune chaîne interdite trouvée."
 
+      # Masquer le curseur système écrase les réglages de taille et de
+      # contraste de l'OS dont certaines personnes dépendent, et axe ne voit
+      # pas la perte. La Phase 10 ajoute un curseur qui AUGMENTE le natif ;
+      # cette garde empêche qu'un commit plus tard le remplace.
+      - name: Native cursor gate
+        run: |
+          # La forme DÉCLARÉE (avec point-virgule), pas la mention : les
+          # commentaires qui expliquent l'interdiction citent la règle.
+          if grep -rInE 'cursor:[[:space:]]*none[[:space:]]*;' app/ components/ lib/; then
+            echo "::error::cursor: none interdit — le curseur système doit rester visible"
+            exit 1
+          fi
+          echo "Curseur système préservé."
+
       # Sans le sous-ensemble vietnamien, le dấu nặng de « Chạm » retombe sur
       # une police système et la marque se lit faux. La plage u+1ea0-1ef9 le
       # couvre ; son absence est une régression silencieuse.

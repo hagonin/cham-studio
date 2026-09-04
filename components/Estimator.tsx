@@ -84,7 +84,7 @@ export function Estimator({ locale, dict }: { locale: Locale; dict: Dictionary }
   }
 
   return (
-    <section className={styles.block} aria-labelledby="estimator-title">
+    <section data-reveal className={styles.block} aria-labelledby="estimator-title">
       <h2 id="estimator-title" className={styles.title}>
         {copy.title}
       </h2>

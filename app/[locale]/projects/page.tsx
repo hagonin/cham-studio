@@ -7,6 +7,12 @@ import { workSectionIsReady } from '@/content/projects';
 import { StatusBar } from '@/components/StatusBar';
 import { ProjectList } from '@/components/ProjectList';
 import { AboutBlock } from '@/components/AboutBlock';
+/**
+ * LE moment 3D du site, et le seul. Ici et pas sur `/[locale]` : la page qui
+ * vend tient Lighthouse ≥ 95 sur mobile, ce que Three ne permet pas. Sur cette
+ * page, la personne a déjà décidé de regarder du métier.
+ */
+import { Hero3DSlot } from '@/components/Hero3DSlot';
 import { ContactBlock } from '@/components/ContactBlock';
 import styles from '../page.module.css';
 
@@ -72,6 +78,7 @@ export default async function ProjectsPage({
         <h1 className={styles.heading}>{work.title}</h1>
         <p className={styles.lead}>{work.lead}</p>
       </header>
+      <Hero3DSlot />
       {/* Sous deux projets réels, la section n'est pas rendue du tout (F4).
           Pas d'état vide : il occuperait la place de ce qui manque. */}
       {workSectionIsReady() ? <ProjectList locale={locale} dict={dict} /> : null}

@@ -154,6 +154,13 @@ export const en = {
       mailIntro: 'Hello, here is the configuration estimated on the site:',
     },
   },
+  motion: {
+    cursor: {
+      read: 'View',
+      write: 'Write',
+      open: 'Open',
+    },
+  },
   notFound: {
     title: 'Page not found',
     body: 'This address does not lead anywhere.',

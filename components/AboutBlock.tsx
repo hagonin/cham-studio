@@ -16,7 +16,7 @@ export function AboutBlock({ dict }: { dict: Dictionary }) {
   const { about } = dict.work;
 
   return (
-    <section className={styles.block} aria-labelledby="about-title">
+    <section data-reveal className={styles.block} aria-labelledby="about-title">
       <ContactMarker label={dict.brand.name} />
       <h2 id="about-title" className={styles.title}>
         {about.title}

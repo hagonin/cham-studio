@@ -21,11 +21,17 @@ export function ContactLine({ dict }: { dict: Dictionary }) {
   return (
     <section className={styles.block} aria-labelledby="approach-title">
       <div className={styles.line} data-contact-line>
-        <span className={styles.end}>{approach.problem}</span>
+        {/* `data-contact-*` : prises du scrub de la Phase 10. Elles ne
+            décrivent rien de visuel — sans JS, la ligne rend son état JOINT. */}
+        <span className={styles.end} data-contact-end>
+          {approach.problem}
+        </span>
         <span className={styles.rule} aria-hidden="true" />
-        <span className={styles.dot} aria-hidden="true" />
+        <span className={styles.dot} data-contact-dot aria-hidden="true" />
         <span className={styles.rule} aria-hidden="true" />
-        <span className={styles.end}>{approach.solution}</span>
+        <span className={styles.end} data-contact-end>
+          {approach.solution}
+        </span>
       </div>
       <h2 id="approach-title" className={styles.title}>
         {approach.title}

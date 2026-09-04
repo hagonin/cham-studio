@@ -1,0 +1,8 @@
+/* Hauteur réservée D'AVANCE : le canvas arrive après coup, la place ne doit
+   pas apparaître avec lui. CLS ~0 est un objectif P1. */
+.holder {
+  width: 100%;
+  height: clamp(16rem, 34vw, 26rem);
+  margin: 2rem 0 3rem;
+  background: var(--paper);
+}

@@ -187,6 +187,19 @@ export const fr = {
       mailIntro: 'Bonjour, voici la configuration estimée sur le site :',
     },
   },
+  /**
+   * Libellés du curseur de contact (Phase 10). Ils nomment l'ACTION dans la
+   * langue de la page — jamais le mot « touch ». C'est le geste qui porte la
+   * marque ; une légende qui l'explique serait le paragraphe que toute cette
+   * idée existe pour éviter.
+   */
+  motion: {
+    cursor: {
+      read: 'Voir',
+      write: 'Écrire',
+      open: 'Ouvrir',
+    },
+  },
   notFound: {
     title: 'Page introuvable',
     body: 'Cette adresse ne mène nulle part.',

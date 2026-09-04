@@ -5,6 +5,8 @@ import { getDictionary } from '@/lib/i18n/getDictionary';
 import { metadataFor } from '@/lib/i18n/metadata';
 import { fontVariables } from '@/lib/fonts';
 import { LangSwitch } from '@/components/LangSwitch';
+import { MotionProvider } from '@/components/MotionProvider';
+import { ContactCursor } from '@/components/ContactCursor';
 import '../globals.css';
 
 export function generateStaticParams() {
@@ -46,6 +48,10 @@ export default async function LocaleLayout({
           <LangSwitch current={locale} dict={dict} />
         </header>
         <div id="content">{children}</div>
+        {/* Aucun des deux ne rend de contenu : ils décident comment le HTML
+            déjà servi arrive. Montés après lui, donc jamais sur son chemin. */}
+        <MotionProvider />
+        <ContactCursor dict={dict} />
         <footer>
           <p>{dict.footer.location}</p>
         </footer>

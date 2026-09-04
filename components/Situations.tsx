@@ -13,7 +13,7 @@ export function Situations({ dict }: { dict: Dictionary }) {
   const { situations } = dict.home;
 
   return (
-    <section className={styles.block} aria-labelledby="situations-title">
+    <section data-reveal className={styles.block} aria-labelledby="situations-title">
       <h2 id="situations-title" className={styles.title}>
         {situations.title}
       </h2>
