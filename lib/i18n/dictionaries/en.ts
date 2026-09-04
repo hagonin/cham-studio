@@ -83,6 +83,38 @@ export const en = {
       cta: 'Write to the studio',
     },
   },
+  work: {
+    meta: {
+      title: 'Work — Chạm Studio',
+      description:
+        'Personal projects, designed and built end to end. Independent studio in Montpellier, France.',
+    },
+    title: 'What I have built',
+    lead: 'Personal projects, carried from the first sketch to launch.',
+    projects: {
+      title: 'Work',
+      framing:
+        'Few projects, each one finished. These are personal builds — they show how I design and how I code, not a client list.',
+      roleLabel: 'Role',
+      yearLabel: 'Year',
+      stackLabel: 'Tools',
+      visit: 'View the project',
+    },
+    about: {
+      title: 'Behind Chạm',
+      creed: [
+        'One person, from sketch to launch.',
+        'What is promised is what ships.',
+        'Nothing goes live that cannot be read without JavaScript.',
+      ],
+      meaning:
+        'Chạm is a Vietnamese word: to touch, to make contact. That is what a site has to do before it does anything else.',
+      body: [
+        'I design and build alone, which removes the place where projects usually get lost: the handover between the person drawing and the person coding. There is nothing to reinterpret, so there is nothing to renegotiate halfway through.',
+        'I take few projects and I finish them. A half-delivered site earns nobody anything, and I would rather turn work down than hand it over incomplete.',
+      ],
+    },
+  },
   pricing: {
     indicative: 'Indicative 2026 rates',
     from: 'From',

@@ -93,6 +93,52 @@ export const fr = {
       cta: 'Écrire au studio',
     },
   },
+  /**
+   * La page /projects. Son travail est la PREUVE : les projets d'abord, la
+   * personne ensuite. Une page intitulée d'après son auteur invite à passer.
+   *
+   * Le cadrage est la décision de design : des projets personnels, présentés
+   * comme petits et terminés, se lisent comme un choix. Les mêmes projets
+   * gonflés pour ressembler à des missions clientes se lisent comme du vide.
+   */
+  work: {
+    meta: {
+      title: 'Travaux — Chạm Studio',
+      description:
+        'Projets personnels, conçus et développés de bout en bout. Studio indépendant à Montpellier.',
+    },
+    title: 'Ce que j’ai construit',
+    lead: 'Des projets personnels, menés du premier croquis à la mise en ligne.',
+    projects: {
+      title: 'Travaux',
+      // Nommer la taille désamorce la question. Ne jamais laisser entendre
+      // qu'il s'agit de missions clientes : c'est faux, et cela s'apprend.
+      framing:
+        'Peu de projets, chacun terminé. Ce sont des travaux personnels — ils montrent comment je conçois et comment je code, pas une liste de références.',
+      roleLabel: 'Rôle',
+      yearLabel: 'Année',
+      stackLabel: 'Outils',
+      visit: 'Voir le projet',
+    },
+    about: {
+      title: 'Derrière Chạm',
+      // Trois lignes, pas un CV. La page vend une façon de penser ; le CV vend
+      // un parcours. Ni historique d'emploi ni barres de compétences.
+      creed: [
+        'Une seule personne, du croquis à la mise en ligne.',
+        'Ce qui est promis est ce qui est livré.',
+        'Rien en ligne qui ne soit lisible sans JavaScript.',
+      ],
+      // La seule occurrence du sens de la marque sur le site. Le test
+      // tests/i18n.test.ts vérifie qu'elle contient bien brand.meaning.
+      meaning:
+        'Chạm est un mot vietnamien : toucher, entrer en contact. C’est ce qu’un site doit faire avant tout le reste.',
+      body: [
+        'Je conçois et je développe seule, ce qui supprime l’endroit où les projets se perdent d’habitude : la transmission entre celui qui dessine et celui qui code. Il n’y a rien à réinterpréter, donc rien à négocier en cours de route.',
+        'Je travaille en petit nombre et je termine. Un site livré à moitié ne rapporte rien à personne, et je préfère refuser un projet que le rendre incomplet.',
+      ],
+    },
+  },
   pricing: {
     // Les coefficients reposent sur un échantillon de deux : la mention rend le
     // provisoire visible au prospect plutôt qu'à nous seuls.

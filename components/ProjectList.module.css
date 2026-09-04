@@ -1,0 +1,22 @@
+.block {
+  padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.title {
+  font-family: var(--font-display-stack);
+  font-size: var(--step-2);
+  margin: 0;
+}
+
+.framing {
+  max-width: 58ch;
+  color: var(--ink-2);
+  margin: 0.5rem 0 1.5rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--rule);
+}

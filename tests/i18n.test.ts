@@ -11,6 +11,9 @@ import {
 import { buildAlternates, robotsFor } from '../lib/i18n/metadata';
 import { getDictionary } from '../lib/i18n/getDictionary';
 import { formatPrice } from '../lib/i18n/format';
+import { SITE_URL } from '../lib/i18n/config';
+import { workSectionIsReady } from '../content/projects';
+import sitemap from '../app/sitemap';
 
 describe('validation de la locale', () => {
   it('rejette tout segment hors liste blanche', () => {
@@ -115,5 +118,53 @@ describe('formats localisés', () => {
 describe('couverture', () => {
   it('construit toutes les locales, publiées ou non', () => {
     expect(locales).toEqual(['fr', 'en']);
+  });
+});
+
+/**
+ * La page /projects. Deux règles s'y croisent : le sens de la marque n'est
+ * écrit qu'à un seul endroit du site, et une page dont le contenu principal
+ * manque ne s'annonce pas au moteur.
+ */
+describe('page travaux', () => {
+  it('écrit le sens de la marque dans la prose « à propos », dans les deux locales', () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale);
+      // La phrase est rédigée à la main pour se lire ; la garde vérifie
+      // qu'elle porte bien le sens déclaré dans `brand`, plutôt qu'une
+      // seconde définition qui dériverait de la première.
+      expect(dict.work.about.meaning, locale).toContain(dict.brand.meaning);
+    }
+  });
+
+  it('n’écrit ce sens que là — jamais dans le hero', () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale);
+      expect(JSON.stringify(dict.home), locale).not.toContain(dict.brand.meaning);
+    }
+  });
+
+  it('remplit la copie de la page dans les deux locales', () => {
+    for (const locale of locales) {
+      const { work } = getDictionary(locale);
+      for (const line of [work.title, work.lead, work.projects.framing]) {
+        expect(line.trim().length, locale).toBeGreaterThan(0);
+      }
+      expect(work.about.creed.length, locale).toBeGreaterThan(0);
+      expect(work.about.body.length, locale).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe('sitemap', () => {
+  it('n’annonce /projects que lorsque la section travaux peut paraître', () => {
+    const urls = sitemap().map((entry) => entry.url);
+    expect(urls).toContain(`${SITE_URL}${localeHref('fr')}`);
+    expect(urls.some((url) => url.endsWith('/projects/'))).toBe(workSectionIsReady());
+  });
+
+  it('n’expose aucune locale non publiée', () => {
+    const urls = sitemap().map((entry) => entry.url);
+    expect(urls.some((url) => url.includes('/en/'))).toBe(false);
   });
 });

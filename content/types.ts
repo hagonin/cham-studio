@@ -23,12 +23,27 @@ export type Service = {
   from: number | null;
 };
 
+/**
+ * Le visuel d'un projet. Les dimensions sont OBLIGATOIRES : sans elles le
+ * navigateur ne réserve pas la place avant le chargement et la page saute —
+ * or CLS ~0 est un objectif P1, pas une préférence.
+ *
+ * `alt` est traduit. Une image de projet porte une information ; la décrire en
+ * français à un lecteur anglophone revient à ne pas la décrire.
+ */
+export type Cover = {
+  /** Chemin sous /public. Aucune image trouvée ailleurs : une carte de projet
+   *  affirme un résultat, une image non possédée la dément. */
+  src: string;
+  width: number;
+  height: number;
+  alt: L10n;
+};
+
 export type Project = {
   slug: string;
   year: number;
-  /** Chemin sous /public. Aucune image trouvée ailleurs : une carte de projects
-   *  affirme un résultat, une image non possédée la dément. */
-  cover: string;
+  cover: Cover;
   title: L10n;
   role: L10n;
   summary: L10n;
