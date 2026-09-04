@@ -6,7 +6,9 @@ const nextConfig = {
   trailingSlash: true,
   reactStrictMode: true,
   async redirects() {
-    return [{ source: '/', destination: '/fr', permanent: true }];
+    // Destination avec slash final : sans lui, `trailingSlash` ajoute une
+    // seconde redirection (/ → /fr → /fr/) et la racine coûte deux allers-retours.
+    return [{ source: '/', destination: '/fr/', permanent: true }];
   },
 };
 export default nextConfig;
