@@ -192,3 +192,58 @@ body {
   left: 0;
   z-index: 10;
 }
+
+/* --- Cadre et recadrage ----------------------------------------------------
+   Le seul effet de défilement du site : un glissement du cadrage À L'INTÉRIEUR
+   d'un cadre fixe. Rien ne bouge par rapport à la page, donc pas de décalage de
+   mise en page (CLS ~0) et pas d'effet flottant — la parallaxe classique a été
+   écartée pour cette raison.
+
+   Global et non modulaire : deux composants s'en servent (ProjectRow, portrait
+   du bloc contact) et une seule définition évite qu'ils divergent. */
+.frame {
+  position: relative;
+  /* Le ratio verrouille la place AVANT le chargement de l'image : la page ne
+     saute pas, avec ou sans visuel. */
+  aspect-ratio: var(--frame-ratio, 16 / 10);
+  overflow: hidden;
+}
+
+.frame img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* État par défaut = état FINAL du recadrage. Firefox (pas de timeline de
+     défilement), JS coupé et reduced-motion voient donc le cadrage voulu, et
+     non un centrage générique qui attendrait un script : aucune branche de
+     repli à écrire.
+
+     `scale(1.1)` est le budget de recadrage — c'est lui qui donne au translate
+     de quoi se déplacer sans découvrir un bord. Le réduire sous la plus grande
+     valeur de `translate3d` laisse voir le fond à travers le cadre. */
+  transform: scale(1.1) translate3d(3%, -2%, 0);
+}
+
+/* Amélioration progressive, jamais porteuse : `animation-timeline` n'est pas
+   Baseline (Firefox 152 le garde derrière un drapeau en juin 2026, ~84 % du
+   parc). Sans la double garde, le cadrage n'est tout simplement pas animé. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes recadrage {
+      from {
+        transform: scale(1.1) translate3d(-3%, 2%, 0);
+      }
+      to {
+        transform: scale(1.1) translate3d(3%, -2%, 0);
+      }
+    }
+
+    .frame img {
+      animation: recadrage linear both;
+      animation-timeline: view(block 15%);
+      animation-range: cover 10% cover 90%;
+    }
+  }
+}

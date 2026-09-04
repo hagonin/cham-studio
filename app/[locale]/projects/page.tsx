@@ -76,7 +76,7 @@ export default async function ProjectsPage({
           Pas d'état vide : il occuperait la place de ce qui manque. */}
       {workSectionIsReady() ? <ProjectList locale={locale} dict={dict} /> : null}
       <AboutBlock dict={dict} />
-      <ContactBlock dict={dict} />
+      <ContactBlock dict={dict} locale={locale} />
     </main>
   );
 }

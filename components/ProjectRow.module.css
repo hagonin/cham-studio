@@ -94,16 +94,17 @@
   margin-top: 1rem;
 }
 
-.cover {
+/* Le placement en grille appartient au cadre, pas à l'image : c'est le cadre
+   qui occupe la place, l'image ne fait que la remplir. Le ratio et le
+   recadrage viennent de `.frame` (globals.css). */
+.frame {
   grid-column: 1 / -1;
-  width: 100%;
-  height: auto;
   background: var(--panel);
   border: 1px solid var(--rule);
 }
 
 @media (min-width: 60rem) {
-  .cover {
+  .frame {
     grid-column: 3;
     grid-row: 1;
   }

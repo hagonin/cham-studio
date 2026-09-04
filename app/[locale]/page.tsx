@@ -56,7 +56,7 @@ export default async function ServicesPage({
       <Situations dict={dict} />
       <ServiceList locale={locale} dict={dict} />
       <ContactLine dict={dict} />
-      <ContactBlock dict={dict} />
+      <ContactBlock dict={dict} locale={locale} />
     </main>
   );
 }

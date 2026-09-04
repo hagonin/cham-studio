@@ -78,21 +78,27 @@ export function ProjectRow({
         ) : null}
       </div>
 
-      {/* `width`/`height` viennent de la donnée : le navigateur réserve la
-          place avant le chargement, donc la page ne saute pas.
+      {/* Le cadre porte le ratio et le débordement ; l'image porte le
+          recadrage. Séparer les deux est ce qui rend l'effet gratuit en
+          disposition : le cadre ne bouge jamais. Voir `.frame` dans
+          globals.css. */}
+      <span className={`${styles.frame} frame`}>
+        {/* `width`/`height` viennent de la donnée : le navigateur réserve la
+            place avant le chargement, donc la page ne saute pas.
 
-          Le premier visuel est le candidat LCP de la page : le charger en
-          `lazy` comme les autres reviendrait à attendre la mise en page pour
-          seulement commencer à le demander. Les suivants restent paresseux. */}
-      <Image
-        className={styles.cover}
-        src={cover.src}
-        alt={cover.alt[locale]}
-        width={cover.width}
-        height={cover.height}
-        sizes="(max-width: 60rem) 100vw, 32rem"
-        priority={index === 0}
-      />
+            Le premier visuel est le candidat LCP de la page : le charger en
+            `lazy` comme les autres reviendrait à attendre la mise en page pour
+            seulement commencer à le demander. Les suivants restent paresseux. */}
+        <Image
+          className={styles.cover}
+          src={cover.src}
+          alt={cover.alt[locale]}
+          width={cover.width}
+          height={cover.height}
+          sizes="(max-width: 60rem) 100vw, 32rem"
+          priority={index === 0}
+        />
+      </span>
     </li>
   );
 }

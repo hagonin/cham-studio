@@ -1,4 +1,4 @@
-import type { L10n } from './types';
+import type { Cover, L10n } from './types';
 
 /**
  * Identité de l'exploitant. Les champs légaux restent `null` tant que les
@@ -13,6 +13,12 @@ export const site = {
   /** Surfaces d'affichage : la ville suffit. L'adresse postale complète
    *  n'apparaît que sur les mentions légales. */
   city: { fr: 'Montpellier, France', en: 'Montpellier, France' } satisfies L10n,
+  /** Portrait du bloc contact, `null` tant que la photo n'existe pas. Même
+   *  règle que les champs légaux : l'absence se rend en ne rendant rien, pas
+   *  en réservant un rectangle gris. Jamais dans le hero — un visage au-dessus
+   *  de la ligne de flottaison retarde la proposition de valeur et pénalise le
+   *  LCP. EXIF (GPS) à retirer AVANT le commit : après, l'historique le garde. */
+  portrait: null as Cover | null,
   legal: {
     postalAddress: null as string | null,
     siret: null as string | null,

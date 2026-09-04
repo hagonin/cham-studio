@@ -18,3 +18,13 @@
   font-family: var(--font-mono-stack);
   font-size: var(--step-0);
 }
+
+/* 4:5 : le portrait est le seul cadre du site qui ne soit pas en 16:10. */
+.portrait {
+  --frame-ratio: 4 / 5;
+  display: block;
+  width: min(20rem, 60%);
+  margin-top: 2.5rem;
+  background: var(--panel);
+  border: 1px solid var(--rule);
+}
