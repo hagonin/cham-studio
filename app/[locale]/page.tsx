@@ -7,6 +7,7 @@ import { StatusBar } from '@/components/StatusBar';
 import { Hero } from '@/components/Hero';
 import { Situations } from '@/components/Situations';
 import { ServiceList } from '@/components/ServiceList';
+import { Estimator } from '@/components/Estimator';
 import { ContactLine } from '@/components/ContactLine';
 import { ContactBlock } from '@/components/ContactBlock';
 import styles from './page.module.css';
@@ -37,8 +38,9 @@ export async function generateMetadata({
  * rapporte derrière un clic : chaque visite entrante et chaque lien retour
  * arrivent directement dessus.
  *
- * Ordre : barre d'état → hero → situations → prestations → approche → contact.
- * L'estimateur s'insère entre prestations et approche en Phase 6.
+ * Ordre : barre d'état → hero → situations → prestations → estimateur →
+ * approche → contact. L'estimateur suit les cartes parce qu'il en dérive :
+ * ses planchers et les leurs sortent du même `BASE`.
  */
 export default async function ServicesPage({
   params,
@@ -55,6 +57,7 @@ export default async function ServicesPage({
       <Hero dict={dict} />
       <Situations dict={dict} />
       <ServiceList locale={locale} dict={dict} />
+      <Estimator locale={locale} dict={dict} />
       <ContactLine dict={dict} />
       <ContactBlock dict={dict} locale={locale} />
     </main>

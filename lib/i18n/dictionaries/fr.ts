@@ -145,6 +145,47 @@ export const fr = {
     indicative: 'Tarifs indicatifs 2026',
     from: 'À partir de',
     estimate: 'Estimation',
+    /**
+     * L'estimateur. Les intitulés des prestations ne sont PAS ici : ils
+     * viennent de `content/services.ts`, sinon la même prestation porterait
+     * deux noms sur la même page.
+     */
+    estimator: {
+      title: 'Estimer votre projet',
+      lead: 'Quatre questions pour un ordre de grandeur. Le résultat part par email avec votre configuration.',
+      typeLegend: 'Quelle prestation ?',
+      scaleLegend: 'Quelle ampleur ?',
+      designLegend: 'Quel niveau de design ?',
+      featuresLegend: 'Fonctionnalités',
+      scales: {
+        simple: 'Simple',
+        standard: 'Standard',
+        etendu: 'Étendu',
+      },
+      designs: {
+        sobre: 'Sobre',
+        surMesure: 'Sur mesure',
+        signature: 'Signature',
+      },
+      features: {
+        multilingue: 'Plusieurs langues',
+        cms: 'Contenus modifiables',
+        ecommerce: 'Vente en ligne',
+        reservation: 'Prise de rendez-vous',
+        compte: 'Comptes utilisateurs',
+        integration: 'Connexion à un outil existant',
+      },
+      resultLabel: 'Estimation',
+      durationLabel: 'Délai',
+      weeks: 'semaines',
+      // Le résultat doit se lire comme une estimation, pas comme un devis :
+      // c'est la mention qui empêche la confusion, pas la fourchette.
+      notAQuote:
+        'Estimation indicative, pas un devis. Le prix définitif est arrêté après un échange.',
+      cta: 'Envoyer cette configuration',
+      mailSubject: 'Estimation — Chạm Studio',
+      mailIntro: 'Bonjour, voici la configuration estimée sur le site :',
+    },
   },
   notFound: {
     title: 'Page introuvable',

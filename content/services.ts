@@ -1,10 +1,13 @@
+import { BASE } from '@/lib/pricing/model';
 import { type Service } from './types';
 
 /**
- * PLANCHERS TARIFAIRES NON ARRÊTÉS. `from: null` partout tant que les quatre
- * chiffres ne sont pas fournis. La Phase 6 ajoute le drapeau
- * `PRICES_CONFIRMED` qui fait échouer le build sur des tarifs provisoires ;
- * `null` est ici l'état honnête en attendant.
+ * Les quatre `from` DÉRIVENT de `BASE` (`lib/pricing/model.ts`) : un plancher
+ * retapé ici pourrait diverger de l'estimateur affiché sur la même page.
+ *
+ * PLANCHERS NON VALIDÉS : ils viennent d'un benchmark, pas d'une décision.
+ * `PRICES_CONFIRMED` reste `false` et bloque la mise en production — ils sont
+ * donc visibles en dev et en préversion, jamais en ligne.
  */
 export const services: Service[] = [
   {
@@ -19,7 +22,7 @@ export const services: Service[] = [
       { fr: 'Design sur mesure', en: 'Bespoke design' },
       { fr: 'Développement et mise en ligne', en: 'Build and launch' },
     ],
-    from: null,
+    from: BASE.vitrine,
   },
   {
     key: 'identite',
@@ -33,7 +36,7 @@ export const services: Service[] = [
       { fr: 'Logotype et déclinaisons', en: 'Logotype and variants' },
       { fr: 'Guide d’usage', en: 'Usage guide' },
     ],
-    from: null,
+    from: BASE.identite,
   },
   {
     key: 'application',
@@ -47,7 +50,7 @@ export const services: Service[] = [
       { fr: 'Interface et parcours', en: 'Interface and flows' },
       { fr: 'Développement et reprise', en: 'Build and handover' },
     ],
-    from: null,
+    from: BASE.application,
   },
   {
     key: 'refonte',
@@ -61,6 +64,6 @@ export const services: Service[] = [
       { fr: 'Reprise du contenu', en: 'Content migration' },
       { fr: 'Refonte et bascule', en: 'Rebuild and switchover' },
     ],
-    from: null,
+    from: BASE.refonte,
   },
 ];

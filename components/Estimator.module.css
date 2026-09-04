@@ -1,0 +1,106 @@
+.block {
+  padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.title {
+  font-family: var(--font-display-stack);
+  font-size: var(--step-2);
+  margin: 0;
+}
+
+.lead {
+  max-width: 52ch;
+  color: var(--ink-2);
+  margin: 0.5rem 0 2rem;
+}
+
+.inputs {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+}
+
+.group {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+  padding: 1rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Libellé court, donc majuscules autorisées — et c'est un <legend>, jamais un
+   <p> : la garde de scripts/check-html.mjs interdit le texte courant capitalisé. */
+.legend {
+  font-family: var(--font-mono-stack);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+  padding: 0;
+}
+
+/* 44px de haut : la cible tactile porte sur toute la ligne, pas sur la case
+   de 16px. Le libellé EST la cible, c'est ce que `htmlFor` achète. */
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+.choice input {
+  /* La bordure interactive ne tient le 3:1 que sur --paper : ces contrôles ne
+     sont donc jamais posés sur --panel. */
+  accent-color: var(--ink);
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: none;
+}
+
+.result {
+  margin-top: 2.5rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--panel);
+  border-left: 2px solid var(--ink);
+}
+
+.figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0 0 0.5rem;
+}
+
+.resultLabel {
+  font-family: var(--font-mono-stack);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--mute);
+  min-width: 7rem;
+}
+
+.amount {
+  font-family: var(--font-display-stack);
+  font-size: var(--step-1);
+}
+
+.notice {
+  font-family: var(--font-mono-stack);
+  font-size: var(--step--1);
+  color: var(--ink-2);
+  margin: 1rem 0 0;
+  max-width: 56ch;
+}
+
+.cta {
+  display: inline-block;
+  margin-top: 1.5rem;
+  min-height: 44px;
+  font-family: var(--font-mono-stack);
+  font-size: var(--step-0);
+}
