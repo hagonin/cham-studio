@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Le déploiement n'est pas ici : Vercel est branché directement sur ce dépôt
+# GitHub (déploiement automatique sur push, preview sur chaque PR). Ce workflow
+# ne fait que la vérification ; voir README pour la configuration Vercel.
+jobs:
+  verify:
+    name: Lint, types, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # la version vient de "packageManager" dans package.json — une seule source
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+
+      # Règles qui ne se vérifient que sur le HTML rendu par Next : ordre des
+      # titres, majuscules hors des libellés, accordéon accessible, contenu
+      # présent sans JavaScript.
+      - run: pnpm check:html
+
+      # Garde-fous : ce qui ne doit jamais atteindre la production.
+      - name: Forbidden strings gate
+        run: |
+          set -e
+          fail() { echo "::error::$1"; exit 1; }
+          grep -rIlE '\+33[0-9 .-]{9,}' .next/server/app/ && fail "numéro de téléphone personnel dans le build" || true
+          grep -rIl 'outlook\.fr' .next/server/app/ && fail "email personnel dans le build" || true
+          grep -rIl '000 000 000 00000' .next/server/app/ && fail "SIRET fictif dans le build" || true
+          grep -rIl 'ph-label' .next/server/app/ && fail "réserve d'image (placeholder) dans le build" || true
+          echo "Aucune chaîne interdite trouvée."
+
+      # Sans le sous-ensemble vietnamien, le dấu nặng de « Chạm » retombe sur
+      # une police système et la marque se lit faux. La plage u+1ea0-1ef9 le
+      # couvre ; son absence est une régression silencieuse.
+      - name: Vietnamese subset gate
+        run: |
+          grep -rq 'u+1ea0-1ef9' .next/static/css/ \
+            || { echo "::error::sous-ensemble vietnamien absent des polices"; exit 1; }
+          echo "Sous-ensemble vietnamien présent."

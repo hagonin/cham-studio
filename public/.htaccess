@@ -1,8 +1,0 @@
-# Redirection racine — l'export statique n'a pas de middleware Next.js.
-# `^$` ne matche que la racine nue : /fr/ ne peut pas la redéclencher.
-RewriteEngine On
-RewriteRule ^$ /fr/ [R=301,L]
-
-# La page 404 de l'export statique est à la racine (out/404.html), pas sous
-# /fr/ : Next ne localise pas le not-found d'un segment dynamique.
-ErrorDocument 404 /404.html
