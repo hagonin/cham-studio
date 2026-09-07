@@ -1,0 +1,30 @@
+/* Rideau plein écran, jamais interactif : `pointer-events: none` et
+   `aria-hidden` (posé dans le composant) — rien à cliquer, rien à traverser
+   au clavier, jamais de piège de focus (règle 7, phase 06). */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.leaving {
+  opacity: 0;
+}
+
+.mark {
+  font-family: var(--font-display-stack);
+  font-size: var(--display-s);
+  color: var(--ink);
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.leaving .mark {
+  opacity: 1;
+}
