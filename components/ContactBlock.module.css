@@ -1,22 +1,52 @@
+/* Décision 25 : seul bloc à fond encre du site. --muted (5.78:1 sur encre)
+   remplace --ink-2 (1,89:1 sur encre, illisible) pour le texte secondaire, et
+   l'anneau de focus passe au papier — sinon `:focus-visible` (encre sur
+   encre) devient invisible ici. */
 .block {
   padding: clamp(3rem, 8vw, 6rem) 0;
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.block :focus-visible {
+  outline-color: var(--paper);
 }
 
 .title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.35em;
   font-family: var(--font-display-stack);
-  font-size: var(--step-3);
+  font-size: var(--display-s);
+  line-height: 0.9;
+  text-transform: uppercase;
   margin: 2rem 0 1rem;
-  max-width: 18ch;
+}
+
+/* Le point, en glyphe statique au fil du texte — même traitement que le « × »
+   du hero (décision 22) : --touch marque un contact déjà advenu, pas un état,
+   et `touch` sur `ink` est la paire testée pour du texte (lib/tokens.ts). */
+.dot {
+  color: var(--touch);
+  font-size: 0.55em;
+}
+
+.lead {
+  font-size: var(--text);
+  color: var(--muted);
+  max-width: 42ch;
+  margin: 0 0 1.5rem;
 }
 
 .body {
   max-width: 52ch;
-  color: var(--ink-2);
+  color: var(--muted);
 }
 
 .cta {
   font-family: var(--font-mono-stack);
-  font-size: var(--step-0);
+  font-size: var(--text-s);
 }
 
 /* 4:5 : le portrait est le seul cadre du site qui ne soit pas en 16:10. */
@@ -25,6 +55,6 @@
   display: block;
   width: min(20rem, 60%);
   margin-top: 2.5rem;
-  background: var(--panel);
-  border: 1px solid var(--rule);
+  background: var(--paper);
+  border: 1px solid var(--line);
 }

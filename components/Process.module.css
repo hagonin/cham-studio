@@ -1,0 +1,128 @@
+.block {
+  padding: clamp(3rem, 8vw, 6rem) 0;
+}
+
+.title {
+  font-family: var(--font-display-stack);
+  font-size: var(--display-s);
+  line-height: 0.92;
+  text-transform: uppercase;
+  margin: 0 0 2.5rem;
+}
+
+.titleLine {
+  display: block;
+}
+
+.steps {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* La ligne continue derrière les cinq marqueurs — un seul filet, pas cinq
+   figures. Alignée sur le centre de la colonne marqueur (3rem de large). */
+.steps::before {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--line);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  column-gap: 1.25rem;
+  align-items: baseline;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.step:first-child {
+  border-top: none;
+}
+
+@media (min-width: 60rem) {
+  .step {
+    grid-template-columns: 3rem 14rem 1fr;
+    column-gap: 2rem;
+  }
+}
+
+.marker {
+  grid-row: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.15rem;
+}
+
+.markerNum {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  color: var(--muted);
+}
+
+/* État de repos = état FINAL (déjà atteint) : sans amélioration progressive,
+   les cinq points se lisent comme un parcours déjà complet — l'animation
+   n'ajoute qu'une façon d'y arriver, elle ne révèle rien. */
+.markerDot {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--touch);
+  flex: none;
+}
+
+.stepTitle {
+  font-family: var(--font-display-stack);
+  font-size: var(--display-s);
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.stepBody {
+  grid-column: 2 / -1;
+  max-width: 52ch;
+  color: var(--ink-2);
+  margin: 0.5rem 0 0;
+}
+
+@media (min-width: 60rem) {
+  .stepBody {
+    grid-column: 3;
+    margin-top: 0;
+  }
+}
+
+/* Amélioration progressive, jamais porteuse : mêmes deux gardes que le
+   recadrage de `.frame img` (`app/globals.css`). `view()` est un timeline
+   PAR ÉLÉMENT — chaque point anime indépendamment au moment où SA ligne
+   entre dans le viewport, sans second sélecteur ni JavaScript. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes stage-arrive {
+      from {
+        background: var(--line);
+        transform: scale(0.6);
+      }
+      to {
+        background: var(--touch);
+        transform: scale(1);
+      }
+    }
+
+    .markerDot {
+      animation: stage-arrive linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+}

@@ -1,0 +1,80 @@
+.nav {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(1.5rem, 5vw, 6rem);
+  padding: 1.25rem var(--gutter);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.wordmark {
+  font-family: var(--font-display-stack);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-transform: none;
+}
+
+.sections {
+  display: flex;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  margin: 0;
+  margin-inline-start: auto;
+  padding: 0;
+  list-style: none;
+}
+
+/* Les crochets sont décoratifs : ils encadrent le libellé sans être lus, et le
+   libellé reste le seul texte de l'élément. */
+.link::before,
+.link::after {
+  color: var(--line);
+}
+.link::before {
+  content: '[ ';
+}
+.link::after {
+  content: ' ]';
+}
+
+.link {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+/* --touch ne paraît qu'au toucher : c'est la règle de tests/tokens.test.ts, et
+   ces deux sélecteurs sont les seuls états de ce fichier. */
+.link:hover,
+.link:focus-visible {
+  color: var(--touch);
+}
+
+.locales {
+  margin: 0;
+  color: var(--muted);
+}
+
+.current {
+  color: var(--ink);
+}
+
+/* La locale non publiée reste visible mais n'est pas un lien : elle annonce que
+   le site existe en deux langues sans promettre une page qui n'est pas prête. */
+.inert {
+  color: var(--muted);
+}
+
+/* La barre disparaît sous 640px plutôt que de se replier en menu : quatre
+   ancres sur une page unique se rejoignent au défilement, et un tiroir ajoute
+   un état à maintenir pour une page qu'on parcourt de toute façon. */
+@media (max-width: 40rem) {
+  .sections {
+    display: none;
+  }
+  .locales {
+    margin-inline-start: auto;
+  }
+}

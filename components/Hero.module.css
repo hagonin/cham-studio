@@ -1,25 +1,218 @@
 .hero {
-  padding: clamp(3rem, 8vw, 7rem) 0;
-  max-width: 26ch;
+  padding: clamp(2rem, 5vw, 4rem) 0 clamp(3.5rem, 9vw, 7rem);
 }
 
+/* --- Bandeau de repères ---------------------------------------------------
+   Deux blocs tenus aux bords. `flex` + `gap` plutôt que des marges : le bloc
+   de droite se replie sous celui de gauche sans qu'aucun espacement ne se
+   double ni ne s'annule. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: clamp(3rem, 9vw, 7rem);
+}
+
+.metaBlock {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.metaRight {
+  text-align: right;
+  margin-left: auto;
+}
+
+.pron {
+  color: var(--muted);
+}
+
+/* --- Titre -----------------------------------------------------------------
+   DESIGN et CODE tenus aux deux bords, la figure au milieu. `space-between`
+   fait le travail : aucune largeur n'est codée en dur, donc la composition
+   tient de 20rem à 90rem sans point de rupture intermédiaire. */
 .title {
-  font-family: var(--font-display-stack);
-  font-size: var(--step-4);
-  line-height: 1.02;
   margin: 0;
+  font-family: var(--font-display-stack);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+}
+
+/* Le nom, à l'échelle réservée au hero : --display-xl existe POUR cette ligne
+   et pour elle seule (voir app/globals.css). Un clamp écrit ici en doublerait
+   la définition et dériverait à la première retouche. */
+.name {
+  display: block;
+  font-size: var(--display-xl);
+  /* Le fût de la capitale condensée s'aligne sur la colonne, pas la gouttière
+     optique du glyphe. */
+  margin-inline-start: -0.04em;
+}
+
+/* --- Positionnement --------------------------------------------------------
+   DESIGN et CODE tenus aux deux bords, la figure au milieu. `space-between`
+   fait le travail : aucune largeur n'est codée en dur, donc la composition
+   tient de 20rem à 90rem sans point de rupture intermédiaire. */
+.positioning {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.06em;
+  margin-top: clamp(1rem, 2.5vw, 2rem);
+  font-size: var(--display-s);
+  /* Ne se replie pas : deux mots sur deux lignes casseraient le point de
+     contact au milieu, qui est tout le propos de la composition. */
+  flex-wrap: nowrap;
+}
+
+.word {
+  flex: none;
+  /* Les capitales condensées portent leur propre gouttière optique ; on la
+     reprend pour aligner le fût sur la colonne, pas la marge du glyphe. */
+  margin-inline: -0.02em;
+}
+
+/* Le « × » vit à sa propre échelle : au corps du titre il pèserait autant que
+   les mots, alors qu'il est la charnière entre eux. Seule occurrence de
+   --touch dans ce bloc, et elle est STATIQUE : décision 22 — l'accent marque
+   l'interaction ET le contact, et le × est un point de contact déjà advenu. */
+.contact {
+  flex: none;
+  font-size: 0.34em;
+  color: var(--touch);
+  align-self: center;
+}
+
+/* --- Figure de contact -----------------------------------------------------
+   Entre les deux mots, à leur hauteur. Elle se dimensionne en em du titre : la
+   composition garde ses proportions à toutes les largeurs sans second clamp à
+   tenir en phase avec le premier. */
+.figure {
+  flex: none;
+  position: relative;
+  width: 1.5em;
+  aspect-ratio: 1 / 1;
+  display: block;
+}
+
+.figure svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ring {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+
+.ringFaint {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.point {
+  fill: var(--touch);
+}
+
+/* Le cartouche de planche. En `position: absolute` pour ne pas entrer dans le
+   calcul de hauteur du titre : sans cela, une ligne de 11px ferait grandir un
+   bloc de 200px. */
+.figureLabel {
+  position: absolute;
+  left: 0;
+  bottom: 0.12em;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.14em;
+  line-height: 1;
+  padding: 0.45em 0.6em;
+}
+
+/* --- Périmètre -------------------------------------------------------------
+   Une ligne de filets, pas des barres de compétence : rien à comparer, rien à
+   quantifier. Aucun état de survol ne révèle d'information, donc son absence
+   au doigt et au clavier ne coûte rien. */
+.scope {
+  list-style: none;
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+  padding: 1rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem clamp(1.5rem, 4vw, 3.5rem);
+  border-top: 1px solid var(--line);
+}
+
+.scopeItem {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+
+/* --- Propos ---------------------------------------------------------------- */
+.statement {
+  margin-top: clamp(3rem, 9vw, 7rem);
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+}
+
+/* La ligne qui porte la personne (décision 19). En corps et non en affichage :
+   le titre affirme la portée, celle-ci l'assume — deux registres, pas deux
+   tailles du même. */
+.lead {
+  margin: 0;
+  max-width: 52ch;
+  font-size: var(--text);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.claim {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-size: var(--display-s);
+  line-height: 1.15;
+  max-width: 34ch;
   text-wrap: balance;
 }
 
-.lead {
-  max-width: 46ch;
-  font-size: var(--step-1);
-  color: var(--ink-2);
+/* La phrase de marque, dans la voix technique du site : mono, en retrait de
+   couleur. Elle commente le geste — elle ne le remplace pas. */
+.tagline {
+  margin: 0;
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.06em;
+  color: var(--muted);
 }
 
 .cta {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+/* Sous 48rem, le cartouche déborderait une figure d'à peine 5rem : on le
+   retire plutôt que de le réduire sous le plancher typographique. */
+@media (max-width: 48rem) {
+  .figureLabel {
+    display: none;
+  }
+
+  .metaRight {
+    text-align: left;
+    margin-left: 0;
+  }
 }

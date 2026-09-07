@@ -1,16 +1,19 @@
 import type { MetadataRoute } from 'next';
 import { PUBLISHED, SITE_URL, localeHref } from '@/lib/i18n/config';
-import { workSectionIsReady } from '@/content/projects';
+import { projectsNewestFirst } from '@/content/projects';
 
 /**
  * Les routes du site, hors préfixe de locale (slugs identiques, F7).
  *
- * `/projects` n'y figure que lorsque la section travaux a de quoi paraître :
- * annoncer au moteur une page dont le contenu principal manque revient à la
- * faire juger sur ce qui n'y est pas. La même condition pilote son `noindex`.
+ * L'index `/projects` a disparu : les travaux vivent sur la page unique. Les
+ * ÉTUDES DE CAS gardent leur propre route, une par projet réel.
+ *
+ * La liste DÉRIVE du contenu au lieu d'être écrite ici : `projects` est vide en
+ * production tant qu'aucune étude n'est publiée, donc le sitemap est correct
+ * avant comme après, sans second endroit à modifier le jour où elles arrivent.
  */
 function routes(): string[] {
-  return workSectionIsReady() ? ['', 'projects'] : [''];
+  return ['', ...projectsNewestFirst().map((project) => project.slug)];
 }
 
 // Rien ici ne dépend de la requête : la route est déclarée figée pour être

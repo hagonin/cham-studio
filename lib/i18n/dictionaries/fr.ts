@@ -15,8 +15,11 @@ export const fr = {
       'Studio indépendant à Montpellier. Sites vitrines, identités et applications web, conçus et développés de bout en bout.',
   },
   nav: {
+    label: 'Sections de la page',
+    about: 'À propos',
     services: 'Prestations',
     work: 'Travaux',
+    process: 'Méthode',
     contact: 'Contact',
     skipToContent: 'Aller au contenu',
   },
@@ -25,6 +28,10 @@ export const fr = {
     // « Chạm » : toucher, entrer en contact. La marque explique le geste, pas
     // l'inverse — cette ligne reste courte partout où elle apparaît.
     meaning: 'toucher, entrer en contact',
+    // Verrou de marque, pas de la prose : identique dans les deux locales. Le
+    // « × » est le point de contact des deux métiers — c'est lui, et lui seul,
+    // qui porte la couleur dans le hero.
+    positioning: 'Design × Code',
   },
   footer: {
     location: 'Montpellier, France',
@@ -52,9 +59,35 @@ export const fr = {
     hero: {
       // La proposition de valeur est au-dessus de la ligne de flottaison et
       // sans image : le LCP est du texte, donc il est déjà chargé.
-      title: 'Des sites et des outils qui donnent envie d’écrire.',
-      lead: 'Studio indépendant à Montpellier. Je conçois et je développe — même personne du premier croquis à la mise en ligne.',
+      // Décision 18. « Du premier écran à la mise en ligne » est ÉCRIT en
+      // français, pas traduit de l'anglais (décision 17) : « écran » est plus
+      // concret que « interaction », et « mise en ligne » est le registre du
+      // site quand « deployment » est celui de l'ingénierie — d'où « mise en
+      // production » dans la ligne suivante, pour tenir les deux.
+      title: 'Du premier écran à la mise en ligne.',
+      // DÉCISION 19 — LIGNE PORTEUSE, PAS DE L'ACCOMPAGNEMENT.
+      // Le titre ne contient aucune première personne : c'est ici, et nulle
+      // part ailleurs dans le hero, qu'une personne apparaît. Si le hero doit
+      // être resserré, cette ligne est la DERNIÈRE à couper — sans elle le
+      // bloc énonce une portée que personne n'assume, exactement la voix
+      // passive que docs/positioning.md §6 interdit.
+      lead: 'Je conçois et je développe des produits numériques pensés pour durer : une interface claire, un code fiable, une mise en production maîtrisée.',
       cta: 'Parler de votre projet',
+      // La phrase de marque. Elle dit le GESTE, jamais la traduction du mot :
+      // tests/i18n.test.ts vérifie que le sens de « Chạm » n'est écrit qu'une
+      // fois sur le site, dans le bloc « à propos ».
+      tagline: 'On ne fait pas que lire Chạm. On le touche.',
+      studio: 'Studio indépendant',
+      // Cartouche de la figure, dans la langue des planches techniques.
+      figureLabel: 'Fig. 01',
+      // Le périmètre — PAS une barre de compétences : ni niveau, ni
+      // pourcentage, ni logo. Ce que la liste dit, les projets le prouvent.
+      expertise: [
+        'UI / UX Design',
+        'Développement front-end',
+        'Produits full-stack',
+        'Intégration IA',
+      ],
     },
     situations: {
       title: 'Où en êtes-vous ?',
@@ -62,14 +95,19 @@ export const fr = {
       // navigation interne de la page.
       // Typé sur ServiceKey : une situation ne peut pas pointer vers une
       // prestation qui n'existe pas.
+      // Trois situations pour trois engagements (décision 13) : une situation
+      // sans prestation en face est une impasse, et une prestation sans
+      // situation ne se reconnaît pas.
       items: [
-        { text: 'Je n’ai rien en ligne et je perds des clients.', service: 'vitrine' },
-        { text: 'Mon activité n’a pas d’image reconnaissable.', service: 'identite' },
+        { text: 'J’ai une idée et il me faut plus qu’une maquette.', service: 'mvp' },
         {
-          text: 'Je gère mon métier dans un tableur qui craque.',
-          service: 'application',
+          text: 'Mon site ne raconte pas ce que je fais vraiment.',
+          service: 'websites',
         },
-        { text: 'Mon site existe mais il ne convertit plus.', service: 'refonte' },
+        {
+          text: 'Mon produit existe mais il mérite mieux.',
+          service: 'improvement',
+        },
       ] as { text: string; service: ServiceKey }[],
     },
     services: {
@@ -86,6 +124,34 @@ export const fr = {
       solution: 'Solution',
       title: 'Une seule personne, du premier croquis à la mise en ligne',
       body: 'Pas de relais entre un studio de design et une agence de développement : le geste qui dessine est celui qui code. Ce qui est promis est ce qui est livré, parce que personne d’autre n’a à l’interpréter.',
+    },
+    process: {
+      // Décision 27 : une ligne continue à cinq points de contact, jamais
+      // cinq figures séparées. Le titre tient sur deux lignes, comme
+      // « Derrière / Chạm » — deux éléments distincts, pas une phrase coupée.
+      title: ['Comment', 'je travaille'],
+      steps: [
+        {
+          title: 'Découvrir',
+          body: 'Comprendre l’activité, les utilisateurs, les contraintes et les objectifs.',
+        },
+        {
+          title: 'Définir',
+          body: 'Clarifier le périmètre, les priorités, les parcours et l’orientation technique.',
+        },
+        {
+          title: 'Concevoir',
+          body: 'Construire la structure, l’interface, les interactions et le prototype.',
+        },
+        {
+          title: 'Développer',
+          body: 'Développer le produit et intégrer les services back-end.',
+        },
+        {
+          title: 'Livrer',
+          body: 'Déployer, valider, itérer et accompagner le lancement.',
+        },
+      ],
     },
     contact: {
       title: 'Parlons de votre projet',

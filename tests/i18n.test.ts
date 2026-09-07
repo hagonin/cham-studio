@@ -10,9 +10,10 @@ import {
 } from '../lib/i18n/config';
 import { buildAlternates, robotsFor } from '../lib/i18n/metadata';
 import { getDictionary } from '../lib/i18n/getDictionary';
+import { MOUNTED_SECTIONS, SECTION_KEYS } from '../lib/sections';
 import { formatPrice } from '../lib/i18n/format';
 import { SITE_URL } from '../lib/i18n/config';
-import { workSectionIsReady } from '../content/projects';
+import { projectsNewestFirst } from '../content/projects';
 import sitemap from '../app/sitemap';
 
 describe('validation de la locale', () => {
@@ -156,11 +157,36 @@ describe('page travaux', () => {
   });
 });
 
+// Une ancre vers un titre absent défile vers rien, et la page répond 200 :
+// aucun test de route ne l'attrape. La garde est donc ici, sur la liste des
+// sections — `about` et `work` n'entrent qu'aux phases 03 et 05.
+describe('navigation de section', () => {
+  it('n’ancre que des sections réellement montées', () => {
+    for (const key of MOUNTED_SECTIONS) {
+      expect(SECTION_KEYS).toContain(key);
+    }
+  });
+
+  it('nomme chaque section dans les deux locales', () => {
+    for (const locale of locales) {
+      const { nav } = getDictionary(locale);
+      expect(nav.label.trim().length, locale).toBeGreaterThan(0);
+      for (const key of SECTION_KEYS) {
+        expect(nav[key].trim().length, `${locale}/${key}`).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
 describe('sitemap', () => {
-  it('n’annonce /projects que lorsque la section travaux peut paraître', () => {
+  // L'index /projects a été retiré : la page unique porte les travaux. Ce qui
+  // reste à garder, c'est qu'aucune route ne soit annoncée sans son contenu —
+  // la règle vaut maintenant pour les études de cas, une par projet réel.
+  it('n’annonce que l’accueil et les études de cas réellement publiées', () => {
     const urls = sitemap().map((entry) => entry.url);
     expect(urls).toContain(`${SITE_URL}${localeHref('fr')}`);
-    expect(urls.some((url) => url.endsWith('/projects/'))).toBe(workSectionIsReady());
+    expect(urls.some((url) => url.endsWith('/projects/'))).toBe(false);
+    expect(urls).toHaveLength(PUBLISHED.length * (1 + projectsNewestFirst().length));
   });
 
   it('n’expose aucune locale non publiée', () => {

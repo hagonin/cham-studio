@@ -4,9 +4,41 @@
 
 .title {
   font-family: var(--font-display-stack);
-  font-size: var(--step-2);
+  font-size: var(--display-s);
+  line-height: 0.92;
+  text-transform: uppercase;
   max-width: 20ch;
   margin: 2rem 0 1.5rem;
+}
+
+.titleLine {
+  display: block;
+}
+
+/* IDEA ──●── PRODUCT. Mêmes primitives que ContactLine (rule + point global),
+   à l'échelle du petit libellé plutôt que du titre : c'est une légende du
+   credo, pas un second titre. */
+.figure {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 34ch;
+  margin: 0 0 2rem;
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.figureRule {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.figureDot {
+  composes: contact-marker__dot from global;
 }
 
 .creed {
@@ -16,7 +48,7 @@
   display: grid;
   gap: 0.5rem;
   font-family: var(--font-display-stack);
-  font-size: var(--step-1);
+  font-size: var(--text);
   max-width: 34ch;
 }
 

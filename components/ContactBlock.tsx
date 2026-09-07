@@ -17,9 +17,16 @@ export function ContactBlock({ dict, locale }: { dict: Dictionary; locale: Local
   return (
     <section data-reveal className={styles.block} aria-labelledby="contact-title">
       <ContactMarker label={dict.brand.name} />
+      {/* Décision 25 : « LET'S ● CHẠM », composition des primitives déjà
+          livrées (le point de contact-marker__dot, en glyphe plutôt qu'en
+          filet, comme le « × » du hero). Le libellé réel reste `contact.title`
+          juste en dessous, pas remplacé. */}
       <h2 id="contact-title" className={styles.title}>
-        {contact.title}
+        <span>LET’S</span>
+        <span className={styles.dot}>●</span>
+        <span>{dict.brand.name}</span>
       </h2>
+      <p className={styles.lead}>{contact.title}</p>
       <p className={styles.body}>{contact.body}</p>
       <a
         className={`${styles.cta} contact-link`}

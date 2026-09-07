@@ -17,14 +17,18 @@ export const en = {
       'Independent studio in Montpellier, France. Marketing sites, brand identities and web applications, designed and built end to end.',
   },
   nav: {
+    label: 'Page sections',
+    about: 'About',
     services: 'Services',
     work: 'Work',
+    process: 'Process',
     contact: 'Contact',
     skipToContent: 'Skip to content',
   },
   brand: {
     name: 'Chạm',
     meaning: 'to touch, to make contact',
+    positioning: 'Design × Code',
   },
   footer: {
     location: 'Montpellier, France',
@@ -46,20 +50,37 @@ export const en = {
       clockLabel: 'Local time in Montpellier',
     },
     hero: {
-      title: 'Sites and tools that make people want to write to you.',
-      lead: 'Independent studio in Montpellier, France. I design and I build — same person from the first sketch to launch.',
+      // Decision 18. Written for its own reader, not translated from the
+      // French (decision 17): the EN visitor is an international client who
+      // needs one accountable person across the whole span.
+      title: 'From first interaction to final deployment.',
+      // DECISION 19 — LOAD-BEARING, NOT SUPPORTING COPY. The headline carries
+      // no first person, so this is the only place someone appears in the
+      // hero. Last thing cut if the hero is tightened.
+      lead: 'I design and develop digital products that feel considered, work reliably and are ready for real users.',
       cta: 'Talk about your project',
+      tagline: 'You don’t only read Chạm. You touch it.',
+      studio: 'Independent studio',
+      figureLabel: 'Fig. 01',
+      expertise: [
+        'UI/UX Design',
+        'Front-end development',
+        'Full-stack products',
+        'AI integration',
+      ],
     },
     situations: {
       title: 'Where are you?',
       items: [
-        { text: 'I have nothing online and I am losing clients.', service: 'vitrine' },
-        { text: 'My business has no recognisable image.', service: 'identite' },
+        { text: 'I have an idea and I need more than a prototype.', service: 'mvp' },
         {
-          text: 'I run my business on a spreadsheet that is buckling.',
-          service: 'application',
+          text: 'My site does not say what the company actually does.',
+          service: 'websites',
         },
-        { text: 'My site exists but it no longer converts.', service: 'refonte' },
+        {
+          text: 'The product works. It deserves better than it has.',
+          service: 'improvement',
+        },
       ],
     },
     services: {
@@ -76,6 +97,31 @@ export const en = {
       solution: 'Solution',
       title: 'One person, from the first sketch to launch',
       body: 'No handover between a design studio and a development agency: the hand that draws is the hand that codes. What is promised is what ships, because nobody else has to interpret it.',
+    },
+    process: {
+      title: ['How', 'I work'],
+      steps: [
+        {
+          title: 'Discover',
+          body: 'Understand the business, users, constraints and goals.',
+        },
+        {
+          title: 'Define',
+          body: 'Clarify scope, priorities, flows and technical direction.',
+        },
+        {
+          title: 'Design',
+          body: 'Create structure, interface, interaction and prototype.',
+        },
+        {
+          title: 'Build',
+          body: 'Develop the product and integrate backend services.',
+        },
+        {
+          title: 'Ship',
+          body: 'Deploy, validate, iterate and support launch.',
+        },
+      ],
     },
     contact: {
       title: 'Let us talk about your project',
