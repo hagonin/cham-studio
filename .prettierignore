@@ -2,3 +2,7 @@
 out/
 node_modules/
 pnpm-lock.yaml
+
+# Maquettes de design (fichiers de travail du canvas), pas du source
+.design/
+graphify-out/

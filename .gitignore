@@ -30,3 +30,8 @@ coverage/
 *.tsbuildinfo
 CLAUDE.md
 plans/
+
+# Sorties d’outillage local, pas du source
+graphify-out/
+/.design
+/docs
