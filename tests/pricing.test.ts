@@ -2,14 +2,13 @@ import { describe, expect, it } from 'vitest';
 import {
   BASE,
   FEATURES,
+  PRICING_KEYS,
   PRICES_CONFIRMED,
   allConfigs,
   duration,
   priceRange,
   type BaseTable,
 } from '../lib/pricing/model';
-import { services } from '../content/services';
-import { SERVICE_KEYS } from '../content/types';
 
 /** Plafond de durée hérité du prototype : il annonçait « 15 à 20 semaines »
  *  sous une carte qui en promettait 6 à 10. 19 est la borne du modèle corrigé. */
@@ -24,7 +23,7 @@ function label(cfg: (typeof configs)[number]): string {
 describe('espace des configurations', () => {
   it('couvre les 2304 combinaisons', () => {
     // 4 types × 3 ampleurs × 3 niveaux de design × 64 sous-ensembles.
-    expect(configs).toHaveLength(SERVICE_KEYS.length * 3 * 3 * 2 ** FEATURES.length);
+    expect(configs).toHaveLength(PRICING_KEYS.length * 3 * 3 * 2 ** FEATURES.length);
     expect(configs).toHaveLength(2304);
   });
 
@@ -106,20 +105,20 @@ describe('prestation sans tarif arrêté', () => {
   });
 
   it('n’écrit jamais un plancher à zéro', () => {
-    for (const key of SERVICE_KEYS) {
+    for (const key of PRICING_KEYS) {
       const floor = BASE[key];
       expect(floor === null || floor > 0, key).toBe(true);
     }
   });
 });
 
-describe('cohérence cartes / estimateur', () => {
-  it('lie les cartes à BASE, sans plancher retapé à côté', () => {
-    // Une carte et l'estimateur ne peuvent pas diverger : ils lisent la même
-    // table.
-    for (const service of services) {
-      expect(service.from, service.key).toBe(BASE[service.key]);
-    }
+describe('découplage du modèle', () => {
+  // REMPLACE « lie les cartes à BASE » : les cartes ne lisent plus BASE, et la
+  // garde qui vérifiait leur cohérence n'a plus d'objet. L'invariant qui la
+  // remplace — les trois prestations valent `null` — vit dans
+  // tests/content.test.ts, au plus près de ce qu'il protège.
+  it('garde ses propres clés, indépendantes de l’offre publiée', () => {
+    expect(PRICING_KEYS).toEqual(['vitrine', 'identite', 'application', 'refonte']);
   });
 
   it('garde les tarifs hors production tant qu’ils ne sont pas validés', () => {

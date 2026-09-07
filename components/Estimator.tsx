@@ -1,11 +1,11 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { services } from '@/content/services';
 import { site } from '@/content/site';
-import { SERVICE_KEYS, type ServiceKey } from '@/content/types';
 import {
   DESIGN_LEVELS,
+  PRICING_KEYS,
+  PRICING_LABELS,
   FEATURES,
   SCALES,
   duration,
@@ -13,6 +13,7 @@ import {
   type Config,
   type DesignLevel,
   type Feature,
+  type PricingKey,
   type Scale,
 } from '@/lib/pricing/model';
 import { formatPrice } from '@/lib/i18n/format';
@@ -35,7 +36,7 @@ export function Estimator({ locale, dict }: { locale: Locale; dict: Dictionary }
   const copy = dict.pricing.estimator;
   const groupId = useId();
 
-  const [type, setType] = useState<ServiceKey>('vitrine');
+  const [type, setType] = useState<PricingKey>('vitrine');
   const [scale, setScale] = useState<Scale>('standard');
   const [design, setDesign] = useState<DesignLevel>('sobre');
   const [features, setFeatures] = useState<Feature[]>([]);
@@ -44,8 +45,7 @@ export function Estimator({ locale, dict }: { locale: Locale; dict: Dictionary }
   const range = priceRange(cfg);
   const { w1, w2 } = duration(cfg);
 
-  const serviceTitle = (key: ServiceKey) =>
-    services.find((service) => service.key === key)!.title[locale];
+  const serviceTitle = (key: PricingKey) => PRICING_LABELS[key][locale];
 
   const priceLine = range
     ? `${formatPrice(locale, range.lo)} – ${formatPrice(locale, range.hi)}`
@@ -93,7 +93,7 @@ export function Estimator({ locale, dict }: { locale: Locale; dict: Dictionary }
       <div className={styles.inputs}>
         <fieldset className={styles.group}>
           <legend className={styles.legend}>{copy.typeLegend}</legend>
-          {SERVICE_KEYS.map((key) => (
+          {PRICING_KEYS.map((key) => (
             <label
               key={key}
               className={styles.choice}

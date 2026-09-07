@@ -1,69 +1,74 @@
-import { BASE } from '@/lib/pricing/model';
 import { type Service } from './types';
 
 /**
- * Les quatre `from` DÉRIVENT de `BASE` (`lib/pricing/model.ts`) : un plancher
- * retapé ici pourrait diverger de l'estimateur affiché sur la même page.
+ * Trois ENGAGEMENTS, pas quatre livrables (décision 13, `docs/positioning.md`
+ * §3). Ce qu'on peut confier, dans les mots de la personne qui le confie.
  *
- * PLANCHERS NON VALIDÉS : ils viennent d'un benchmark, pas d'une décision.
- * `PRICES_CONFIRMED` reste `false` et bloque la mise en production — ils sont
- * donc visibles en dev et en préversion, jamais en ligne.
+ * AUCUN CHIFFRE (décision 7). Les trois `from` valent `null`, donc les lignes
+ * affichent `dict.home.services.quoteOnRequest`. Un plancher public sur un
+ * portfolio visé à l'international ancre bas et négocie à la place de
+ * l'exploitante ; la conversation est le produit. `tests/content.test.ts`
+ * garde l'invariant — c'est ce qui remplace l'ancienne garde `check-prices`.
+ *
+ * Ce fichier n'importe plus `BASE` : le modèle tarifaire existe toujours et
+ * reste testé, mais il n'alimente plus rien d'affiché.
+ *
+ * Les deux locales sont ÉCRITES, pas traduites (décision 17). L'anglais vise
+ * une personne qui cherche quelqu'un de responsable de bout en bout ; le
+ * français, une personne qui hésite entre une indépendante et une agence.
  */
 export const services: Service[] = [
   {
-    key: 'vitrine',
-    title: { fr: 'Site vitrine', en: 'Marketing site' },
+    key: 'mvp',
+    title: { fr: 'MVP et développement produit', en: 'MVP & product development' },
     summary: {
-      fr: 'Un site qui présente une activité et donne envie de vous écrire.',
-      en: 'A site that presents the business and makes people want to write to you.',
+      fr: 'De l’idée à un produit qui tourne.',
+      en: 'From idea to a working product.',
     },
     deliverables: [
-      { fr: 'Arborescence et contenus', en: 'Structure and content' },
-      { fr: 'Design sur mesure', en: 'Bespoke design' },
-      { fr: 'Développement et mise en ligne', en: 'Build and launch' },
+      { fr: 'Structuration du produit', en: 'Product structure' },
+      { fr: 'Conception de l’expérience', en: 'Core experience design' },
+      { fr: 'Front, back et API', en: 'Frontend, backend and APIs' },
+      { fr: 'Authentification et base de données', en: 'Authentication and database' },
+      { fr: 'Mise en production', en: 'Deployment' },
     ],
-    from: BASE.vitrine,
+    from: null,
   },
   {
-    key: 'identite',
-    title: { fr: 'Identité', en: 'Brand identity' },
+    key: 'websites',
+    title: { fr: 'Sites produit et vitrine', en: 'Product & marketing websites' },
     summary: {
-      fr: 'Un nom, une typographie, une palette : de quoi être reconnaissable.',
-      en: 'A name, a typeface, a palette — enough to be recognisable.',
+      fr: 'Des sites faits pour expliquer, convaincre et convertir.',
+      en: 'Sites built to explain, convince and convert.',
     },
     deliverables: [
-      { fr: 'Recherche et direction', en: 'Research and direction' },
-      { fr: 'Logotype et déclinaisons', en: 'Logotype and variants' },
-      { fr: 'Guide d’usage', en: 'Usage guide' },
+      { fr: 'Architecture de l’information', en: 'Information architecture' },
+      { fr: 'Design d’interface responsive', en: 'Responsive interface design' },
+      { fr: 'Développement front', en: 'Frontend development' },
+      { fr: 'CMS et fondations SEO', en: 'CMS and SEO foundations' },
+      { fr: 'Performance et mesure', en: 'Performance and analytics' },
     ],
-    from: BASE.identite,
+    from: null,
   },
   {
-    key: 'application',
-    title: { fr: 'Application web', en: 'Web application' },
+    key: 'improvement',
+    title: {
+      fr: 'Amélioration et intégrations',
+      en: 'Product improvement & integrations',
+    },
     summary: {
-      fr: 'Un outil métier sur mesure, pensé pour les gens qui s’en servent.',
-      en: 'A bespoke internal tool, designed around the people who use it.',
+      fr: 'Améliorer ce qui existe déjà.',
+      en: 'Improve what already exists.',
     },
     deliverables: [
-      { fr: 'Cadrage fonctionnel', en: 'Scoping' },
-      { fr: 'Interface et parcours', en: 'Interface and flows' },
-      { fr: 'Développement et reprise', en: 'Build and handover' },
+      { fr: 'Nouvelles fonctionnalités', en: 'Feature development' },
+      { fr: 'Refonte d’interface', en: 'Interface redesign' },
+      { fr: 'Intégrations d’API', en: 'API integrations' },
+      // L'IA est UNE capacité parmi d'autres, jamais la spécialité affichée :
+      // un portfolio « développeur IA » de plus se confond avec les autres.
+      { fr: 'Fonctionnalités IA et automatisations', en: 'AI features and automation' },
+      { fr: 'Gains de performance', en: 'Performance improvements' },
     ],
-    from: BASE.application,
-  },
-  {
-    key: 'refonte',
-    title: { fr: 'Refonte', en: 'Redesign' },
-    summary: {
-      fr: 'Un site existant remis d’aplomb : lisibilité, vitesse, conversion.',
-      en: 'An existing site set straight: legibility, speed, conversion.',
-    },
-    deliverables: [
-      { fr: 'Audit de l’existant', en: 'Audit of what exists' },
-      { fr: 'Reprise du contenu', en: 'Content migration' },
-      { fr: 'Refonte et bascule', en: 'Rebuild and switchover' },
-    ],
-    from: BASE.refonte,
+    from: null,
   },
 ];

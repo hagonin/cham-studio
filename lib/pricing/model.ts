@@ -1,4 +1,25 @@
-import { SERVICE_KEYS, type ServiceKey } from '@/content/types';
+/**
+ * DÉCOUPLÉ DE L'OFFRE (décisions 8 et 13). L'estimateur n'est plus monté et
+ * l'offre publiée est passée à trois engagements ; ce modèle garde les quatre
+ * clés sur lesquelles ses tests ont été écrits. Les rebrancher sur
+ * `ServiceKey` ferait bouger un modèle démontré par une décision commerciale,
+ * et casserait `tests/pricing.test.ts` sans que personne ne regarde la page.
+ */
+export const PRICING_KEYS = ['vitrine', 'identite', 'application', 'refonte'] as const;
+export type PricingKey = (typeof PRICING_KEYS)[number];
+
+/**
+ * Libellés du modèle, pour lui seul. Ils vivaient dans `content/services.ts`
+ * du temps où l'offre publiée et les clés tarifaires étaient les mêmes ; elles
+ * ne le sont plus. Les reprendre depuis l'offre ferait dépendre un modèle
+ * démonté de décisions commerciales qui bougent sans lui.
+ */
+export const PRICING_LABELS: Record<PricingKey, Record<'fr' | 'en', string>> = {
+  vitrine: { fr: 'Site vitrine', en: 'Marketing site' },
+  identite: { fr: 'Identité', en: 'Brand identity' },
+  application: { fr: 'Application web', en: 'Web application' },
+  refonte: { fr: 'Refonte', en: 'Redesign' },
+};
 
 /**
  * Le modèle tarifaire. Fonction pure, aucune connaissance du DOM : les deux
@@ -26,7 +47,7 @@ export const PRICES_CONFIRMED = false;
  * encore validés par l'exploitante : d'où `PRICES_CONFIRMED` à `false`, qui les
  * laisse visibles en préversion et bloque la mise en production.
  */
-export const BASE: Record<ServiceKey, number | null> = {
+export const BASE: Record<PricingKey, number | null> = {
   vitrine: 1500,
   identite: 1200,
   application: 6000,
@@ -50,7 +71,7 @@ export const FEATURES = [
 export type Feature = (typeof FEATURES)[number];
 
 export type Config = {
-  type: ServiceKey;
+  type: PricingKey;
   scale: Scale;
   design: DesignLevel;
   features: readonly Feature[];
@@ -63,7 +84,7 @@ export type Weeks = { w1: number; w2: number };
  *  exercer la branche « chiffre non arrêté » avec une table à `null` : c'est
  *  l'état qui reviendra si une prestation est ajoutée sans son tarif. Aucun
  *  appelant applicatif ne la passe. */
-export type BaseTable = Record<ServiceKey, number | null>;
+export type BaseTable = Record<PricingKey, number | null>;
 
 /* --- Coefficients ---------------------------------------------------------
    Hypothèse commerciale issue d'un échantillon de DEUX sites, pas un tarif
@@ -104,7 +125,7 @@ const WEEKS_FACTOR: Record<Scale, number> = {
   etendu: 1.9,
 };
 
-const WEEKS_BASE: Record<ServiceKey, number> = {
+const WEEKS_BASE: Record<PricingKey, number> = {
   vitrine: 3,
   identite: 2,
   application: 6,
@@ -173,7 +194,7 @@ export function allConfigs(): Config[] {
   }
 
   const configs: Config[] = [];
-  for (const type of SERVICE_KEYS) {
+  for (const type of PRICING_KEYS) {
     for (const scale of SCALES) {
       for (const design of DESIGN_LEVELS) {
         for (const features of subsets) {

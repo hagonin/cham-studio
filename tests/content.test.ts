@@ -35,7 +35,11 @@ describe('services', () => {
     // Les quatre chiffres ne sont pas arrêtés. `null` est l'état honnête ;
     // la Phase 6 les renseigne et ajoute la garde PRICES_CONFIRMED.
     for (const service of services) {
-      expect(service.from === null || service.from > 0).toBe(true);
+      // REMPLACE la garde `prebuild` check-prices, supprimée avec l'estimateur
+      // (décisions 7 à 9) : plus aucun chiffre n'atteint la page, donc ce qui
+      // doit échouer bruyamment n'est plus « un tarif provisoire en
+      // production » mais « un tarif tout court ».
+      expect(service.from, service.key).toBeNull();
     }
   });
 });
