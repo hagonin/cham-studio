@@ -3,7 +3,7 @@
   grid-template-columns: auto 1fr;
   gap: 0.75rem 1.25rem;
   padding: clamp(1.5rem, 4vw, 2.5rem) 0;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--line);
 }
 
 @media (min-width: 60rem) {
@@ -16,8 +16,8 @@
 
 .index {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
-  color: var(--mute);
+  font-size: var(--label);
+  color: var(--muted);
   padding-top: 0.4rem;
 }
 
@@ -27,7 +27,7 @@
 
 .title {
   font-family: var(--font-display-stack);
-  font-size: var(--step-2);
+  font-size: var(--display-s);
   margin: 0;
 }
 
@@ -49,15 +49,15 @@
    qui porterait cette classe. */
 .metaLabel {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--mute);
+  color: var(--muted);
 }
 
 .metaValue {
   margin: 0;
-  font-size: var(--step--1);
+  font-size: var(--label);
   color: var(--ink-2);
 }
 
@@ -70,10 +70,10 @@
 .stackLabel {
   display: block;
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--mute);
+  color: var(--muted);
   margin-bottom: 0.4rem;
 }
 
@@ -85,7 +85,7 @@
   margin: 0;
   padding: 0;
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   color: var(--ink-2);
 }
 
@@ -99,8 +99,8 @@
    recadrage viennent de `.frame` (globals.css). */
 .frame {
   grid-column: 1 / -1;
-  background: var(--panel);
-  border: 1px solid var(--rule);
+  background: var(--paper);
+  border: 1px solid var(--line);
 }
 
 @media (min-width: 60rem) {

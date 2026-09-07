@@ -4,9 +4,9 @@
   gap: 0.5rem 1.5rem;
   align-items: baseline;
   padding: 0.6rem 0;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--line);
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   color: var(--ink-2);
   /* Majuscules réservées aux libellés courts : les capitales accentuées
      nuisent à la lisibilité dans du texte courant en français. */

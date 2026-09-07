@@ -7,10 +7,10 @@
   align-items: center;
   gap: 0.75rem;
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--mute);
+  color: var(--muted);
 }
 
 .end {
@@ -20,10 +20,10 @@
 .rule {
   flex: 1;
   height: 1px;
-  background: var(--rule);
+  background: var(--line);
 }
 
-/* Le point reprend celui du ContactMarker. Il ne redéclare pas --seal :
+/* Le point reprend celui du ContactMarker. Il ne redéclare pas --touch :
    l'assertion « exactement deux références » tient sur globals.css, et une
    troisième ici viderait la règle de son sens. */
 .dot {
@@ -32,7 +32,7 @@
 
 .title {
   font-family: var(--font-display-stack);
-  font-size: var(--step-2);
+  font-size: var(--display-s);
   max-width: 20ch;
   margin: 2rem 0 1rem;
 }

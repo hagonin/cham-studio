@@ -4,7 +4,7 @@
 
 .title {
   font-family: var(--font-display-stack);
-  font-size: var(--step-2);
+  font-size: var(--display-s);
   margin: 0 0 1.5rem;
 }
 
@@ -15,5 +15,5 @@
   display: grid;
   gap: 0.75rem;
   max-width: 52ch;
-  font-size: var(--step-1);
+  font-size: var(--text);
 }

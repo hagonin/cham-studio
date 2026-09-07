@@ -2,7 +2,7 @@ import { gsap } from 'gsap';
 
 /**
  * PROBLÈME ──────●────── SOLUTION, scrubbé au défilement : les deux extrémités
- * voyagent l'une vers l'autre et le point prend `--seal` à l'instant du
+ * voyagent l'une vers l'autre et le point prend `--touch` à l'instant du
  * contact. Le set-piece du site, et il n'arrive QU'UNE FOIS — répété par
  * projet ou par section, un énoncé devient un tic.
  *

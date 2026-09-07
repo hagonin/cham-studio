@@ -15,7 +15,7 @@
   height: 36px;
   margin: -18px 0 0 -18px;
   border-radius: 50%;
-  border: 1px solid var(--rule-s);
+  border: 1px solid var(--muted);
   /* Il ne doit jamais intercepter un clic : c'est une décoration posée
      au-dessus de la page, pas une surface. */
   pointer-events: none;
@@ -45,18 +45,17 @@
   margin: -1px;
 }
 
-/* L'état de contact emprunte la couleur de marque par `color-mix` sur la
-   variable, sans réécrire `--seal` : l'assertion « exactement deux références »
-   porte sur globals.css et une troisième la viderait de son sens.
+/* L'état de contact emprunte --touch par `color-mix` sur la variable, sans le
+   redéclarer : --touch ne paraît qu'au toucher, et celui-ci en est un.
    Atteint au survol ET au focus clavier — c'est la parité, pas un bonus. */
 .ring[data-state='contact'] .face {
   transform: scale(1.55);
-  background-color: color-mix(in srgb, var(--seal) 88%, transparent);
+  background-color: color-mix(in srgb, var(--touch) 88%, transparent);
 }
 
 .ring[data-state='release'] .face {
   transform: scale(2);
-  background-color: color-mix(in srgb, var(--seal) 30%, transparent);
+  background-color: color-mix(in srgb, var(--touch) 30%, transparent);
 }
 
 .label {

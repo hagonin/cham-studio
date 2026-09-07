@@ -4,7 +4,7 @@
 
 .title {
   font-family: var(--font-display-stack);
-  font-size: var(--step-2);
+  font-size: var(--display-s);
   margin: 0;
 }
 
@@ -22,7 +22,7 @@
 
 .group {
   border: 0;
-  border-top: 1px solid var(--rule);
+  border-top: 1px solid var(--line);
   margin: 0;
   padding: 1rem 0 0;
   display: flex;
@@ -34,10 +34,10 @@
    <p> : la garde de scripts/check-html.mjs interdit le texte courant capitalisé. */
 .legend {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--mute);
+  color: var(--muted);
   padding: 0;
 }
 
@@ -63,7 +63,7 @@
 .result {
   margin-top: 2.5rem;
   padding: 1.25rem 1.5rem;
-  background: var(--panel);
+  background: var(--paper);
   border-left: 2px solid var(--ink);
 }
 
@@ -77,21 +77,21 @@
 
 .resultLabel {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--mute);
+  color: var(--muted);
   min-width: 7rem;
 }
 
 .amount {
   font-family: var(--font-display-stack);
-  font-size: var(--step-1);
+  font-size: var(--text);
 }
 
 .notice {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   color: var(--ink-2);
   margin: 1rem 0 0;
   max-width: 56ch;
@@ -102,5 +102,5 @@
   margin-top: 1.5rem;
   min-height: 44px;
   font-family: var(--font-mono-stack);
-  font-size: var(--step-0);
+  font-size: var(--text-s);
 }
