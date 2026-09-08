@@ -74,6 +74,20 @@ describe('projects', () => {
     expect(placeholderSlugs()).toEqual([]);
   });
 
+  /**
+   * La galerie 3D dessine des plans d'un rapport FIXE (`GalleryScene`,
+   * `PLANE_W = PLANE_H * 1.6`). Un visuel d'un autre rapport ne casse rien —
+   * il s'étire, en silence, et seul l'œil le remarque. La contrainte était
+   * écrite dans `cover-specs.md` ; elle est ici parce qu'un document ne
+   * refuse pas un fichier.
+   */
+  it('donne à tous les visuels le même rapport, celui de la galerie', () => {
+    for (const project of projects) {
+      const ratio = project.cover.width / project.cover.height;
+      expect(ratio, `${project.slug} (${project.cover.src})`).toBeCloseTo(1.6, 1);
+    }
+  });
+
   it('n’attribue pas deux fois le même slug', () => {
     const slugs = projects.map((project) => project.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
