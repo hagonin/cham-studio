@@ -1,0 +1,52 @@
+.section {
+  margin: 0 auto;
+  max-width: 60rem;
+  padding: var(--gutter);
+}
+
+.section + .section {
+  border-top: 1px solid var(--line);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--gutter);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.swatch {
+  border: 1px solid var(--line);
+}
+
+.swatchColor {
+  height: 4rem;
+}
+
+.swatchLabel {
+  display: block;
+  padding: 0.5rem;
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+}
+
+.typeRow {
+  margin: 1.5rem 0;
+}
+
+.typeRow p {
+  margin: 0.25rem 0 0;
+}
+
+.typeLabel {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  color: var(--muted);
+}
+
+.tokenList {
+  font-family: var(--font-mono-stack);
+  font-size: var(--text-s);
+}
