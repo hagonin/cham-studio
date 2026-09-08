@@ -19,7 +19,7 @@
   font-size: var(--label);
   line-height: 1.8;
   letter-spacing: 0.06em;
-  color: var(--muted);
+  color: var(--ink-2);
 }
 
 .metaRight {
@@ -28,7 +28,7 @@
 }
 
 .pron {
-  color: var(--muted);
+  color: var(--ink-2);
 }
 
 /* --- Titre -----------------------------------------------------------------
@@ -159,7 +159,7 @@
   font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--muted);
+  color: var(--ink-2);
 }
 
 /* --- Propos ---------------------------------------------------------------- */
@@ -178,7 +178,7 @@
   max-width: 52ch;
   font-size: var(--text);
   line-height: 1.55;
-  color: var(--muted);
+  color: var(--ink-2);
 }
 
 .claim {
@@ -191,13 +191,19 @@
 }
 
 /* La phrase de marque, dans la voix technique du site : mono, en retrait de
-   couleur. Elle commente le geste — elle ne le remplace pas. */
+   couleur. Elle commente le geste — elle ne le remplace pas.
+
+   `--ink-2` et NON `--muted` : mesuré à 3,05:1 sur papier, `--muted` ne tient
+   pas le 4,5:1 exigé d'un texte courant. Le commentaire de `lib/tokens.ts` le
+   réserve d'ailleurs aux micro-libellés mono en capitales ; ceci est une
+   phrase, en minuscules, qui se lit. `--ink-2` la donne à 8,77:1 sans rien
+   changer au retrait visuel voulu. */
 .tagline {
   margin: 0;
   font-family: var(--font-mono-stack);
   font-size: var(--label);
   letter-spacing: 0.06em;
-  color: var(--muted);
+  color: var(--ink-2);
 }
 
 .cta {
