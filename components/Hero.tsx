@@ -37,11 +37,14 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
         </span>
       </div>
 
-      {/* UN SEUL <h1> : `check-html.mjs` en exige exactement un par page. Le nom
-          et la position tiennent donc dans le même titre, le second en
-          <span> — deux <h1> feraient échouer le gate, et un <h2> pour
-          « Design × Code » sauterait un niveau avant les titres de section. */}
-      <h1 className={styles.title}>
+      {/* Le bloc de marque n'est PAS le titre de la page : c'est un logotype.
+          Le <h1> est la phrase qui dit ce que fait ce site, plus bas — un
+          document dont le titre est un nom de marque n'annonce rien à qui ne
+          connaît pas la marque, et docs/positioning.md §2 fait de cette
+          phrase le message, pas de « Chạm ».
+          Reste un seul <h1> par page (`check-html.mjs`), et aucun niveau
+          sauté : les titres de section restent en <h2>. */}
+      <p className={styles.title}>
         <span className={styles.name}>{dict.brand.name}</span>
 
         <span className={styles.positioning}>
@@ -67,7 +70,7 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           <span className={styles.contact}>×</span>
           <span className={styles.word}>{after.trim()}</span>
         </span>
-      </h1>
+      </p>
 
       {/* Le périmètre, en une ligne de filets sous le titre. Ni niveau, ni
           pourcentage, ni logo : ce que la liste annonce, les projets le
@@ -81,7 +84,10 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
       </ul>
 
       <div className={styles.statement}>
-        <p className={styles.claim}>{hero.title}</p>
+        {/* LE titre de la page. Il était en <p> : la phrase qui porte tout le
+            positionnement n'entrait alors dans aucun plan du document, ni pour
+            un lecteur d'écran ni pour un moteur. */}
+        <h1 className={styles.claim}>{hero.title}</h1>
         {/* DÉCISION 19. Le titre au-dessus n'a pas de première personne : cette
             ligne est le SEUL endroit du hero où quelqu'un apparaît. Elle n'est
             pas de l'accompagnement — sans elle le bloc énonce une portée que
