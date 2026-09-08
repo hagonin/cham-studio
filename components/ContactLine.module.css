@@ -33,6 +33,10 @@
 .title {
   font-family: var(--font-display-stack);
   font-size: var(--display-s);
+  /* 1,05 et non 0,92 : c'est une PHRASE sur deux ou trois lignes, pas un
+     titre d'un mot. Le serrage éditorial des autres titres collerait les
+     lignes entre elles. Elle héritait auparavant du 1,55 du corps. */
+  line-height: 1.05;
   max-width: 20ch;
   margin: 2rem 0 1rem;
 }
