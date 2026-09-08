@@ -16,7 +16,16 @@ import styles from './CanvasHost.module.css';
  * (phase 07) passerait sa propre scène par la même prop, sans toucher cet
  * hôte.
  */
-export default function CanvasHost({ scene }: { scene: ReactNode }) {
+export default function CanvasHost({
+  scene,
+  background = colors.paper,
+}: {
+  scene: ReactNode;
+  /** Fond de la scène. Papier par défaut — le loader n'en demande pas d'autre ;
+   *  la galerie (phase 07) passe `--ink`, son sol sombre. Le couple
+   *  texte/fond correspondant est déjà dans `contrastPairs`. */
+  background?: string;
+}) {
   if (!scene) return null;
 
   return (
@@ -26,7 +35,7 @@ export default function CanvasHost({ scene }: { scene: ReactNode }) {
         camera={{ position: [0, 0, 4], fov: 42 }}
         dpr={[1, 1.5]}
       >
-        <color attach="background" args={[colors.paper]} />
+        <color attach="background" args={[background]} />
         <ambientLight intensity={1.1} />
         <directionalLight position={[3, 4, 5]} intensity={1.6} />
         {scene}

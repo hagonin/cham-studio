@@ -10,6 +10,12 @@ import dynamic from 'next/dynamic';
  */
 const CanvasHost = dynamic(() => import('./CanvasHost'), { ssr: false });
 
-export function CanvasHostSlot({ scene }: { scene: ReactNode }) {
-  return <CanvasHost scene={scene} />;
+export function CanvasHostSlot({
+  scene,
+  background,
+}: {
+  scene: ReactNode;
+  background?: string;
+}) {
+  return <CanvasHost scene={scene} background={background} />;
 }

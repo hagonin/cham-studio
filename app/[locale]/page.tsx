@@ -12,7 +12,7 @@ import { ServiceList } from '@/components/ServiceList';
 import { Process } from '@/components/Process';
 import { ContactLine } from '@/components/ContactLine';
 import { ContactBlock } from '@/components/ContactBlock';
-import { ProjectList } from '@/components/ProjectList';
+import { WorkSection } from '@/components/WorkSection';
 import { workSectionIsReady } from '@/content/projects';
 import styles from './page.module.css';
 
@@ -74,7 +74,7 @@ export default async function ServicesPage({
       <main className={styles.page}>
         <StatusBar locale={locale} dict={dict} />
         <Hero dict={dict} locale={locale} />
-        {workSectionIsReady() && <ProjectList locale={locale} dict={dict} />}
+        {workSectionIsReady() && <WorkSection locale={locale} dict={dict} />}
         <ServiceList locale={locale} dict={dict} />
         {/* L'estimateur n'est PAS monté (décision 8) : une fourchette calculée
             est un chiffre, et la décision 7 n'en publie aucun. Le composant, le
