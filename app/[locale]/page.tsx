@@ -7,12 +7,13 @@ import { SectionNav } from '@/components/SectionNav';
 import { MOUNTED_SECTIONS } from '@/lib/sections';
 import { StatusBar } from '@/components/StatusBar';
 import { Hero } from '@/components/Hero';
-import { Situations } from '@/components/Situations';
 import { AboutBlock } from '@/components/AboutBlock';
 import { ServiceList } from '@/components/ServiceList';
 import { Process } from '@/components/Process';
 import { ContactLine } from '@/components/ContactLine';
 import { ContactBlock } from '@/components/ContactBlock';
+import { ProjectList } from '@/components/ProjectList';
+import { workSectionIsReady } from '@/content/projects';
 import styles from './page.module.css';
 
 export async function generateMetadata({
@@ -41,13 +42,19 @@ export async function generateMetadata({
  * rapporte derrière un clic : chaque visite entrante et chaque lien retour
  * arrivent directement dessus.
  *
- * Ordre de lecture (décision 16) : nav → barre d'état → hero → situations →
+ * Ordre de lecture (décision 16) : nav → barre d'état → hero → travaux →
  * prestations → process → à propos → contact. La preuve d'abord, l'offre
  * ensuite, comment ça se passe, puis la personne en dernier : un client a
  * besoin de savoir ce qu'il peut confier et comment avant de savoir à qui.
  *
- * Les travaux (phase 05) s'insèrent quand leur contenu existe. Aucune section
- * vide en attendant.
+ * Le bloc « situations » a été retiré : aucune planche du canvas ne le dessine,
+ * et il ouvrait la page sur des questions au lieu de la preuve.
+ *
+ * Les travaux s'insèrent quand leur contenu existe — `workSectionIsReady()`,
+ * la même condition qui décide de l'ancre dans `lib/sections.ts`. Aucune
+ * section vide en attendant : en production la liste est encore `[]`, donc
+ * rien ne paraît ; sous `pnpm dev` la réserve la remplit et la mise en page
+ * se juge sur pièce.
  */
 export default async function ServicesPage({
   params,
@@ -67,7 +74,7 @@ export default async function ServicesPage({
       <main className={styles.page}>
         <StatusBar locale={locale} dict={dict} />
         <Hero dict={dict} locale={locale} />
-        <Situations dict={dict} />
+        {workSectionIsReady() && <ProjectList locale={locale} dict={dict} />}
         <ServiceList locale={locale} dict={dict} />
         {/* L'estimateur n'est PAS monté (décision 8) : une fourchette calculée
             est un chiffre, et la décision 7 n'en publie aucun. Le composant, le

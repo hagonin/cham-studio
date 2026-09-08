@@ -1,5 +1,3 @@
-import type { ServiceKey } from '@/content/types';
-
 /**
  * Source de vérité de la forme du dictionnaire. `en.ts` est typé contre ce
  * fichier : une clé manquante côté anglais casse `tsc`, elle ne retombe pas
@@ -88,27 +86,6 @@ export const fr = {
         'Produits full-stack',
         'Intégration IA',
       ],
-    },
-    situations: {
-      title: 'Où en êtes-vous ?',
-      // Chaque situation mène à la prestation correspondante : c'est la seule
-      // navigation interne de la page.
-      // Typé sur ServiceKey : une situation ne peut pas pointer vers une
-      // prestation qui n'existe pas.
-      // Trois situations pour trois engagements (décision 13) : une situation
-      // sans prestation en face est une impasse, et une prestation sans
-      // situation ne se reconnaît pas.
-      items: [
-        { text: 'J’ai une idée et il me faut plus qu’une maquette.', service: 'mvp' },
-        {
-          text: 'Mon site ne raconte pas ce que je fais vraiment.',
-          service: 'websites',
-        },
-        {
-          text: 'Mon produit existe mais il mérite mieux.',
-          service: 'improvement',
-        },
-      ] as { text: string; service: ServiceKey }[],
     },
     services: {
       title: 'Prestations',

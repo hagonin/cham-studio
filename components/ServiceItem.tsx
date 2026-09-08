@@ -32,7 +32,9 @@ export function ServiceItem({
   const triggerId = `${panelId}-trigger`;
   const anchor = `service-${service.key}`;
 
-  // Arrivée depuis le bloc « situations » : la prestation visée s'ouvre.
+  // Arrivée sur `#service-<clé>` : la prestation visée s'ouvre. L'ancre reste
+  // une URL partageable depuis l'extérieur — le bloc « situations » qui s'en
+  // servait n'existe plus, la ligne reste atteignable directement.
   // Le lien fonctionne sans cela ; c'est un supplément, pas la condition.
   useEffect(() => {
     if (window.location.hash === `#${anchor}`) setOpen(true);

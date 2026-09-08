@@ -69,20 +69,6 @@ export const en = {
         'AI integration',
       ],
     },
-    situations: {
-      title: 'Where are you?',
-      items: [
-        { text: 'I have an idea and I need more than a prototype.', service: 'mvp' },
-        {
-          text: 'My site does not say what the company actually does.',
-          service: 'websites',
-        },
-        {
-          text: 'The product works. It deserves better than it has.',
-          service: 'improvement',
-        },
-      ],
-    },
     services: {
       title: 'Services',
       deliverablesLabel: 'What you get',

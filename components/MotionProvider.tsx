@@ -59,7 +59,7 @@ export function MotionProvider() {
     });
 
     // Lenis avale le comportement natif de `#ancre` : le lien d'évitement et
-    // les liens internes de `Situations` défileraient sans emmener le focus.
+    // les ancres de section de la nav défileraient sans emmener le focus.
     function onAnchorClick(event: MouseEvent) {
       const link = (event.target as Element | null)?.closest?.('a[href^="#"]');
       const hash = link?.getAttribute('href');
