@@ -63,9 +63,16 @@
   --text-s: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
   --text: clamp(1rem, 0.94rem + 0.28vw, 1.25rem);
 
-  /* Affichage */
-  --display-s: clamp(3rem, 7vw, 7rem); /* titres de section */
-  --display-xl: clamp(3.5rem, 11vw, 10.75rem); /* le hero, et lui seul */
+  /* Affichage — TROIS échelles, et l'écart entre elles est la hiérarchie.
+     Avant : le nom à 172 px et TOUS les titres de section à 112 px. Six <h2>
+     de taille identique ne se hiérarchisent pas entre eux, et le nom cessait
+     de dominer parce que plus rien ne lui cédait le pas. Une seule dimension
+     doit crier ; ici c'est le nom. */
+  --display-s: clamp(2.25rem, 4.5vw, 4.5rem); /* titres de section — 72 px max */
+  --display-m: clamp(2.75rem, 6vw, 6rem); /* la revendication et la ligne de
+                                             marque — 96 px, le plafond au-delà
+                                             duquel une page hurle */
+  --display-xl: clamp(3.5rem, 11vw, 10.75rem); /* le nom, et lui seul */
 
   /* Grille — 12 colonnes, asymétrique par composition et non par jeton :
      les compositions placent leurs éléments avec `grid-column`, donc une

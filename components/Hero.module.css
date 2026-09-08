@@ -63,7 +63,10 @@
   justify-content: space-between;
   gap: 0.06em;
   margin-top: clamp(1rem, 2.5vw, 2rem);
-  font-size: var(--display-s);
+  /* Deuxième cran, pas le troisième : cette ligne appartient au bloc de
+     marque, pas aux titres de section. Elle descendrait à 72 px avec eux et
+     le verrou « Design × Code » perdrait son rang. */
+  font-size: var(--display-m);
   /* Ne se replie pas : deux mots sur deux lignes casseraient le point de
      contact au milieu, qui est tout le propos de la composition. */
   flex-wrap: nowrap;
@@ -156,7 +159,7 @@
   font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--ink-2);
+  color: var(--muted);
 }
 
 /* --- Propos ---------------------------------------------------------------- */
@@ -175,13 +178,13 @@
   max-width: 52ch;
   font-size: var(--text);
   line-height: 1.55;
-  color: var(--ink-2);
+  color: var(--muted);
 }
 
 .claim {
   margin: 0;
   font-family: var(--font-display-stack);
-  font-size: var(--display-s);
+  font-size: var(--display-m);
   line-height: 1.15;
   max-width: 34ch;
   text-wrap: balance;
