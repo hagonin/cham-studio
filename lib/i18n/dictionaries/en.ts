@@ -24,6 +24,7 @@ export const en = {
     process: 'Process',
     contact: 'Contact',
     skipToContent: 'Skip to content',
+    top: 'Back to top',
   },
   brand: {
     name: 'Chạm',

@@ -1,0 +1,37 @@
+.button {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-mono-stack);
+  font-size: 1.125rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity 180ms var(--contact),
+    border-color 180ms var(--contact),
+    color 180ms var(--contact);
+}
+
+.button[data-visible='true'] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* --touch au survol/focus : c'est un état, pas un aplat au repos. */
+.button:hover,
+.button:focus-visible {
+  border-color: var(--touch);
+  color: var(--touch);
+}

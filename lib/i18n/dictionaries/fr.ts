@@ -20,6 +20,7 @@ export const fr = {
     process: 'Méthode',
     contact: 'Contact',
     skipToContent: 'Aller au contenu',
+    top: 'Haut de page',
   },
   brand: {
     name: 'Chạm',
