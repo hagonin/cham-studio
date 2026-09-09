@@ -42,25 +42,18 @@
   letter-spacing: -0.045em;
 }
 
-/* Le nom, à l'échelle réservée au hero : --display-xl existe POUR cette ligne
-   et pour elle seule (voir app/globals.css). Un clamp écrit ici en doublerait
-   la définition et dériverait à la première retouche. */
-.name {
-  display: block;
-  font-size: var(--display-xl);
-  /* Le fût de la capitale condensée s'aligne sur la colonne, pas la gouttière
-     optique du glyphe. */
-  margin-inline-start: -0.04em;
-}
-
 /* --- Positionnement --------------------------------------------------------
-   DESIGN et CODE tenus aux deux bords, la figure au milieu. `space-between`
-   fait le travail : aucune largeur n'est codée en dur, donc la composition
-   tient de 20rem à 90rem sans point de rupture intermédiaire. */
+   DESIGN et CODE tenus l'un contre l'autre, le × entre les deux comme
+   charnière. La figure du milieu a disparu ; `space-between` n'a donc plus
+   rien à répartir et écarterait les mots aux bords du bloc — `flex-start` +
+   `gap` les garde au contact, quelle que soit la largeur. */
 .positioning {
   display: flex;
+  /* Repère des nœuds d'onde, posés en absolu par `ripple()` : sans lui ils se
+     placeraient par rapport au premier ancêtre positionné, quel qu'il soit. */
+  position: relative;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 0.06em;
   margin-top: clamp(1rem, 2.5vw, 2rem);
   /* Deuxième cran, pas le troisième : cette ligne appartient au bloc de
@@ -79,65 +72,32 @@
   margin-inline: -0.02em;
 }
 
+/* Chaque caractère du logotype est transformable, donc `inline-block` : un
+   `<span>` en ligne ignore purement et simplement `transform`. Rien d'autre ne
+   change ici — le texte, la casse et l'interlettrage restent ceux du mot. */
+.char {
+  display: inline-block;
+}
+
 /* Le « × » vit à sa propre échelle : au corps du titre il pèserait autant que
-   les mots, alors qu'il est la charnière entre eux. Seule occurrence de
-   --touch dans ce bloc, et elle est STATIQUE : décision 22 — l'accent marque
-   l'interaction ET le contact, et le × est un point de contact déjà advenu. */
+   les mots, alors qu'il est la charnière entre eux.
+
+   AU REPOS il est en --ink, pas en --touch : --touch ne tient que 3,24:1 sur
+   papier (lib/tokens.ts) — assez pour de l'UI, jamais pour un signe au repos.
+   Il ne prend l'accent que sous [data-state='contact'], c'est-à-dire au
+   moment où quelqu'un touche le logotype. C'est exactement ce que la garde de
+   `tests/tokens.test.ts` protège dans globals.css ; un module CSS n'y est pas
+   soumis, on s'y tient quand même. */
 .contact {
   flex: none;
   font-size: 0.34em;
-  color: var(--touch);
+  color: var(--ink);
   align-self: center;
+  transition: color 180ms var(--contact);
 }
 
-/* --- Figure de contact -----------------------------------------------------
-   Entre les deux mots, à leur hauteur. Elle se dimensionne en em du titre : la
-   composition garde ses proportions à toutes les largeurs sans second clamp à
-   tenir en phase avec le premier. */
-.figure {
-  flex: none;
-  position: relative;
-  width: 1.5em;
-  aspect-ratio: 1 / 1;
-  display: block;
-}
-
-.figure svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.ring {
-  fill: none;
-  stroke: var(--ink);
-  stroke-width: 1;
-}
-
-.ringFaint {
-  fill: none;
-  stroke: var(--line);
-  stroke-width: 1;
-}
-
-.point {
-  fill: var(--touch);
-}
-
-/* Le cartouche de planche. En `position: absolute` pour ne pas entrer dans le
-   calcul de hauteur du titre : sans cela, une ligne de 11px ferait grandir un
-   bloc de 200px. */
-.figureLabel {
-  position: absolute;
-  left: 0;
-  bottom: 0.12em;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  letter-spacing: 0.14em;
-  line-height: 1;
-  padding: 0.45em 0.6em;
+.contact[data-state='contact'] {
+  color: var(--touch);
 }
 
 /* --- Périmètre -------------------------------------------------------------
@@ -146,12 +106,25 @@
    au doigt et au clavier ne coûte rien. */
 .scope {
   list-style: none;
-  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+  /* Décalée vers la droite : le logotype tient le bord gauche, le périmètre
+     amorce la diagonale, le propos la termine en bas à droite. Une largeur en
+     pourcentage suffit — importer une grille pour trois blocs coûterait plus
+     que l'asymétrie ne rapporte. */
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0 auto;
+  width: min(100%, 72%);
   padding: 1rem 0 0;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem clamp(1.5rem, 4vw, 3.5rem);
   border-top: 1px solid var(--line);
+}
+
+/* Le « / » est un filet, pas un mot : il est décoratif, donc il vit dans un
+   ::before et n'entre pas dans le texte lu. Le <li> est conservé — la liste
+   reste une liste, et `check-html.mjs` échoue sur un <p> en majuscules. */
+.scopeItem::before {
+  content: '/ ';
+  color: var(--muted);
 }
 
 .scopeItem {
@@ -163,8 +136,12 @@
 }
 
 /* --- Propos ---------------------------------------------------------------- */
+/* Fin de la diagonale : en bas, à droite. Aucun centrage vertical — la page
+   n'a pas de hauteur fixe, et un bloc centré verticalement se décale à chaque
+   ligne de texte qui se replie. */
 .statement {
-  margin-top: clamp(3rem, 9vw, 7rem);
+  margin: clamp(3rem, 9vw, 7rem) 0 0 auto;
+  width: min(100%, 78%);
   display: grid;
   gap: 1.25rem;
   justify-items: start;
@@ -213,15 +190,17 @@
   letter-spacing: 0.08em;
 }
 
-/* Sous 48rem, le cartouche déborderait une figure d'à peine 5rem : on le
-   retire plutôt que de le réduire sous le plancher typographique. */
 @media (max-width: 48rem) {
-  .figureLabel {
-    display: none;
-  }
-
   .metaRight {
     text-align: left;
     margin-left: 0;
+  }
+
+  /* La diagonale demande de la largeur : sous 48rem elle ne se lit plus comme
+     une composition, seulement comme une colonne étroite et un vide à gauche. */
+  .scope,
+  .statement {
+    width: 100%;
+    margin-inline-start: 0;
   }
 }

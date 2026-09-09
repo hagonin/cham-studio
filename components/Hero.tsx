@@ -1,7 +1,34 @@
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import type { Locale } from '@/lib/i18n/config';
 import { site } from '@/content/site';
+import { HeroMotion } from './HeroMotion';
 import styles from './Hero.module.css';
+
+/**
+ * Le mot du logotype, découpé caractère par caractère AU RENDU SERVEUR.
+ *
+ * Découper après hydratation viderait le HTML servi que
+ * `scripts/check-html.mjs` inspecte, et laisserait le logotype sans mouvement
+ * possible tant que le JS n'a pas répondu. Les `<span>` restent enfants du
+ * MÊME élément : les lecteurs d'écran concatènent les nœuds texte d'un même
+ * nœud, donc le nom accessible demeure « DESIGN × CODE » et non une épellation.
+ * Si une vérification VoiceOver montre le contraire, le repli est écrit dans la
+ * phase 03 (aria-hidden sur les caractères + un unique frère `sr-only`).
+ *
+ * Le découpage ne sort JAMAIS de ces deux mots : appliqué à de la prose il
+ * casserait la césure et l'équilibrage des lignes.
+ */
+function SplitWord({ word }: { word: string }) {
+  return (
+    <span className={styles.word}>
+      {[...word].map((char, index) => (
+        <span key={`${char}-${index}`} data-char className={styles.char}>
+          {char}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 /**
  * Pas d'image porteuse : le LCP est le titre, donc il est peint dès la première
@@ -13,8 +40,10 @@ import styles from './Hero.module.css';
  * pour devenir visible. Seul l'appel à l'action est magnétique.
  *
  * La composition tient les deux mots aux bords et pose la figure entre eux : le
- * « × » NOMME le contact, la figure le MONTRE, au même endroit. C'est aussi la
- * seule occurrence de la couleur de marque dans ce bloc.
+ * « × » NOMME le contact, la figure le MONTRE, au même endroit. La couleur de
+ * marque n'apparaît que là : le point de la figure au repos, et le « × »
+ * uniquement pendant qu'on touche le logotype — --touch ne tient pas le
+ * contraste d'un texte au repos.
  */
 export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { hero } = dict.home;
@@ -26,7 +55,7 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           de « Chạm » n'y figure pas — tests/i18n.test.ts vérifie qu'il n'est
           écrit qu'à un seul endroit du site, le bloc « à propos ». Ici, la
           prononciation suffit à poser le mot. */}
-      <div className={styles.meta}>
+      <div className={styles.meta} data-parallax="0.2">
         <span className={styles.metaBlock}>
           <span className={styles.pron}>/tʃam/</span>
         </span>
@@ -44,31 +73,24 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           phrase le message, pas de « Chạm ».
           Reste un seul <h1> par page (`check-html.mjs`), et aucun niveau
           sauté : les titres de section restent en <h2>. */}
-      <p className={styles.title}>
-        <span className={styles.name}>{dict.brand.name}</span>
+      {/* `data-parallax` porte la PROFONDEUR, pas l'effet : `MotionProvider`
+          ramasse toutes les couches marquées et n'ouvre qu'un ScrollTrigger
+          pour l'ensemble. Le <h1> n'en porte jamais — il est le LCP, et le
+          décaler au défilement le ferait mesurer comme un élément animé. */}
+      <p className={styles.title} data-parallax="0.08">
+        {/* Zone d'onde : le pointeur laisse un cercle là où il touche le
+            logotype. `position: relative` est donc obligatoire ici — les nœuds
+            d'onde sont positionnés en absolu par rapport à cette boîte. */}
+        <span className={styles.positioning} data-ripple-zone>
+          <SplitWord word={before.trim()} />
 
-        <span className={styles.positioning}>
-          <span className={styles.word}>{before.trim()}</span>
-
-          {/* Décoratif, donc `aria-hidden` : le nom accessible reste
-            « Design × Code ». Deux champs qui se recouvrent et se touchent en
-            un point — pas un portrait : `content/site.ts` interdit un visage
-            au-dessus de la ligne de flottaison (LCP) et `site.portrait` vaut
-            `null` tant que la photo n'existe pas. SVG inline : rien à charger,
-            donc rien qui retarde le texte ni décale la mise en page. */}
-          <span className={styles.figure} aria-hidden="true">
-            <svg viewBox="0 0 230 230" role="presentation" focusable="false">
-              <circle cx="86" cy="115" r="62" className={styles.ring} />
-              <circle cx="144" cy="115" r="62" className={styles.ring} />
-              <circle cx="86" cy="115" r="44" className={styles.ringFaint} />
-              <circle cx="144" cy="115" r="44" className={styles.ringFaint} />
-              <circle cx="115" cy="115" r="5" className={styles.point} />
-            </svg>
-            <span className={styles.figureLabel}>{hero.figureLabel}</span>
+          {/* Le × est la charnière : c'est le point du loader arrivé à
+              destination. `data-state` lui donne --touch au contact seulement
+              (voir le module CSS). */}
+          <span className={styles.contact} data-hero-contact data-state="idle">
+            ×
           </span>
-
-          <span className={styles.contact}>×</span>
-          <span className={styles.word}>{after.trim()}</span>
+          <SplitWord word={after.trim()} />
         </span>
       </p>
 
@@ -103,6 +125,11 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           {hero.cta}
         </a>
       </div>
+
+      {/* Le seul nœud client du hero, et il ne rend RIEN : il s'attache aux
+          nœuds ci-dessus. Sans lui, `Hero` deviendrait un composant client et
+          toute cette copie sortirait du HTML servi. Motif de MotionProvider. */}
+      <HeroMotion />
     </section>
   );
 }
