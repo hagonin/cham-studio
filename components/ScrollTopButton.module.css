@@ -8,7 +8,11 @@
   justify-content: center;
   width: 2.75rem;
   height: 2.75rem;
-  border: 1px solid var(--line);
+  /* --muted (3.05:1) et non --line (1.45:1) : ce bord n'est pas un
+     séparateur, c'est la SEULE limite perceptible du bouton. Un contrôle dont
+     on doit voir le contour pour s'en servir prend la bordure interactive,
+     règle posée en tête de globals.css. */
+  border: 1px solid var(--muted);
   border-radius: 50%;
   background: var(--paper);
   color: var(--ink);
@@ -18,15 +22,24 @@
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
+  /* `visibility` retire le bouton de l'ordre de tabulation ET de l'arbre
+     d'accessibilité tant qu'il est caché — `opacity: 0` seul le laisse au
+     clavier, qui annonce alors un bouton que personne ne voit. Même montage
+     que le panneau replié de ServiceItem : la transition à 0s différée laisse
+     le fondu se terminer avant la disparition. */
+  visibility: hidden;
   transition:
     opacity 180ms var(--contact),
+    visibility 0s linear 180ms,
     border-color 180ms var(--contact),
     color 180ms var(--contact);
 }
 
 .button[data-visible='true'] {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  transition-delay: 0s;
 }
 
 /* --touch au survol/focus : c'est un état, pas un aplat au repos. */
