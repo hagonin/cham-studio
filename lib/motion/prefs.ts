@@ -1,8 +1,55 @@
 /**
- * Les préférences qui décident SI la Phase 10 s'exécute. Isolées ici, sans
+ * Les préférences qui décident SI le mouvement s'exécute. Isolées ici, sans
  * import de GSAP ni de Lenis : ce sont les seules décisions du système de
  * mouvement qui se testent sans navigateur, et ce sont celles qui, prises à
  * l'envers, cassent l'accessibilité.
+ *
+ * ── ÉTAT DES PORTES ────────────────────────────────────────────────────────
+ * Le risque n'a jamais été qu'une porte manque : c'est qu'elles DIVERGENT, et
+ * qu'une combinaison (pointeur grossier sur grand écran, par exemple) laisse
+ * un effet à moitié monté que personne n'a regardé. D'où ce tableau, ici et
+ * pas dans un plan : il se lit à côté des fonctions qu'il décrit.
+ *
+ * | Système                     | coarse   | reduced-motion | Porte             |
+ * |-----------------------------|----------|----------------|-------------------|
+ * | Loader                      | actif    | inactif*       | Loader.tsx        |
+ * | Curseur + champ + onde      | inactif  | inactif        | ContactCursor.tsx |
+ * | Réaction par caractère      | inactif  | inactif        | interne HeroMotion|
+ * | Magnétisme de la figure     | inactif  | inactif        | interne HeroMotion|
+ * | Magnétisme CTA + liens nav  | inactif  | inactif        | magnetic()        |
+ * | Continuité loader → ×       | actif    | inactif**      | interne HeroMotion|
+ * | Parallaxe au défilement     | ACTIF    | inactif        | parallax()        |
+ * | État courant (aria-current) | actif    | actif          | aucune            |
+ * | Menu plein écran            | actif    | actif***       | aucune            |
+ * | Indicateur de défilement    | actif    | statique       | ScrollCue.tsx     |
+ *
+ *   * le drapeau de session est posé quand même, sinon la galerie attendrait
+ *     un événement jamais émis.
+ *  ** aucun événement n'est émis, donc rien à prolonger : l'état au repos du
+ *     logotype est déjà l'état final.
+ * *** il s'ouvre et se ferme, sans révélation séquentielle — la règle globale
+ *     de `globals.css` ramène les durées d'animation à ~0.
+ *
+ * Deux lignes demandent une décision plutôt qu'une lecture :
+ *
+ * 1. **La parallaxe reste active au doigt** (décision V1). Elle suit le
+ *    DÉFILEMENT, pas le pointeur : la gater sur `hasFinePointer()` la
+ *    perdrait sur tablette sans que rien ne le justifie.
+ * 2. **L'état courant et le menu survivent à reduced-motion.** Ce sont des
+ *    informations de navigation, pas des effets ; les couper priverait de
+ *    repères précisément les personnes qui ont demandé moins de mouvement.
+ *
+ * `HeroMotion` est la seule ligne où « le composant est monté » ne veut pas
+ * dire « tous ses effets tournent » : il monte sous `!prefersReducedMotion()`
+ * seul, et porte `hasFinePointer()` À L'INTÉRIEUR, sur la réaction par
+ * caractère et le magnétisme de la figure. Cela se vérifie en lisant le code —
+ * à l'écran, un effet inerte et un composant absent se ressemblent.
+ *
+ * Aucune porte n'écoute le CHANGEMENT de préférence : toutes lisent au
+ * montage. Activer reduced-motion en cours de session ne retire donc rien
+ * avant la navigation suivante. C'est un choix uniforme, et l'uniformité est
+ * ce qui compte : quatre systèmes qui réagiraient différemment au même
+ * changement seraient impossibles à vérifier.
  */
 
 /** `reduce` ne veut pas dire « plus vite » : il veut dire AUCUN mouvement.
