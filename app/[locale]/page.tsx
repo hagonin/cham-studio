@@ -7,6 +7,7 @@ import { SectionNav } from '@/components/SectionNav';
 import { MOUNTED_SECTIONS } from '@/lib/sections';
 import { StatusBar } from '@/components/StatusBar';
 import { Hero } from '@/components/Hero';
+import { ScrollCue } from '@/components/ScrollCue';
 import { AboutBlock } from '@/components/AboutBlock';
 import { ServiceList } from '@/components/ServiceList';
 import { Process } from '@/components/Process';
@@ -74,6 +75,9 @@ export default async function ServicesPage({
       <main className={styles.page}>
         <StatusBar locale={locale} dict={dict} />
         <Hero dict={dict} locale={locale} />
+        {/* L'indicateur appartient à la charnière entre le hero et la suite,
+            pas au hero : il annonce ce qui vient après, donc il vit ici. */}
+        <ScrollCue label={dict.nav.scroll} />
         {workSectionIsReady() && <WorkSection locale={locale} dict={dict} />}
         <ServiceList locale={locale} dict={dict} />
         {/* L'estimateur n'est PAS monté (décision 8) : une fourchette calculée

@@ -25,6 +25,9 @@ export const fr = {
     // pas deux commandes. `aria-expanded` dit l'état, le libellé dit l'action.
     menu: 'Menu',
     close: 'Fermer',
+    // L'indicateur sous le hero. Décoratif, mais VISIBLE : donc dans la langue
+    // de la page, pas un « scroll » anglais posé sur une page française.
+    scroll: 'Défiler',
   },
   brand: {
     name: 'Chạm',

@@ -16,7 +16,7 @@ export function ProjectList({ locale, dict }: { locale: Locale; dict: Dictionary
   const projects = projectsNewestFirst();
 
   return (
-    <section className={styles.block} aria-labelledby="work-title">
+    <section data-reveal className={styles.block} aria-labelledby="work-title">
       <h2 id="work-title" className={styles.title}>
         {copy.title}
       </h2>

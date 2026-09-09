@@ -1,0 +1,45 @@
+/* SCROLL / trait / point. Décoratif de bout en bout (`aria-hidden`) : il ne
+   dit rien qu'on ne puisse déduire de la page, il rend seulement lisible qu'il
+   y a une suite. D'où le droit de ne pas exister sans JavaScript. */
+.cue {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Le rail donne au point sa course. Une hauteur fixe, pas un pourcentage :
+   c'est une mesure de dessin, elle ne doit pas dépendre du bloc qui l'entoure. */
+.rail {
+  position: relative;
+  width: 1px;
+  height: 3.5rem;
+  background: var(--line);
+  flex: none;
+}
+
+.dot {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 7px;
+  height: 7px;
+  margin-inline-start: -3px;
+  border-radius: 50%;
+  /* --touch au point de contact : même sens que le point de `contact-marker`,
+     donc même couleur, et le couple {touch, paper, ui} est déjà mesuré. */
+  background: var(--touch);
+}
+
+/* Sous 40rem la place manque sous le hero : le rail seul suffit à dire qu'il y
+   a une suite, le mot devient une redite de ce que le doigt sait déjà. */
+@media (max-width: 40rem) {
+  .label {
+    display: none;
+  }
+}
