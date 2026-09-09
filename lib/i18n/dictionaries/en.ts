@@ -25,6 +25,8 @@ export const en = {
     contact: 'Contact',
     skipToContent: 'Skip to content',
     top: 'Back to top',
+    menu: 'Menu',
+    close: 'Close',
   },
   brand: {
     name: 'Chạm',

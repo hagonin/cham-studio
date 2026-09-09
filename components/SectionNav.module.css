@@ -1,4 +1,16 @@
+/* Collante, mais pas un conteneur : ni pilule, ni ombre, ni fond plein. Le
+   fond est le papier RENDU TRANSLUCIDE — sans lui, le titre qui passe dessous
+   se lirait à travers la barre. Le filet du bas reste : c'est une ligne de
+   composition, pas le bord d'une boîte.
+
+   `min-height: var(--nav-h)` verrouille la hauteur qui sert de décalage aux
+   ancres (`h2[id] { scroll-margin-top }` dans globals.css). Les deux doivent
+   dire la même chose, sinon le titre visé atterrit sous la barre. */
 .nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  min-height: var(--nav-h);
   display: flex;
   align-items: baseline;
   gap: clamp(1.5rem, 5vw, 6rem);
@@ -8,6 +20,20 @@
   font-size: var(--label);
   letter-spacing: 0.22em;
   text-transform: uppercase;
+}
+
+/* Le fond flou vit dans un PSEUDO-ÉLÉMENT, pas sur la barre elle-même.
+   `backdrop-filter` sur un élément en fait le bloc conteneur de tous ses
+   descendants en `position: fixed` — le menu plein écran, qui est un enfant de
+   la barre, se retrouvait alors haut de 32px au lieu de couvrir l'écran. Le
+   flou posé sur un enfant n'a pas cet effet sur ses frères. */
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(8px);
 }
 
 .wordmark {
@@ -59,6 +85,53 @@
   color: var(--touch);
 }
 
+/* Le point d'état courant. `aria-current` et non une classe : l'information
+   est d'abord sémantique — un lecteur d'écran annonce « page actuelle » — et
+   la garde `tests/tokens.test.ts` compte `aria-current` parmi les sélecteurs
+   d'état qui ont le droit de poser --touch. Un seul point à la fois : c'est
+   `NavMotion` qui le garantit, pas le CSS.
+
+   Le point est posé sur le `<li>` et non sur le lien : `.link::after` porte
+   déjà le crochet fermant décoratif, et le remplacer par le point ferait
+   disparaître le crochet du seul élément qui compte. */
+.item:has(> a[aria-current])::after {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-inline-start: 0.5em;
+  border-radius: 50%;
+  background: var(--touch);
+  vertical-align: middle;
+}
+
+/* Le bouton n'existe que sous 40rem (voir le bloc média). Masqué ici par
+   `display: none` et non par un déplacement hors écran : au-dessus de 40rem
+   les ancres sont toutes visibles, il n'y a rien à déplier, donc rien à
+   atteindre au clavier non plus. */
+.toggle {
+  display: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  padding: 0;
+  margin-inline-start: auto;
+  cursor: pointer;
+}
+
+/* Le bouton parle la même langue que les liens : --touch au toucher, et
+   nulle part ailleurs. Pas de bordure — une boîte ferait de lui le seul
+   objet encadré d'une barre qui n'en contient aucun ; si elle devenait
+   nécessaire, elle prendrait --muted (bordure interactive) et jamais --line
+   (décoratif, 1,45:1 par conception). */
+.toggle:hover,
+.toggle:focus-visible {
+  color: var(--touch);
+}
+
 .locales {
   margin: 0;
   color: var(--muted);
@@ -74,14 +147,92 @@
   color: var(--muted);
 }
 
-/* La barre disparaît sous 640px plutôt que de se replier en menu : quatre
-   ancres sur une page unique se rejoignent au défilement, et un tiroir ajoute
-   un état à maintenir pour une page qu'on parcourt de toute façon. */
+/* Sous 640px, les ancres passent derrière un bouton — elles ne DISPARAISSENT
+   plus. L'ancien raisonnement (« quatre ancres se rejoignent au défilement, un
+   tiroir ajoute un état ») tenait pour une barre qui défilait avec la page :
+   masquer des ancres qu'on retrouvait en descendant ne coûtait rien. La barre
+   est maintenant collante, donc visible en permanence : y masquer les ancres
+   devient une perte visible, et le bouton la rend.
+
+   FERMÉ, la liste est en `display: none` : elle sort réellement de l'ordre de
+   tabulation. Un menu simplement transparent laisserait le clavier entrer dans
+   des liens que personne ne voit — la panne exacte que le piège de focus
+   existe pour empêcher. */
 @media (max-width: 40rem) {
+  .toggle {
+    display: block;
+  }
+
+  /* La barre collante est un contexte d'empilement : le z-index du menu ne
+     joue QU'À L'INTÉRIEUR d'elle. C'est donc la barre qui doit monter pendant
+     que le menu est ouvert, sinon le bouton « haut de page » (z-index 40)
+     flotte par-dessus un menu plein écran. On reste sous le loader (50). */
+  .nav[data-open='true'] {
+    z-index: 45;
+  }
+
   .sections {
     display: none;
   }
+
   .locales {
-    margin-inline-start: auto;
+    margin-inline-start: 0;
+  }
+
+  /* OUVERT : plein écran, typographie de titre, liste numérotée. Le compteur
+     est décoratif — il est dans un ::before, donc il n'entre pas dans le texte
+     lu, et la liste reste une liste. */
+  .nav[data-open='true'] .sections {
+    display: flex;
+    position: fixed;
+    inset: var(--nav-h) 0 0;
+    z-index: 30;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-5);
+    margin: 0;
+    padding: var(--gutter);
+    background: var(--paper);
+    counter-reset: section-item;
+  }
+
+  .nav[data-open='true'] .item {
+    counter-increment: section-item;
+    font-family: var(--font-display-stack);
+    font-size: var(--display-s);
+    letter-spacing: -0.03em;
+    text-transform: none;
+    /* Révélation séquentielle en CSS : le décalage est le même que celui de
+       `reveal.ts` (0,06 s, plafonné). Sous reduced-motion la règle globale de
+       globals.css ramène toutes les durées à ~0 — rien à gater ici. */
+    animation: contact-in var(--contact-duration) var(--contact) both;
+  }
+
+  /* Décalage plafonné au quatrième élément, comme `reveal.ts` : au-delà, la
+     liste se lit comme une file d'attente. */
+  .nav[data-open='true'] .item:nth-child(2) {
+    animation-delay: 0.06s;
+  }
+  .nav[data-open='true'] .item:nth-child(3) {
+    animation-delay: 0.12s;
+  }
+  .nav[data-open='true'] .item:nth-child(n + 4) {
+    animation-delay: 0.18s;
+  }
+
+  .nav[data-open='true'] .item::before {
+    content: counter(section-item, decimal-leading-zero);
+    margin-inline-end: var(--space-3);
+    font-family: var(--font-mono-stack);
+    font-size: var(--label);
+    color: var(--muted);
+    vertical-align: super;
+  }
+
+  /* Les crochets appartiennent à la barre, pas au menu : à cette taille ils
+     deviendraient deux glyphes de titre au lieu d'un filet. */
+  .nav[data-open='true'] .link::before,
+  .nav[data-open='true'] .link::after {
+    content: none;
   }
 }

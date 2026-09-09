@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { PUBLISHED, locales, localeHref, type Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import { SECTION_KEYS, type SectionKey } from '@/lib/sections';
+import { NavMotion } from './NavMotion';
 import styles from './SectionNav.module.css';
 
 /**
@@ -19,9 +20,12 @@ import styles from './SectionNav.module.css';
  * qui écoute déjà `a[href^="#"]`. Rien à ajouter ici : un second chemin de
  * défilement serait un second endroit où le focus peut se perdre.
  *
- * Composant serveur. L'état « section courante » demanderait un observateur au
- * défilement ; il n'est pas là, et son absence ne coûte rien tant que la barre
- * n'est pas collante.
+ * Composant serveur — et il le reste. La barre est devenue COLLANTE, ce qui
+ * rend l'observateur de section nécessaire (une barre qui reste à l'écran doit
+ * dire où l'on est) et le masquage mobile intenable (masquer les ancres d'une
+ * barre visible en permanence, c'est une perte visible). Les deux vivent dans
+ * `NavMotion`, un enfant client qui ne rend rien : le balisage, les libellés et
+ * les ancres restent dans le HTML servi, donc utilisables sans JavaScript.
  */
 
 export function SectionNav({
@@ -40,15 +44,38 @@ export function SectionNav({
   }));
 
   return (
-    <nav className={styles.nav} aria-label={nav.label}>
+    <nav className={styles.nav} aria-label={nav.label} data-nav>
       <Link href={localeHref(locale)} className={styles.wordmark}>
         {dict.brand.name}
       </Link>
 
-      <ul className={styles.sections}>
+      {/* `aria-controls` n'est pas une formalité : `check-html.mjs` fait
+          échouer le build sur un `aria-expanded` qui n'en a pas. Le bouton est
+          rendu par le serveur avec l'état FERMÉ — c'est l'état sans JS, et sans
+          JS les ancres restent atteignables autrement (le menu n'est masqué que
+          sous 40rem, où la liste redevient visible dès que le CSS s'applique).
+          Les deux libellés voyagent en `data-*` : le composant client bascule
+          le texte sans avoir à connaître la langue de la page. */}
+      <button
+        type="button"
+        className={styles.toggle}
+        aria-expanded="false"
+        aria-controls="nav-menu"
+        data-nav-toggle
+        data-label-open={nav.menu}
+        data-label-close={nav.close}
+      >
+        {nav.menu}
+      </button>
+
+      <ul id="nav-menu" className={styles.sections}>
         {items.map(({ href, label }) => (
-          <li key={href}>
-            <a href={href} className={styles.link}>
+          <li key={href} className={styles.item}>
+            {/* `data-magnetic` porte ici sa FORCE : 0,08, presque rien —
+                l'attraction d'un CTA (0,28) sur une barre collante ferait
+                vibrer la ligne entière au passage du pointeur. Le câblage est
+                celui de MotionProvider, il n'y a pas de second chemin. */}
+            <a href={href} className={styles.link} data-magnetic="0.08">
               {label}
             </a>
           </li>
@@ -83,6 +110,8 @@ export function SectionNav({
           );
         })}
       </p>
+
+      <NavMotion />
     </nav>
   );
 }

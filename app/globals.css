@@ -77,6 +77,13 @@
   /* Grille — 12 colonnes, asymétrique par composition et non par jeton :
      les compositions placent leurs éléments avec `grid-column`, donc une
      colonne ne se nomme pas ici. Le seul réglage partagé est la gouttière. */
+  /* Hauteur de la barre collante. Ce n'est pas une mesure décorative : c'est
+     le décalage dont chaque ancre a besoin pour ne pas atterrir SOUS la nav.
+     Un seul endroit à corriger si le rembourrage de la barre change. */
+  /* 80px : mesuré à 78,19px en 1440px de large (1,25rem de rembourrage haut et
+     bas + la ligne du wordmark). Arrondi AU-DESSUS — sous-estimer cette valeur
+     fait atterrir le titre visé à quelques pixels sous la barre. */
+  --nav-h: 5rem;
   --gutter: clamp(1rem, 2vw, 1.5rem);
   --page: 90rem; /* 1440px, la planche du canvas */
 
@@ -119,6 +126,15 @@ body {
   font-size: var(--text-s);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+}
+
+/* La barre est collante depuis la phase 04 : sans ce décalage, chaque saut
+   d'ancre amène le titre visé EXACTEMENT sous la barre, qui le recouvre.
+   En CSS et non en JS — `scroll-margin-top` est respecté par le défilement
+   natif, par `scrollIntoView()` et par le `scrollTo` de Lenis, donc la
+   correction vaut pour les trois chemins sans en instrumenter aucun. */
+h2[id] {
+  scroll-margin-top: calc(var(--nav-h) + var(--space-4));
 }
 
 /* Base de focus : visible partout, jamais supprimée.

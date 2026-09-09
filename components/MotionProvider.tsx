@@ -54,8 +54,13 @@ export function MotionProvider() {
       const line = document.querySelector<HTMLElement>('[data-contact-line]');
       if (line) scrubContactLine(line);
 
+      // La VALEUR de `data-magnetic` est la force, quand elle est donnée :
+      // un CTA claque (0,28, le défaut), un lien de nav collante frémit
+      // (0,08). Le réglage vit dans le balisage, à côté de l'élément qu'il
+      // concerne, plutôt que dans une liste de sélecteurs à tenir à jour ici.
       for (const cta of document.querySelectorAll<HTMLElement>('[data-magnetic]')) {
-        cleanups.push(magnetic(cta));
+        const strength = Number(cta.dataset.magnetic);
+        cleanups.push(magnetic(cta, strength > 0 ? { strength } : {}));
       }
 
       // Un SEUL appel pour toutes les couches : `parallax()` n'ouvre qu'un

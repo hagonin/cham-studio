@@ -21,6 +21,10 @@ export const fr = {
     contact: 'Contact',
     skipToContent: 'Aller au contenu',
     top: 'Haut de page',
+    // Le bouton porte les deux libellés : c'est le MÊME bouton qui bascule,
+    // pas deux commandes. `aria-expanded` dit l'état, le libellé dit l'action.
+    menu: 'Menu',
+    close: 'Fermer',
   },
   brand: {
     name: 'Chạm',
