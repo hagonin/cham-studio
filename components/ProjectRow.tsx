@@ -57,16 +57,9 @@ export function ProjectRow({
 
         <p className={styles.summary}>{project.summary[locale]}</p>
 
-        {/* Les outils ne sont pas traduits — React reste React. */}
-        <span className={styles.stackLabel} id={`${project.slug}-stack`}>
-          {copy.stackLabel}
-        </span>
-        <ul className={styles.stack} aria-labelledby={`${project.slug}-stack`}>
-          {project.stack.map((tool) => (
-            <li key={tool}>{tool}</li>
-          ))}
-        </ul>
-
+        {/* Le lien précède les outils pour que TOUTES les lignes se terminent
+            sur la liste d'outils. Placé en dernier, il n'existait que sur les
+            projets en ligne et laissait les autres finir sur un bord ragged. */}
         {project.url ? (
           <a
             className={`${styles.link} contact-link`}
@@ -76,6 +69,16 @@ export function ProjectRow({
             {copy.visit}
           </a>
         ) : null}
+
+        {/* Les outils ne sont pas traduits — React reste React. */}
+        <span className={styles.stackLabel} id={`${project.slug}-stack`}>
+          {copy.stackLabel}
+        </span>
+        <ul className={styles.stack} aria-labelledby={`${project.slug}-stack`}>
+          {project.stack.map((tool) => (
+            <li key={tool}>{tool}</li>
+          ))}
+        </ul>
       </div>
 
       {/* Le cadre porte le ratio et le débordement ; l'image porte le

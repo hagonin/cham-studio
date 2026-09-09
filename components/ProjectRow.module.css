@@ -91,7 +91,8 @@
 
 .link {
   display: inline-block;
-  margin-top: 1rem;
+  /* Pas de margin-top : le `margin-bottom` du résumé espace déjà. */
+  margin-bottom: 1.25rem;
 }
 
 /* Le placement en grille appartient au cadre, pas à l'image : c'est le cadre
