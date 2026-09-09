@@ -10,13 +10,26 @@ import { hasFinePointer, prefersReducedMotion } from './prefs';
  *
  * Rend sa propre fonction de nettoyage : sans elle, une navigation client
  * laisse des écouteurs sur des nœuds détachés.
+ *
+ * `strength` et `release` sont paramétrables plutôt que dupliqués dans une
+ * seconde fonction magnétique : la figure du hero demande un retour pondéré
+ * (~0,9 s), les CTA gardent la relâche vive d'origine. Les valeurs par défaut
+ * sont celles d'avant, l'appel `magnetic(el)` existant est inchangé.
  */
-export function magnetic(element: HTMLElement): () => void {
+export function magnetic(
+  element: HTMLElement,
+  { strength = 0.28, release: releaseDuration = 0.4 } = {},
+): () => void {
   if (!hasFinePointer() || prefersReducedMotion()) return () => {};
 
-  const strength = 0.28;
-  const quickX = gsap.quickTo(element, 'x', { duration: 0.4, ease: 'power3' });
-  const quickY = gsap.quickTo(element, 'y', { duration: 0.4, ease: 'power3' });
+  const quickX = gsap.quickTo(element, 'x', {
+    duration: releaseDuration,
+    ease: 'power3',
+  });
+  const quickY = gsap.quickTo(element, 'y', {
+    duration: releaseDuration,
+    ease: 'power3',
+  });
 
   function onMove(event: PointerEvent) {
     const rect = element.getBoundingClientRect();

@@ -7,6 +7,7 @@ import {
   lerp,
   stateFor,
 } from '../lib/motion/cursor';
+import { CHAR_RADIUS, falloff } from '../lib/motion/pointer';
 
 /**
  * Seule la logique PURE du curseur est testée ici : c'est la part qui peut se
@@ -125,6 +126,34 @@ describe('parité clavier', () => {
     } as unknown as Element;
     // Un libellé différent au clavier serait une seconde vérité à maintenir.
     expect(labelFor(el, labels)).toBe('Écrire');
+  });
+});
+
+describe('chute de proximité par caractère', () => {
+  it('vaut 1 au contact et 0 au rayon', () => {
+    expect(falloff(0)).toBe(1);
+    expect(falloff(CHAR_RADIUS)).toBe(0);
+  });
+
+  it('reste nulle au-delà du rayon', () => {
+    // La panne qu'on empêche : un caractère resté déplacé alors que le
+    // pointeur est parti — le logotype se lirait de travers sans raison.
+    expect(falloff(CHAR_RADIUS + 1)).toBe(0);
+    expect(falloff(1e4)).toBe(0);
+  });
+
+  it('décroît de façon monotone', () => {
+    let previous = falloff(0);
+    for (let distance = 1; distance <= CHAR_RADIUS + 20; distance += 1) {
+      const current = falloff(distance);
+      expect(current).toBeLessThanOrEqual(previous);
+      expect(current).toBeGreaterThanOrEqual(0);
+      previous = current;
+    }
+  });
+
+  it('accepte un rayon explicite', () => {
+    expect(falloff(20, 40)).toBeCloseTo(0.5, 5);
   });
 });
 

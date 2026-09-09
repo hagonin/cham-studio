@@ -10,6 +10,7 @@ import {
   type CursorState,
 } from '@/lib/motion/cursor';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ripple } from '@/lib/motion/pointer';
 import { hasFinePointer, prefersReducedMotion } from '@/lib/motion/prefs';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import styles from './ContactCursor.module.css';
@@ -29,6 +30,7 @@ import styles from './ContactCursor.module.css';
 export function ContactCursor({ dict }: { dict: Dictionary }) {
   const [mounted, setMounted] = useState(false);
   const ring = useRef<HTMLDivElement>(null);
+  const field = useRef<HTMLDivElement>(null);
   const labelNode = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -39,12 +41,16 @@ export function ContactCursor({ dict }: { dict: Dictionary }) {
   useEffect(() => {
     if (!mounted) return;
     const node = ring.current;
+    const fieldEl = field.current;
     const labelEl = labelNode.current;
-    if (!node || !labelEl) return;
+    if (!node || !fieldEl || !labelEl) return;
 
     const labels = dict.motion.cursor;
     const pointer = { x: innerWidth / 2, y: innerHeight / 2 };
     const drawn = { ...pointer };
+    // Le champ de contact traîne DAVANTAGE que l'anneau : c'est l'écart entre
+    // les deux couches qui se lit comme une matière, pas la seconde couche.
+    const trailed = { ...pointer };
     let state: CursorState = 'idle';
     let hovered: Element | null = null;
     let focused: Element | null = null;
@@ -73,10 +79,30 @@ export function ContactCursor({ dict }: { dict: Dictionary }) {
       node!.dataset.state = next;
     }
 
+    // Onde en survol d'une zone marquée. ÉTRANGLÉE : sans plafond de fréquence,
+    // un pointeur agité crée une onde par frame et une décoration devient le
+    // pire coût de peinture de la page. L'onde forte du `pointerdown` passe
+    // outre — c'est un geste délibéré, pas un survol.
+    const RIPPLE_INTERVAL = 180;
+    let lastRipple = 0;
+    function rippleAt(event: PointerEvent, strong: boolean) {
+      const zone = (event.target as Element | null)?.closest?.('[data-ripple-zone]');
+      if (!(zone instanceof HTMLElement)) return;
+      if (!strong && event.timeStamp - lastRipple < RIPPLE_INTERVAL) return;
+      lastRipple = event.timeStamp;
+      ripple(zone, {
+        x: event.clientX,
+        y: event.clientY,
+        strong,
+        className: styles.ripple,
+      });
+    }
+
     // Un seul `pointermove` délégué, contre les rectangles en cache.
     function onMove(event: PointerEvent) {
       pointer.x = event.clientX;
       pointer.y = event.clientY;
+      rippleAt(event, false);
 
       // Le pointeur passe en coordonnées document pour rencontrer le cache.
       const px = event.clientX + window.scrollX;
@@ -95,8 +121,9 @@ export function ContactCursor({ dict }: { dict: Dictionary }) {
       labelEl!.textContent = over ? labelFor(over, labels) : '';
     }
 
-    function onDown() {
+    function onDown(event: PointerEvent) {
       if (hovered) setState('release');
+      rippleAt(event, true);
     }
     function onUp() {
       setState(hovered ? 'contact' : 'idle');
@@ -139,6 +166,10 @@ export function ContactCursor({ dict }: { dict: Dictionary }) {
       drawn.x = lerp(drawn.x, pointer.x);
       drawn.y = lerp(drawn.y, pointer.y);
       node!.style.transform = `translate3d(${drawn.x}px, ${drawn.y}px, 0)`;
+      // Facteur plus bas que le LERP de l'anneau : le champ arrive après lui.
+      trailed.x = lerp(trailed.x, pointer.x, 0.07);
+      trailed.y = lerp(trailed.y, pointer.y, 0.07);
+      fieldEl!.style.transform = `translate3d(${trailed.x}px, ${trailed.y}px, 0)`;
       frame = requestAnimationFrame(tick);
     }
     frame = requestAnimationFrame(tick);
@@ -168,13 +199,19 @@ export function ContactCursor({ dict }: { dict: Dictionary }) {
   if (!mounted) return null;
 
   return (
-    <div ref={ring} className={styles.ring} data-state="idle" aria-hidden="true">
-      {/* Deux couches : `ring` porte la POSITION (translate3d, réécrit à
+    <>
+      {/* Le champ est un SECOND nœud, pas une couche de l'anneau : il porte sa
+          propre position (une traîne plus lente) et l'anneau écrit déjà la
+          sienne à chaque frame. Fusionnés, l'une écraserait l'autre. */}
+      <div ref={field} className={styles.field} aria-hidden="true" />
+      <div ref={ring} className={styles.ring} data-state="idle" aria-hidden="true">
+        {/* Deux couches : `ring` porte la POSITION (translate3d, réécrit à
           chaque frame), `face` porte l'ÉTAT (échelle, couleur). Séparées,
           l'une n'écrase pas l'autre. */}
-      <span className={styles.face}>
-        <span ref={labelNode} className={styles.label} />
-      </span>
-    </div>
+        <span className={styles.face}>
+          <span ref={labelNode} className={styles.label} />
+        </span>
+      </div>
+    </>
   );
 }

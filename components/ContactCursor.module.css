@@ -58,6 +58,31 @@
   background-color: color-mix(in srgb, var(--touch) 30%, transparent);
 }
 
+/* Le champ de contact : plus large, plus lent, sans état. Il ne dit rien de
+   plus que l'anneau — il donne au geste une épaisseur. Même règle que
+   l'anneau : décoration, donc jamais une surface cliquable. */
+.field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* L'onde emprunte --touch : c'est un contact, et --touch ne paraît qu'au
+   toucher. Seule l'APPARENCE vit ici ; la géométrie et la position sont
+   écrites par `ripple()` (lib/motion/pointer.ts), qui seul connaît l'endroit
+   exact du pointeur. */
+.ripple {
+  border: 1px solid var(--touch);
+}
+
 .label {
   font-family: var(--font-mono-stack);
   font-size: 0.75rem;
