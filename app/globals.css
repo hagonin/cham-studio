@@ -69,9 +69,9 @@
      de dominer parce que plus rien ne lui cédait le pas. Une seule dimension
      doit crier ; ici c'est le nom. */
   --display-s: clamp(2.25rem, 4.5vw, 4.5rem); /* titres de section — 72 px max */
-  --display-m: clamp(2.75rem, 6vw, 6rem); /* la revendication et la ligne de
-                                             marque — 96 px, le plafond au-delà
-                                             duquel une page hurle */
+  /* la revendication et la ligne de marque — 96 px, le plafond au-delà duquel
+     une page hurle */
+  --display-m: clamp(2.75rem, 6vw, 6rem);
   --display-xl: clamp(3.5rem, 11vw, 10.75rem); /* le nom, et lui seul */
 
   /* Grille — 12 colonnes, asymétrique par composition et non par jeton :
@@ -79,6 +79,20 @@
      colonne ne se nomme pas ici. Le seul réglage partagé est la gouttière. */
   --gutter: clamp(1rem, 2vw, 1.5rem);
   --page: 90rem; /* 1440px, la planche du canvas */
+
+  /* Échelle d'espacement — les paliers reprennent les valeurs déjà en usage
+     dans les composants (margin/padding/gap), pas une progression inventée.
+     Les nouveaux espacements se posent sur un palier existant plutôt que
+     d'en écrire un de plus. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
 
   /* Le geste : deux bords qui se rejoignent. */
   --contact: cubic-bezier(0.85, 0, 0.15, 1);

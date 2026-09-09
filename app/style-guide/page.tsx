@@ -24,7 +24,8 @@ const typeScale = [
   { label: '--display-xl', value: 'var(--display-xl)' },
 ] as const;
 
-const spacing = ['--gutter', '--page'] as const;
+const spacingScale = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((step) => `--space-${step}`);
+const spacing = ['--gutter', '--page', ...spacingScale] as const;
 const motion = ['--contact', '--contact-duration'] as const;
 
 export default function StyleGuide() {
