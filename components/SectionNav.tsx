@@ -41,7 +41,9 @@ export function SectionNav({
 
   return (
     <nav className={styles.nav} aria-label={nav.label}>
-      <span className={styles.wordmark}>{dict.brand.name}.</span>
+      <Link href={localeHref(locale)} className={styles.wordmark}>
+        {dict.brand.name}
+      </Link>
 
       <ul className={styles.sections}>
         {items.map(({ href, label }) => (
