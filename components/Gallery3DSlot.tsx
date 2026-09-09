@@ -20,11 +20,12 @@ import styles from './Gallery3DSlot.module.css';
  * `window`, et le HTML servi doit être identique pour tout le monde.
  *
  * Le montage ATTEND que le loader ait rendu la main (`lib/motion/loader-gate`).
- * `CanvasHost` promet un seul contexte WebGL, et le loader vit dans le layout
- * qui enveloppe cette page : sans cette attente, les deux canvas coexistaient
- * pendant les 2,4 s du loader sur une première visite. Aucun risque de blocage
- * — les deux passent par `allows3D()`, donc un refus n'attend rien, il ne
- * monte rien.
+ * Le loader est un rideau opaque monté par le layout qui enveloppe cette page :
+ * monter le canvas avant sa dismission, c'est charger les textures et faire
+ * tourner une boucle de rendu sous une surface que personne ne voit. Les deux
+ * portes ne sont plus les mêmes (le loader ne refuse que sur reduced-motion),
+ * d'où le drapeau posé jusque dans sa branche de refus : sans lui, cette
+ * attente n'aurait pas de fin.
  *
  * `Suspense` est ici et non dans `CanvasHost` : c'est `GalleryScene` qui
  * suspend, en chargeant ses textures, et l'hôte ne doit rien savoir de ses

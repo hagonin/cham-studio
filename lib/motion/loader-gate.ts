@@ -1,17 +1,19 @@
 /**
- * Le passage de témoin entre les deux scènes 3D du site.
+ * Le passage de témoin entre le rideau et la galerie 3D.
  *
- * `CanvasHost` promet UN SEUL contexte WebGL à la fois, et cette promesse
- * n'était tenue que par hasard : le loader vit dans `app/[locale]/layout.tsx`,
- * la galerie dans la page, et les deux lisaient `allows3D()` chacun de leur
- * côté. Sur une première visite qualifiante, les deux canvas coexistaient
- * pendant les 2,4 s du loader — deux contextes, exactement ce que l'hôte
- * partagé existe pour éviter, et un risque réel là où la limite de contextes
- * concurrents est basse.
+ * Le loader n'est plus WebGL : il n'y a plus de course entre deux contextes à
+ * arbitrer. Ce qui reste vrai, c'est qu'il est OPAQUE et qu'il vit dans
+ * `app/[locale]/layout.tsx`, au-dessus de la page — monter la galerie pendant
+ * qu'il couvre l'écran, c'est payer un canvas, ses textures et son
+ * `requestAnimationFrame` pour dessiner sous un rideau que personne ne
+ * traverse. La galerie attend donc que la voie soit libre, pas qu'un contexte
+ * se libère.
  *
  * Le drapeau de session est posé à la DISMISSION du loader, jamais à son
  * montage : quelqu'un qui recharge pendant l'animation le revoit, et la
- * galerie attend de nouveau son tour.
+ * galerie attend de nouveau son tour. Il est aussi posé quand le loader REFUSE
+ * de se monter (reduced-motion) : les deux portes ne sont plus la même, et une
+ * galerie qui attendrait un événement jamais émis resterait vide.
  */
 export const LOADER_SESSION_KEY = 'cham-loader-shown';
 
