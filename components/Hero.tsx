@@ -48,6 +48,15 @@ function SplitWord({ word }: { word: string }) {
 export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { hero } = dict.home;
   const [before, after] = dict.brand.positioning.split('×');
+  // Le « × » est la charnière du logotype (voir plus haut) : un dictionnaire
+  // qui l'omet casserait `after.trim()` avec un message qui ne dit pas où
+  // chercher. Un contenu manquant doit rater fort, pas produire une page à
+  // moitié rendue (voir CLAUDE.md, « contenu qui ne doit jamais partir »).
+  if (after === undefined) {
+    throw new Error(
+      `dict.brand.positioning doit contenir « × » : "${dict.brand.positioning}"`,
+    );
+  }
 
   return (
     <section className={styles.hero}>
