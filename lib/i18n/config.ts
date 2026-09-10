@@ -14,7 +14,7 @@ export const defaultLocale: Locale = 'fr';
  * personne : une traduction non relue coûte plus cher en crédibilité qu'une
  * langue absente.
  */
-export const PUBLISHED: Locale[] = ['fr'];
+export const PUBLISHED: Locale[] = ['fr', 'en'];
 
 /** Le segment vient de l'URL : jamais de lookup avant cette validation. */
 export function isLocale(value: string): value is Locale {

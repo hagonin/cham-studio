@@ -5,7 +5,6 @@ import { getDictionary } from '@/lib/i18n/getDictionary';
 import { metadataFor } from '@/lib/i18n/metadata';
 import { SectionNav } from '@/components/SectionNav';
 import { MOUNTED_SECTIONS } from '@/lib/sections';
-import { StatusBar } from '@/components/StatusBar';
 import { Hero } from '@/components/Hero';
 import { ScrollCue } from '@/components/ScrollCue';
 import { AboutBlock } from '@/components/AboutBlock';
@@ -43,7 +42,7 @@ export async function generateMetadata({
  * rapporte derrière un clic : chaque visite entrante et chaque lien retour
  * arrivent directement dessus.
  *
- * Ordre de lecture (décision 16) : nav → barre d'état → hero → travaux →
+ * Ordre de lecture (décision 16) : nav → hero → travaux →
  * prestations → process → à propos → contact. La preuve d'abord, l'offre
  * ensuite, comment ça se passe, puis la personne en dernier : un client a
  * besoin de savoir ce qu'il peut confier et comment avant de savoir à qui.
@@ -73,7 +72,6 @@ export default async function ServicesPage({
           cas de la phase 05 partageront ce layout et n'ont pas la même nav. */}
       <SectionNav locale={locale} dict={dict} sections={MOUNTED_SECTIONS} />
       <main className={styles.page}>
-        <StatusBar locale={locale} dict={dict} />
         <Hero dict={dict} locale={locale} />
         {/* L'indicateur appartient à la charnière entre le hero et la suite,
             pas au hero : il annonce ce qui vient après, donc il vit ici. */}

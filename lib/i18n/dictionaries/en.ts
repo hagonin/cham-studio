@@ -49,8 +49,6 @@ export const en = {
   },
   home: {
     status: {
-      availability: 'Available for new projects',
-      replyTime: 'Reply within 24h',
       clockLabel: 'Local time in Montpellier',
     },
     hero: {

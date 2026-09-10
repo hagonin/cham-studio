@@ -25,13 +25,13 @@ describe('validation de la locale', () => {
 });
 
 describe('publication des locales', () => {
-  it('ne publie que le français pour l’instant', () => {
-    expect(PUBLISHED).toEqual(['fr']);
-    expect(isPublished('en')).toBe(false);
+  it('publie le français et l’anglais', () => {
+    expect(PUBLISHED).toEqual(['fr', 'en']);
+    expect(isPublished('en')).toBe(true);
   });
 
-  it('met les locales non publiées en noindex, nofollow', () => {
-    expect(robotsFor('en')).toEqual({ index: false, follow: false });
+  it('met les locales publiées en index, follow', () => {
+    expect(robotsFor('en')).toEqual({ index: true, follow: true });
     expect(robotsFor('fr')).toEqual({ index: true, follow: true });
   });
 });
@@ -188,8 +188,8 @@ describe('sitemap', () => {
     expect(urls).toHaveLength(PUBLISHED.length);
   });
 
-  it('n’expose aucune locale non publiée', () => {
+  it('expose toutes les locales publiées', () => {
     const urls = sitemap().map((entry) => entry.url);
-    expect(urls.some((url) => url.includes('/en/'))).toBe(false);
+    expect(urls).toContain(`${SITE_URL}${localeHref('en')}`);
   });
 });

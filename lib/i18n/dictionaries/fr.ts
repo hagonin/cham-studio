@@ -58,8 +58,6 @@ export const fr = {
    */
   home: {
     status: {
-      availability: 'Disponible pour de nouveaux projets',
-      replyTime: 'Réponse sous 24 h',
       clockLabel: 'Heure locale à Montpellier',
     },
     hero: {

@@ -8,6 +8,7 @@ import { MotionProvider } from '@/components/MotionProvider';
 import { ContactCursor } from '@/components/ContactCursor';
 import { Loader } from '@/components/Loader';
 import { ScrollTopButton } from '@/components/ScrollTopButton';
+import { Clock } from '@/components/Clock';
 // Feuille de Lenis, livrée par le paquet. Sans elle, `html.lenis` n'a pas sa
 // règle `height: auto` et les gardes `data-lenis-prevent` sont inertes : le
 // défilement lissé se comporte alors de façon imprévisible selon la page.
@@ -58,7 +59,9 @@ export default async function LocaleLayout({
         <Loader dict={dict} />
         <ScrollTopButton label={dict.nav.top} />
         <footer>
-          <p>{dict.footer.location}</p>
+          <p>
+            {dict.footer.location} <Clock locale={locale} label={dict.home.status.clockLabel} />
+          </p>
         </footer>
       </body>
     </html>
