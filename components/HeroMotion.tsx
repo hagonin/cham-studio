@@ -2,7 +2,6 @@
 
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   CHAR_RADIUS,
   MAX_CHAR_SCALE,
@@ -72,28 +71,24 @@ export function HeroMotion() {
           scale: gsap.quickTo(char, 'scale', { duration: 0.5, ease: 'power3' }),
         }));
 
-        // Centres en coordonnées DOCUMENT, comme dans ContactCursor : en
-        // coordonnées écran il faudrait les relire à chaque défilement, donc à
-        // peu près à chaque frame.
-        let centers: Array<{ x: number; y: number }> = [];
-        function cacheCenters() {
-          const { scrollX, scrollY } = window;
-          centers = chars.map((char) => {
-            const box = char.getBoundingClientRect();
-            return {
-              x: box.left + box.width / 2 + scrollX,
-              y: box.top + box.height / 2 + scrollY,
-            };
-          });
-        }
-        cacheCenters();
-
+        // Centre de chaque caractère recalculé À CHAQUE déplacement, en deux
+        // temps : `zone.getBoundingClientRect()` capte la position ÉCRAN
+        // vivante (parallaxe comprise — `data-parallax` sur le <p> parent,
+        // cf. Hero.tsx, la déplace en continu au défilement) ; `offsetLeft`/
+        // `offsetTop` du caractère restent des coordonnées de MISE EN PAGE,
+        // insensibles au `transform` que `quick[index]` lui applique déjà —
+        // les lire directement bouclerait sur le propre déplacement du
+        // caractère au lieu de sa position au repos. `zone` est le seul
+        // ancêtre positionné (`position: relative`, Hero.module.css) : c'est
+        // donc l'`offsetParent` de chaque caractère, et ces deux mesures
+        // partagent le même repère.
         function onMove(event: PointerEvent) {
-          const px = event.clientX + window.scrollX;
-          const py = event.clientY + window.scrollY;
-          for (const [index, center] of centers.entries()) {
-            const dx = px - center.x;
-            const dy = py - center.y;
+          const zoneBox = zone!.getBoundingClientRect();
+          for (const [index, char] of chars.entries()) {
+            const cx = zoneBox.left + char.offsetLeft + char.offsetWidth / 2;
+            const cy = zoneBox.top + char.offsetTop + char.offsetHeight / 2;
+            const dx = event.clientX - cx;
+            const dy = event.clientY - cy;
             const weight = falloff(Math.hypot(dx, dy), CHAR_RADIUS);
             if (weight === 0) {
               quick[index].x(0);
@@ -126,15 +121,11 @@ export function HeroMotion() {
         zone.addEventListener('pointermove', onMove);
         zone.addEventListener('pointerenter', onEnter);
         zone.addEventListener('pointerleave', onLeave);
-        addEventListener('resize', cacheCenters);
-        ScrollTrigger.addEventListener('refresh', cacheCenters);
 
         cleanups.push(() => {
           zone.removeEventListener('pointermove', onMove);
           zone.removeEventListener('pointerenter', onEnter);
           zone.removeEventListener('pointerleave', onLeave);
-          removeEventListener('resize', cacheCenters);
-          ScrollTrigger.removeEventListener('refresh', cacheCenters);
           onLeave();
         });
       }
