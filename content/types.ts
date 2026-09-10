@@ -15,9 +15,10 @@ export type L10n = Record<Locale, string>;
  * l'atelier ; ces trois-là nomment ce pour quoi on est engagée. Une personne
  * arrive en se disant « il me faut un MVP », jamais « il me faut une vitrine ».
  *
- * Les clés de tarification n'en dérivent plus : `lib/pricing/model.ts` garde
- * les siennes (`PricingKey`), parce que l'estimateur n'est pas monté et que
- * coupler une offre publiée à un modèle démonté ferait bouger l'un pour l'autre.
+ * Les clés de tarification n'en dérivent pas : l'estimateur (`PricingKey`,
+ * retiré tant que les tarifs restent provisoires) vivait à part pour la même
+ * raison — coupler une offre publiée à un modèle démonté ferait bouger l'un
+ * pour l'autre.
  */
 export const SERVICE_KEYS = ['mvp', 'websites', 'improvement'] as const;
 export type ServiceKey = (typeof SERVICE_KEYS)[number];
