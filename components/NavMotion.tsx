@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { getLenis } from '@/lib/motion/lenis';
 
 /**
  * Le comportement de la nav, sans rien rendre. `SectionNav` reste serveur.
@@ -99,8 +100,11 @@ export function NavMotion() {
         : (toggle!.dataset.labelOpen ?? '');
       nav!.dataset.open = String(next);
       // Le défilement de la page derrière un menu plein écran donne un
-      // deuxième contenu qui bouge sous le premier.
+      // deuxième contenu qui bouge sous le premier. Lenis pilote le scroll
+      // par sa propre boucle rAF : `overflow: hidden` seul ne l'arrête pas.
       document.body.style.overflow = next ? 'hidden' : '';
+      if (next) getLenis()?.stop();
+      else getLenis()?.start();
       if (!next) toggle!.focus();
     }
 
@@ -158,8 +162,10 @@ export function NavMotion() {
       removeEventListener('resize', onResize);
       for (const trigger of triggers) trigger.kill();
       // Un menu démonté ouvert laisserait la page bloquée sans rien pour la
-      // débloquer : l'état de défilement du corps est rendu dans tous les cas.
+      // débloquer : l'état de défilement du corps et celui de Lenis sont
+      // rendus dans tous les cas.
       document.body.style.overflow = '';
+      if (open) getLenis()?.start();
     };
   }, []);
 
