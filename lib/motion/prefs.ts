@@ -15,7 +15,6 @@
  * | Loader                      | actif    | inactif*       | Loader.tsx        |
  * | Curseur + champ + onde      | inactif  | inactif        | ContactCursor.tsx |
  * | Réaction par caractère      | inactif  | inactif        | interne HeroMotion|
- * | Magnétisme de la figure     | inactif  | inactif        | interne HeroMotion|
  * | Magnétisme CTA + liens nav  | inactif  | inactif        | magnetic()        |
  * | Continuité loader → ×       | actif    | inactif**      | interne HeroMotion|
  * | Parallaxe au défilement     | ACTIF    | inactif        | parallax()        |
@@ -42,8 +41,8 @@
  * `HeroMotion` est la seule ligne où « le composant est monté » ne veut pas
  * dire « tous ses effets tournent » : il monte sous `!prefersReducedMotion()`
  * seul, et porte `hasFinePointer()` À L'INTÉRIEUR, sur la réaction par
- * caractère et le magnétisme de la figure. Cela se vérifie en lisant le code —
- * à l'écran, un effet inerte et un composant absent se ressemblent.
+ * caractère. Cela se vérifie en lisant le code — à l'écran, un effet inerte et
+ * un composant absent se ressemblent.
  *
  * Aucune porte n'écoute le CHANGEMENT de préférence : toutes lisent au
  * montage. Activer reduced-motion en cours de session ne retire donc rien

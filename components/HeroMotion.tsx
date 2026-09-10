@@ -9,7 +9,6 @@ import {
   MAX_CHAR_SHIFT,
   falloff,
 } from '@/lib/motion/pointer';
-import { magnetic } from '@/lib/motion/magnetic';
 import { LOADER_DONE_EVENT } from '@/lib/motion/loader-gate';
 import { hasFinePointer, prefersReducedMotion } from '@/lib/motion/prefs';
 
@@ -22,10 +21,10 @@ import { hasFinePointer, prefersReducedMotion } from '@/lib/motion/prefs';
  * Deux portes, et elles ne sont PAS la même (décision V1 du plan) :
  * - `prefersReducedMotion()` refuse tout, y compris la parallaxe ;
  * - `hasFinePointer()` ne refuse QUE ce qui suit un pointeur — la réaction par
- *   caractère et le magnétisme de la figure. La parallaxe au défilement marche
- *   au doigt ; la gater ici la perdrait sur tablette sans raison. Elle est
- *   d'ailleurs câblée ailleurs, par `MotionProvider` via `[data-parallax]`,
- *   pour ne rester qu'un seul ScrollTrigger pour toute la page.
+ *   caractère. La parallaxe au défilement marche au doigt ; la gater ici la
+ *   perdrait sur tablette sans raison. Elle est d'ailleurs câblée ailleurs,
+ *   par `MotionProvider` via `[data-parallax]`, pour ne rester qu'un seul
+ *   ScrollTrigger pour toute la page.
  */
 export function HeroMotion() {
   useEffect(() => {
@@ -35,15 +34,13 @@ export function HeroMotion() {
 
     /* --- Continuité loader → × ---------------------------------------------
        OPTIONNELLE PAR CONSTRUCTION. L'événement n'est émis que si le loader
-       s'est monté ; sans lui, la figure et le × sont déjà à leur place. C'est
-       un bonus posé sur un état correct, jamais une condition d'affichage. */
+       s'est monté ; sans lui, le × est déjà à sa place. C'est un bonus posé
+       sur un état correct, jamais une condition d'affichage. */
     function onLoaderDone(event: Event) {
       const from = (event as CustomEvent<{ x: number; y: number } | null>).detail;
       if (!from) return;
 
-      for (const target of document.querySelectorAll<HTMLElement>(
-        '[data-hero-mark], [data-hero-contact]',
-      )) {
+      for (const target of document.querySelectorAll<HTMLElement>('[data-hero-contact]')) {
         const box = target.getBoundingClientRect();
         // `from` et non `to` : l'état au repos reste l'état final, donc un
         // tween qui n'arrive jamais ne laisse rien de travers.
@@ -63,12 +60,6 @@ export function HeroMotion() {
       const zone = document.querySelector<HTMLElement>('[data-ripple-zone]');
       const contact = document.querySelector<HTMLElement>('[data-hero-contact]');
       const chars = [...document.querySelectorAll<HTMLElement>('[data-char]')];
-
-      const figure = document.querySelector<HTMLElement>('[data-hero-figure]');
-      // Retour lent (0,9 s) et attraction faible : la figure suit le pointeur
-      // comme une masse, là où un CTA claque. Mêmes physiques, deux réglages —
-      // d'où le paramètre plutôt qu'une seconde fonction magnétique.
-      if (figure) cleanups.push(magnetic(figure, { strength: 0.12, release: 0.9 }));
 
       if (zone && chars.length > 0) {
         // Un `quickTo` par caractère et par propriété, créé UNE fois : le
