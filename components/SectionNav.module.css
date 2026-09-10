@@ -91,18 +91,20 @@
    d'état qui ont le droit de poser --touch. Un seul point à la fois : c'est
    `NavMotion` qui le garantit, pas le CSS.
 
-   Le point est posé sur le `<li>` et non sur le lien : `.link::after` porte
-   déjà le crochet fermant décoratif, et le remplacer par le point ferait
-   disparaître le crochet du seul élément qui compte. */
-.item:has(> a[aria-current])::after {
-  content: '';
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  margin-inline-start: 0.5em;
-  border-radius: 50%;
-  background: var(--touch);
-  vertical-align: middle;
+   Le point vit DANS le crochet fermant (pas après) : le caractère puce
+   remplace l'espace qui précédait `]`. Crochets et libellé prennent la même
+   couleur --touch que le point, pour lire le lien actif d'un coup d'œil. */
+.link[aria-current] {
+  color: var(--touch);
+}
+
+.link[aria-current]::before,
+.link[aria-current]::after {
+  color: var(--touch);
+}
+
+.link[aria-current]::after {
+  content: '\2022 ]';
 }
 
 /* Le bouton n'existe que sous 40rem (voir le bloc média). Masqué ici par
