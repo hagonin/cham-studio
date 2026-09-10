@@ -1,19 +1,18 @@
 import type { MetadataRoute } from 'next';
 import { PUBLISHED, SITE_URL, localeHref } from '@/lib/i18n/config';
-import { projectsNewestFirst } from '@/content/projects';
 
 /**
  * Les routes du site, hors préfixe de locale (slugs identiques, F7).
  *
- * L'index `/projects` a disparu : les travaux vivent sur la page unique. Les
- * ÉTUDES DE CAS gardent leur propre route, une par projet réel.
+ * L'index `/projects` a disparu : les travaux vivent sur la page unique.
  *
- * La liste DÉRIVE du contenu au lieu d'être écrite ici : `projects` est vide en
- * production tant qu'aucune étude n'est publiée, donc le sitemap est correct
- * avant comme après, sans second endroit à modifier le jour où elles arrivent.
+ * Pas d'expansion par slug de projet ici : `content/projects.ts` a du contenu
+ * réel mais aucune route `[locale]/[slug]` n'existe encore pour le servir —
+ * l'annoncer au sitemap enverrait Google sur des 404. Reprendre la dérivation
+ * depuis `projectsNewestFirst()` le jour où cette route existe.
  */
 function routes(): string[] {
-  return ['', ...projectsNewestFirst().map((project) => project.slug)];
+  return [''];
 }
 
 // Rien ici ne dépend de la requête : la route est déclarée figée pour être

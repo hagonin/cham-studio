@@ -13,7 +13,6 @@ import { getDictionary } from '../lib/i18n/getDictionary';
 import { MOUNTED_SECTIONS, SECTION_KEYS } from '../lib/sections';
 import { formatPrice } from '../lib/i18n/format';
 import { SITE_URL } from '../lib/i18n/config';
-import { projectsNewestFirst } from '../content/projects';
 import sitemap from '../app/sitemap';
 
 describe('validation de la locale', () => {
@@ -179,14 +178,14 @@ describe('navigation de section', () => {
 });
 
 describe('sitemap', () => {
-  // L'index /projects a été retiré : la page unique porte les travaux. Ce qui
-  // reste à garder, c'est qu'aucune route ne soit annoncée sans son contenu —
-  // la règle vaut maintenant pour les études de cas, une par projet réel.
-  it('n’annonce que l’accueil et les études de cas réellement publiées', () => {
+  // L'index /projects a été retiré : la page unique porte les travaux. Aucune
+  // route [locale]/[slug] n'existe encore pour les études de cas, donc le
+  // sitemap ne doit annoncer que l'accueil tant que cette page n'est pas là.
+  it('n’annonce que l’accueil', () => {
     const urls = sitemap().map((entry) => entry.url);
     expect(urls).toContain(`${SITE_URL}${localeHref('fr')}`);
     expect(urls.some((url) => url.endsWith('/projects/'))).toBe(false);
-    expect(urls).toHaveLength(PUBLISHED.length * (1 + projectsNewestFirst().length));
+    expect(urls).toHaveLength(PUBLISHED.length);
   });
 
   it('n’expose aucune locale non publiée', () => {
