@@ -56,13 +56,23 @@
   justify-content: flex-start;
   gap: 0.06em;
   margin-top: clamp(1rem, 2.5vw, 2rem);
-  /* Deuxième cran, pas le troisième : cette ligne appartient au bloc de
-     marque, pas aux titres de section. Elle descendrait à 72 px avec eux et
-     le verrou « Design × Code » perdrait son rang. */
-  font-size: var(--display-m);
+  /* Troisième cran : le wordmark tient le rang que --display-xl lui réserve
+     dans globals.css (« le nom, et lui seul ») — la seule dimension de la
+     page qui crie. */
+  font-size: var(--display-xl);
+  /* Même graisse que `.wordmark` du nav (`SectionNav.module.css`) : les deux
+     rendent le même logotype, dans la même police — rien ne justifie qu'ils
+     divergent en épaisseur. */
+  font-weight: 700;
   /* Ne se replie pas : deux mots sur deux lignes casseraient le point de
      contact au milieu, qui est tout le propos de la composition. */
   flex-wrap: nowrap;
+  /* Sort du conteneur `main.page` (72rem) pour tenir toute la largeur de
+     l'écran — le calc casse la marge auto du conteneur parent, `body` porte
+     `overflow-x: hidden` pour absorber la barre de défilement réservée. */
+  width: 100vw;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: clamp(1rem, 4vw, 2.5rem);
 }
 
 .word {
@@ -100,23 +110,41 @@
   color: var(--touch);
 }
 
-/* --- Périmètre -------------------------------------------------------------
-   Une ligne de filets, pas des barres de compétence : rien à comparer, rien à
+/* --- Photo + périmètre -------------------------------------------------------
+   Le périmètre (ex-liste de compétences) tient le bord gauche, la photo à sa
+   droite — la même relation spatiale que la référence transmise en chat,
+   plutôt qu'un empilement vertical. C'est un ajout délibéré : `content/site.ts`
+   documentait « jamais dans le hero » pour des raisons de LCP (un visage ne
+   doit pas concurrencer le titre texte comme plus gros contentful paint).
+   `loading="lazy"` tient cette contrainte : le <h1> reste peint avant. */
+.showcase {
+  display: flex;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+}
+
+.portraitFrame {
+  /* Même mécanique que le portrait du bloc contact (`ContactBlock.module.css`) :
+     la classe globale `frame` (globals.css) pose le recadrage et l'animation
+     de défilement, `--frame-ratio` est le seul réglage propre à ce cadre. */
+  --frame-ratio: 4 / 5;
+  display: block;
+  flex: none;
+  width: min(60vw, 16rem);
+}
+
+/* Une ligne de filets, pas des barres de compétence : rien à comparer, rien à
    quantifier. Aucun état de survol ne révèle d'information, donc son absence
    au doigt et au clavier ne coûte rien. */
 .scope {
   list-style: none;
-  /* Décalée vers la droite : le logotype tient le bord gauche, le périmètre
-     amorce la diagonale, le propos la termine en bas à droite. Une largeur en
-     pourcentage suffit — importer une grille pour trois blocs coûterait plus
-     que l'asymétrie ne rapporte. */
-  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0 auto;
-  width: min(100%, 72%);
-  padding: 1rem 0 0;
+  flex: none;
+  margin: 0;
+  padding: 0;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem clamp(1.5rem, 4vw, 3.5rem);
-  border-top: 1px solid var(--line);
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 /* Le « / » est un filet, pas un mot : il est décoratif, donc il vit dans un
@@ -198,9 +226,20 @@
 
   /* La diagonale demande de la largeur : sous 48rem elle ne se lit plus comme
      une composition, seulement comme une colonne étroite et un vide à gauche. */
-  .scope,
   .statement {
     width: 100%;
     margin-inline-start: 0;
+  }
+
+  /* Photo et périmètre côte à côte ont besoin de largeur pour respirer : en
+     dessous, la photo passe au-dessus du périmètre, chacun sur toute la
+     largeur disponible. */
+  .showcase {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .portraitFrame {
+    width: min(70vw, 14rem);
   }
 }

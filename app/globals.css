@@ -69,10 +69,10 @@
      de dominer parce que plus rien ne lui cédait le pas. Une seule dimension
      doit crier ; ici c'est le nom. */
   --display-s: clamp(2.25rem, 4.5vw, 4.5rem); /* titres de section — 72 px max */
-  /* la revendication et la ligne de marque — 96 px, le plafond au-delà duquel
-     une page hurle */
+  /* la revendication — 96 px, le plafond au-delà duquel une page hurle */
   --display-m: clamp(2.75rem, 6vw, 6rem);
-  --display-xl: clamp(3.5rem, 11vw, 10.75rem); /* le nom, et lui seul */
+  --display-xl: clamp(3.5rem, 11vw, 10.75rem); /* le nom : le wordmark plein
+    largeur du hero, et lui seul */
 
   /* Grille — 12 colonnes, asymétrique par composition et non par jeton :
      les compositions placent leurs éléments avec `grid-column`, donc une
@@ -126,6 +126,10 @@ body {
   font-size: var(--text-s);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
+  /* Le wordmark du hero sort volontairement du conteneur (100vw) : sans ce
+     garde-fou, la largeur de la barre de défilement ajoute un débord
+     horizontal sur les navigateurs qui la réservent (Windows/Firefox). */
+  overflow-x: hidden;
 }
 
 /* La barre est collante depuis la phase 04 : sans ce décalage, chaque saut

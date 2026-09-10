@@ -13,12 +13,21 @@ export const site = {
   /** Surfaces d'affichage : la ville suffit. L'adresse postale complète
    *  n'apparaît que sur les mentions légales. */
   city: { fr: 'Montpellier, France', en: 'Montpellier, France' } satisfies L10n,
-  /** Portrait du bloc contact, `null` tant que la photo n'existe pas. Même
-   *  règle que les champs légaux : l'absence se rend en ne rendant rien, pas
-   *  en réservant un rectangle gris. Jamais dans le hero — un visage au-dessus
-   *  de la ligne de flottaison retarde la proposition de valeur et pénalise le
-   *  LCP. EXIF (GPS) à retirer AVANT le commit : après, l'historique le garde. */
-  portrait: null as Cover | null,
+  /** Portrait partagé par le hero et le bloc contact, `null` tant que la
+   *  photo n'existe pas. Même règle que les champs légaux : l'absence se rend
+   *  en ne rendant rien, pas en réservant un rectangle gris. Dans le hero il
+   *  est posé sous le wordmark (pas au-dessus) et chargé en `loading="lazy"` :
+   *  le <h1> texte reste le LCP, la photo ne le concurrence pas.
+   *  EXIF (GPS) à retirer AVANT le commit : après, l'historique le garde. */
+  portrait: {
+    src: '/portrait.jpg',
+    width: 960,
+    height: 1200,
+    alt: {
+      fr: 'Portrait de la fondatrice de Chạm Studio',
+      en: 'Portrait of Chạm Studio’s founder',
+    },
+  } satisfies Cover,
   legal: {
     postalAddress: null as string | null,
     siret: null as string | null,

@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import type { Locale } from '@/lib/i18n/config';
 import { site } from '@/content/site';
@@ -47,6 +48,7 @@ function SplitWord({ word }: { word: string }) {
  */
 export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { hero } = dict.home;
+  const { portrait } = site;
   const [before, after] = dict.brand.positioning.split('×');
   // Le « × » est la charnière du logotype (voir plus haut) : un dictionnaire
   // qui l'omet casserait `after.trim()` avec un message qui ne dit pas où
@@ -103,16 +105,32 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
         </span>
       </p>
 
-      {/* Le périmètre, en une ligne de filets sous le titre. Ni niveau, ni
-          pourcentage, ni logo : ce que la liste annonce, les projets le
-          prouvent. */}
-      <ul className={styles.scope}>
-        {hero.expertise.map((item) => (
-          <li key={item} className={styles.scopeItem}>
-            {item}
-          </li>
-        ))}
-      </ul>
+      {/* Périmètre + portrait, côte à côte sous le wordmark. Le périmètre est
+          toujours rendu — ce n'est pas une barre de compétences, ni niveau ni
+          pourcentage : ce que la liste annonce, les projets le prouvent. La
+          photo, elle, ne paraît que si `content/site.ts` en fournit une : pas
+          de cadre vide en attendant. */}
+      <div className={styles.showcase}>
+        <ul className={styles.scope}>
+          {hero.expertise.map((item) => (
+            <li key={item} className={styles.scopeItem}>
+              {item}
+            </li>
+          ))}
+        </ul>
+        {portrait ? (
+          <span className={`${styles.portraitFrame} frame`}>
+            <Image
+              src={portrait.src}
+              alt={portrait.alt[locale]}
+              width={portrait.width}
+              height={portrait.height}
+              sizes="(max-width: 48rem) 70vw, 16rem"
+              loading="lazy"
+            />
+          </span>
+        ) : null}
+      </div>
 
       <div className={styles.statement}>
         {/* LE titre de la page. Il était en <p> : la phrase qui porte tout le
