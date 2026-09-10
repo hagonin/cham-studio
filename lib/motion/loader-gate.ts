@@ -20,8 +20,30 @@ export const LOADER_SESSION_KEY = 'cham-loader-shown';
 /** Émis sur `window` quand le loader libère le canvas. */
 export const LOADER_DONE_EVENT = 'cham:loader-done';
 
+/**
+ * `sessionStorage` lève une `SecurityError` en navigation privée stricte ou
+ * derrière certaines politiques d'iframe. Une lecture qui échoue redevient
+ * « pas encore vu » (le rideau rejoue, sans casser la page) ; une écriture
+ * qui échoue est ignorée (on perd juste le « une fois par session »).
+ */
+export function loaderAlreadyShown(): boolean {
+  try {
+    return sessionStorage.getItem(LOADER_SESSION_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
+export function markLoaderShown(): void {
+  try {
+    sessionStorage.setItem(LOADER_SESSION_KEY, '1');
+  } catch {
+    // Session non persistée : rien à faire de plus, voir la note ci-dessus.
+  }
+}
+
 /** Le loader a-t-il déjà rendu la main dans cette session ? */
 export function canvasIsFree(): boolean {
   if (typeof window === 'undefined') return false;
-  return sessionStorage.getItem(LOADER_SESSION_KEY) !== null;
+  return loaderAlreadyShown();
 }

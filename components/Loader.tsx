@@ -3,7 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { prefersReducedMotion } from '@/lib/motion/prefs';
-import { LOADER_DONE_EVENT, LOADER_SESSION_KEY } from '@/lib/motion/loader-gate';
+import {
+  LOADER_DONE_EVENT,
+  loaderAlreadyShown,
+  markLoaderShown,
+} from '@/lib/motion/loader-gate';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import styles from './Loader.module.css';
 
@@ -37,10 +41,10 @@ export function Loader({ dict }: { dict: Dictionary }) {
       // événement dès qu'il n'est pas encore posé, et sa propre porte n'est
       // plus la même que la nôtre. Sans cette ligne, une machine que
       // `allows3D()` accepterait resterait à attendre un loader jamais monté.
-      sessionStorage.setItem(LOADER_SESSION_KEY, '1');
+      markLoaderShown();
       return;
     }
-    if (sessionStorage.getItem(LOADER_SESSION_KEY)) return;
+    if (loaderAlreadyShown()) return;
 
     setPhase('active');
     const arrive = setTimeout(() => setPhase('leaving'), ARRIVE_MS);
@@ -48,7 +52,7 @@ export function Loader({ dict }: { dict: Dictionary }) {
       // Position du contact AVANT de démonter : la phase 03 prolonge ce point
       // vers le × du logotype, et le nœud n'existe plus une frame plus tard.
       const box = point.current?.getBoundingClientRect();
-      sessionStorage.setItem(LOADER_SESSION_KEY, '1');
+      markLoaderShown();
       setPhase('hidden');
       // La galerie attend ce signal pour peindre : rien à dessiner sous un
       // rideau opaque, et son canvas coûte plus cher que la séquence.
