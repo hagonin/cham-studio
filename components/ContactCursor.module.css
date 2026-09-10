@@ -1,0 +1,102 @@
+/* L'anneau AUGMENTE le curseur système. `cursor: none` est interdit dans tout
+   le projet et vérifié par une garde CI : masquer le curseur natif écrase les
+   réglages de taille et de contraste du système d'exploitation dont certaines
+   personnes dépendent, et aucun test automatique ne voit la perte. */
+.ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  /* Boîte FIXE de 36px. Les états ne changent que `scale` : animer
+     width/height/margin ferait recalculer la mise en page à chaque
+     transition, et le curseur est la dernière chose qui doit coûter cela.
+     Le décalage d'un demi-côté centre l'anneau sur le pointeur ; il est
+     constant, donc il ne participe à aucune animation. */
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border-radius: 50%;
+  border: 1px solid var(--muted);
+  /* Il ne doit jamais intercepter un clic : c'est une décoration posée
+     au-dessus de la page, pas une surface. */
+  pointer-events: none;
+  z-index: 9999;
+  display: grid;
+  place-items: center;
+}
+
+/* `transform` porte la position (translate3d, écrit par le rAF) ; l'échelle
+   vit donc à part, sur l'anneau lui-même, pour ne pas écraser l'une avec
+   l'autre à chaque frame. */
+.face {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition:
+    transform 180ms var(--contact),
+    background-color 180ms var(--contact),
+    border-color 180ms var(--contact);
+}
+
+.ring[data-state='near'] .face {
+  transform: scale(1.33);
+  border: 1px solid var(--ink-2);
+  margin: -1px;
+}
+
+/* L'état de contact emprunte --touch par `color-mix` sur la variable, sans le
+   redéclarer : --touch ne paraît qu'au toucher, et celui-ci en est un.
+   Atteint au survol ET au focus clavier — c'est la parité, pas un bonus. */
+.ring[data-state='contact'] .face {
+  transform: scale(1.55);
+  background-color: color-mix(in srgb, var(--touch) 88%, transparent);
+}
+
+.ring[data-state='release'] .face {
+  transform: scale(2);
+  background-color: color-mix(in srgb, var(--touch) 30%, transparent);
+}
+
+/* Le champ de contact : plus large, plus lent, sans état. Il ne dit rien de
+   plus que l'anneau — il donne au geste une épaisseur. Même règle que
+   l'anneau : décoration, donc jamais une surface cliquable. */
+.field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 120px;
+  height: 120px;
+  margin: -60px 0 0 -60px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* L'onde emprunte --touch : c'est un contact, et --touch ne paraît qu'au
+   toucher. Seule l'APPARENCE vit ici ; la géométrie et la position sont
+   écrites par `ripple()` (lib/motion/pointer.ts), qui seul connaît l'endroit
+   exact du pointeur. */
+.ripple {
+  border: 1px solid var(--touch);
+}
+
+.label {
+  font-family: var(--font-mono-stack);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0;
+  transition: opacity 140ms var(--contact);
+  white-space: nowrap;
+  /* Le libellé ne subit pas l'échelle de l'anneau : mis à l'échelle, il
+     deviendrait flou et sa taille cesserait d'être celle qu'on a choisie. */
+  transform: scale(0.65);
+}
+
+.ring[data-state='contact'] .label {
+  opacity: 1;
+}

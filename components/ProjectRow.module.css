@@ -1,0 +1,112 @@
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem 1.25rem;
+  padding: clamp(1.5rem, 4vw, 2.5rem) 0;
+  border-top: 1px solid var(--line);
+}
+
+@media (min-width: 60rem) {
+  .row {
+    grid-template-columns: auto minmax(0, 1fr) minmax(0, 26rem);
+    align-items: start;
+    gap: 2rem;
+  }
+}
+
+.index {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  color: var(--muted);
+  padding-top: 0.4rem;
+}
+
+.body {
+  min-width: 0;
+}
+
+.title {
+  font-family: var(--font-display-stack);
+  font-size: var(--display-s);
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 2rem;
+  margin: 0.75rem 0 0;
+}
+
+.metaPair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+/* Majuscules : libellé court, jamais du texte courant — les capitales
+   accentuées se lisent mal en français, et check-html.mjs refuse un <p>
+   qui porterait cette classe. */
+.metaLabel {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.metaValue {
+  margin: 0;
+  font-size: var(--label);
+  color: var(--ink-2);
+}
+
+.summary {
+  max-width: 58ch;
+  color: var(--ink-2);
+  margin: 1rem 0;
+}
+
+.stackLabel {
+  display: block;
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  color: var(--ink-2);
+}
+
+.link {
+  display: inline-block;
+  /* Pas de margin-top : le `margin-bottom` du résumé espace déjà. */
+  margin-bottom: 1.25rem;
+}
+
+/* Le placement en grille appartient au cadre, pas à l'image : c'est le cadre
+   qui occupe la place, l'image ne fait que la remplir. Le ratio et le
+   recadrage viennent de `.frame` (globals.css). */
+.frame {
+  grid-column: 1 / -1;
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+@media (min-width: 60rem) {
+  .frame {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}

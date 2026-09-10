@@ -1,25 +1,206 @@
 .hero {
-  padding: clamp(3rem, 8vw, 7rem) 0;
-  max-width: 26ch;
+  padding: clamp(2rem, 5vw, 4rem) 0 clamp(3.5rem, 9vw, 7rem);
 }
 
+/* --- Bandeau de repères ---------------------------------------------------
+   Deux blocs tenus aux bords. `flex` + `gap` plutôt que des marges : le bloc
+   de droite se replie sous celui de gauche sans qu'aucun espacement ne se
+   double ni ne s'annule. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-bottom: clamp(3rem, 9vw, 7rem);
+}
+
+.metaBlock {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  line-height: 1.8;
+  letter-spacing: 0.06em;
+  color: var(--ink-2);
+}
+
+.metaRight {
+  text-align: right;
+  margin-left: auto;
+}
+
+.pron {
+  color: var(--ink-2);
+}
+
+/* --- Titre -----------------------------------------------------------------
+   DESIGN et CODE tenus aux deux bords, la figure au milieu. `space-between`
+   fait le travail : aucune largeur n'est codée en dur, donc la composition
+   tient de 20rem à 90rem sans point de rupture intermédiaire. */
 .title {
-  font-family: var(--font-display-stack);
-  font-size: var(--step-4);
-  line-height: 1.02;
   margin: 0;
+  font-family: var(--font-display-stack);
+  line-height: 0.82;
+  letter-spacing: -0.045em;
+}
+
+/* --- Positionnement --------------------------------------------------------
+   DESIGN et CODE tenus l'un contre l'autre, le × entre les deux comme
+   charnière. La figure du milieu a disparu ; `space-between` n'a donc plus
+   rien à répartir et écarterait les mots aux bords du bloc — `flex-start` +
+   `gap` les garde au contact, quelle que soit la largeur. */
+.positioning {
+  display: flex;
+  /* Repère des nœuds d'onde, posés en absolu par `ripple()` : sans lui ils se
+     placeraient par rapport au premier ancêtre positionné, quel qu'il soit. */
+  position: relative;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.06em;
+  margin-top: clamp(1rem, 2.5vw, 2rem);
+  /* Deuxième cran, pas le troisième : cette ligne appartient au bloc de
+     marque, pas aux titres de section. Elle descendrait à 72 px avec eux et
+     le verrou « Design × Code » perdrait son rang. */
+  font-size: var(--display-m);
+  /* Ne se replie pas : deux mots sur deux lignes casseraient le point de
+     contact au milieu, qui est tout le propos de la composition. */
+  flex-wrap: nowrap;
+}
+
+.word {
+  flex: none;
+  /* Les capitales condensées portent leur propre gouttière optique ; on la
+     reprend pour aligner le fût sur la colonne, pas la marge du glyphe. */
+  margin-inline: -0.02em;
+}
+
+/* Chaque caractère du logotype est transformable, donc `inline-block` : un
+   `<span>` en ligne ignore purement et simplement `transform`. Rien d'autre ne
+   change ici — le texte, la casse et l'interlettrage restent ceux du mot. */
+.char {
+  display: inline-block;
+}
+
+/* Le « × » vit à sa propre échelle : au corps du titre il pèserait autant que
+   les mots, alors qu'il est la charnière entre eux.
+
+   AU REPOS il est en --ink, pas en --touch : --touch ne tient que 3,24:1 sur
+   papier (lib/tokens.ts) — assez pour de l'UI, jamais pour un signe au repos.
+   Il ne prend l'accent que sous [data-state='contact'], c'est-à-dire au
+   moment où quelqu'un touche le logotype. C'est exactement ce que la garde de
+   `tests/tokens.test.ts` protège dans globals.css ; un module CSS n'y est pas
+   soumis, on s'y tient quand même. */
+.contact {
+  flex: none;
+  font-size: 0.34em;
+  color: var(--ink);
+  align-self: center;
+  transition: color 180ms var(--contact);
+}
+
+.contact[data-state='contact'] {
+  color: var(--touch);
+}
+
+/* --- Périmètre -------------------------------------------------------------
+   Une ligne de filets, pas des barres de compétence : rien à comparer, rien à
+   quantifier. Aucun état de survol ne révèle d'information, donc son absence
+   au doigt et au clavier ne coûte rien. */
+.scope {
+  list-style: none;
+  /* Décalée vers la droite : le logotype tient le bord gauche, le périmètre
+     amorce la diagonale, le propos la termine en bas à droite. Une largeur en
+     pourcentage suffit — importer une grille pour trois blocs coûterait plus
+     que l'asymétrie ne rapporte. */
+  margin: clamp(1.25rem, 2.5vw, 2rem) 0 0 auto;
+  width: min(100%, 72%);
+  padding: 1rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem clamp(1.5rem, 4vw, 3.5rem);
+  border-top: 1px solid var(--line);
+}
+
+/* Le « / » est un filet, pas un mot : il est décoratif, donc il vit dans un
+   ::before et n'entre pas dans le texte lu. Le <li> est conservé — la liste
+   reste une liste, et `check-html.mjs` échoue sur un <p> en majuscules. */
+.scopeItem::before {
+  content: '/ ';
+  color: var(--muted);
+}
+
+.scopeItem {
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-2);
+}
+
+/* --- Propos ---------------------------------------------------------------- */
+/* Fin de la diagonale : en bas, à droite. Aucun centrage vertical — la page
+   n'a pas de hauteur fixe, et un bloc centré verticalement se décale à chaque
+   ligne de texte qui se replie. */
+.statement {
+  margin: clamp(3rem, 9vw, 7rem) 0 0 auto;
+  width: min(100%, 78%);
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+}
+
+/* La ligne qui porte la personne (décision 19). En corps et non en affichage :
+   le titre affirme la portée, celle-ci l'assume — deux registres, pas deux
+   tailles du même. */
+.lead {
+  margin: 0;
+  max-width: 52ch;
+  font-size: var(--text);
+  line-height: 1.55;
+  color: var(--ink-2);
+}
+
+.claim {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-size: var(--display-m);
+  line-height: 1.15;
+  max-width: 34ch;
   text-wrap: balance;
 }
 
-.lead {
-  max-width: 46ch;
-  font-size: var(--step-1);
+/* La phrase de marque, dans la voix technique du site : mono, en retrait de
+   couleur. Elle commente le geste — elle ne le remplace pas.
+
+   `--ink-2` et NON `--muted` : mesuré à 3,05:1 sur papier, `--muted` ne tient
+   pas le 4,5:1 exigé d'un texte courant. Le commentaire de `lib/tokens.ts` le
+   réserve d'ailleurs aux micro-libellés mono en capitales ; ceci est une
+   phrase, en minuscules, qui se lit. `--ink-2` la donne à 8,77:1 sans rien
+   changer au retrait visuel voulu. */
+.tagline {
+  margin: 0;
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.06em;
   color: var(--ink-2);
 }
 
 .cta {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
+  font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+@media (max-width: 48rem) {
+  .metaRight {
+    text-align: left;
+    margin-left: 0;
+  }
+
+  /* La diagonale demande de la largeur : sous 48rem elle ne se lit plus comme
+     une composition, seulement comme une colonne étroite et un vide à gauche. */
+  .scope,
+  .statement {
+    width: 100%;
+    margin-inline-start: 0;
+  }
 }

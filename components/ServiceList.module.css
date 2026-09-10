@@ -4,14 +4,19 @@
 
 .title {
   font-family: var(--font-display-stack);
-  font-size: var(--step-2);
+  font-size: var(--display-s);
+  /* Sans cette ligne le titre héritait du 1,55 du corps : à cette taille
+     un interligne de texte courant fait lire un titre comme un paragraphe
+     agrandi. Même valeur que AboutBlock et Process — un seul interligne
+     d'affichage sur le site. */
+  line-height: 0.92;
   margin: 0;
 }
 
 .indicative {
   font-family: var(--font-mono-stack);
-  font-size: var(--step--1);
-  color: var(--mute);
+  font-size: var(--label);
+  color: var(--muted);
   margin: 0.25rem 0 1.5rem;
 }
 
@@ -19,5 +24,5 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid var(--rule);
+  border-bottom: 1px solid var(--line);
 }

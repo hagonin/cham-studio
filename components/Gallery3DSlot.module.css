@@ -1,0 +1,15 @@
+/* Le sol sombre de la section travaux. Pleine largeur : la scène est une
+   respiration, pas une vignette dans la grille.
+
+   La hauteur est fixe et modeste — le canvas s'ajoute AU-DESSUS de la liste,
+   il ne la recouvre pas. Un canvas opaque posé par-dessus laisserait les
+   liens de la liste focalisables mais invisibles, ce qui casse la navigation
+   au clavier pour quelqu'un qui voit : le pire des deux mondes. */
+.stage {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: clamp(18rem, 34vw, 30rem);
+  background: var(--ink);
+  overflow: hidden;
+}

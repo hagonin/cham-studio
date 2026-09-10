@@ -1,0 +1,27 @@
+.block {
+  padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+.title {
+  font-family: var(--font-display-stack);
+  font-size: var(--display-s);
+  /* Sans cette ligne le titre héritait du 1,55 du corps : à cette taille
+     un interligne de texte courant fait lire un titre comme un paragraphe
+     agrandi. Même valeur que AboutBlock et Process — un seul interligne
+     d'affichage sur le site. */
+  line-height: 0.92;
+  margin: 0;
+}
+
+.framing {
+  max-width: 58ch;
+  color: var(--ink-2);
+  margin: 0.5rem 0 1.5rem;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+}

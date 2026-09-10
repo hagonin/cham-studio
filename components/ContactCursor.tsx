@@ -1,0 +1,217 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import {
+  INTERACTIVE,
+  distanceToRect,
+  labelFor,
+  lerp,
+  stateFor,
+  type CursorState,
+} from '@/lib/motion/cursor';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ripple } from '@/lib/motion/pointer';
+import { hasFinePointer, prefersReducedMotion } from '@/lib/motion/prefs';
+import type { Dictionary } from '@/lib/i18n/getDictionary';
+import styles from './ContactCursor.module.css';
+
+/**
+ * L'anneau de contact. Il AUGMENTE le curseur système, il ne le remplace pas :
+ * `cursor: none` est interdit dans tout le projet et vérifié en CI.
+ *
+ * Ne se monte que sur pointeur fin et hors reduced-motion. Sur tout le reste,
+ * l'idée de contact vit déjà dans le marqueur CSS de la Phase 2 et dans l'état
+ * `.contact-link` — c'est pour cela que ceux-là sont partis les premiers.
+ *
+ * Un seul élément, `position: fixed`, déplacé par `translate3d` dans une boucle
+ * rAF interpolée. Aucun état React par mouvement de souris : le curseur ne
+ * re-rend jamais l'arbre.
+ */
+export function ContactCursor({ dict }: { dict: Dictionary }) {
+  const [mounted, setMounted] = useState(false);
+  const ring = useRef<HTMLDivElement>(null);
+  const field = useRef<HTMLDivElement>(null);
+  const labelNode = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    if (!hasFinePointer() || prefersReducedMotion()) return;
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    const node = ring.current;
+    const fieldEl = field.current;
+    const labelEl = labelNode.current;
+    if (!node || !fieldEl || !labelEl) return;
+
+    const labels = dict.motion.cursor;
+    const pointer = { x: innerWidth / 2, y: innerHeight / 2 };
+    const drawn = { ...pointer };
+    // Le champ de contact traîne DAVANTAGE que l'anneau : c'est l'écart entre
+    // les deux couches qui se lit comme une matière, pas la seconde couche.
+    const trailed = { ...pointer };
+    let state: CursorState = 'idle';
+    let hovered: Element | null = null;
+    let focused: Element | null = null;
+
+    // Les rectangles sont CACHÉS, en coordonnées DOCUMENT (rect + scroll) et
+    // non écran. Stockés en coordonnées écran, il faudrait les recalculer à
+    // chaque défilement — soit à peu près à chaque frame, ce qui ferait de ce
+    // curseur décoratif le pire coût de script du site. En coordonnées
+    // document ils ne bougent qu'au redimensionnement.
+    let rects: Array<{ el: Element; rect: DOMRect }> = [];
+    function cacheRects() {
+      const { scrollX, scrollY } = window;
+      rects = [...document.querySelectorAll(INTERACTIVE)].map((el) => {
+        const box = el.getBoundingClientRect();
+        return {
+          el,
+          rect: new DOMRect(box.x + scrollX, box.y + scrollY, box.width, box.height),
+        };
+      });
+    }
+    cacheRects();
+
+    function setState(next: CursorState) {
+      if (next === state) return;
+      state = next;
+      node!.dataset.state = next;
+    }
+
+    // Onde en survol d'une zone marquée. ÉTRANGLÉE : sans plafond de fréquence,
+    // un pointeur agité crée une onde par frame et une décoration devient le
+    // pire coût de peinture de la page. L'onde forte du `pointerdown` passe
+    // outre — c'est un geste délibéré, pas un survol.
+    const RIPPLE_INTERVAL = 180;
+    let lastRipple = 0;
+    function rippleAt(event: PointerEvent, strong: boolean) {
+      const zone = (event.target as Element | null)?.closest?.('[data-ripple-zone]');
+      if (!(zone instanceof HTMLElement)) return;
+      if (!strong && event.timeStamp - lastRipple < RIPPLE_INTERVAL) return;
+      lastRipple = event.timeStamp;
+      ripple(zone, {
+        x: event.clientX,
+        y: event.clientY,
+        strong,
+        className: styles.ripple,
+      });
+    }
+
+    // Un seul `pointermove` délégué, contre les rectangles en cache.
+    function onMove(event: PointerEvent) {
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      rippleAt(event, false);
+
+      // Le pointeur passe en coordonnées document pour rencontrer le cache.
+      const px = event.clientX + window.scrollX;
+      const py = event.clientY + window.scrollY;
+      let nearest = Number.POSITIVE_INFINITY;
+      for (const { rect } of rects) {
+        nearest = Math.min(nearest, distanceToRect(px, py, rect));
+      }
+
+      const over = (event.target as Element | null)?.closest?.(INTERACTIVE) ?? null;
+      hovered = over;
+      // Un élément focalisé au clavier garde la main : bouger la souris ne doit
+      // pas éteindre le point rempli que le contour de focus annonce encore.
+      if (focused && !over) return;
+      setState(stateFor(nearest, Boolean(over)));
+      labelEl!.textContent = over ? labelFor(over, labels) : '';
+    }
+
+    function onDown(event: PointerEvent) {
+      if (hovered) setState('release');
+      rippleAt(event, true);
+    }
+    function onUp() {
+      setState(hovered ? 'contact' : 'idle');
+    }
+
+    /**
+     * PARITÉ CLAVIER — pas une option. Sans elle, le site dit « Chạm » à la
+     * souris et rien à tout le monde d'autre : l'idée de marque deviendrait
+     * réservée au pointeur.
+     *
+     * `:focus-visible` et non `:focus` : un clic donne aussi le focus, et
+     * l'anneau sauterait alors sur l'élément cliqué au lieu de suivre le
+     * pointeur. On ne réagit qu'au focus que le navigateur juge visible,
+     * c'est-à-dire au clavier.
+     */
+    function onFocusIn(event: FocusEvent) {
+      const target = (event.target as Element | null)?.closest?.(INTERACTIVE);
+      if (!target || !target.matches(':focus-visible')) return;
+
+      // L'anneau se pose sur l'élément focalisé : le point rempli apparaît là
+      // où le contour de focus l'annonce, jamais ailleurs.
+      const box = target.getBoundingClientRect();
+      pointer.x = box.left + box.width / 2;
+      pointer.y = box.top + box.height / 2;
+      focused = target;
+      setState('contact');
+      labelEl!.textContent = labelFor(target, labels);
+    }
+
+    function onFocusOut() {
+      focused = null;
+      if (!hovered) {
+        setState('idle');
+        labelEl!.textContent = '';
+      }
+    }
+
+    let frame = 0;
+    function tick() {
+      drawn.x = lerp(drawn.x, pointer.x);
+      drawn.y = lerp(drawn.y, pointer.y);
+      node!.style.transform = `translate3d(${drawn.x}px, ${drawn.y}px, 0)`;
+      // Facteur plus bas que le LERP de l'anneau : le champ arrive après lui.
+      trailed.x = lerp(trailed.x, pointer.x, 0.07);
+      trailed.y = lerp(trailed.y, pointer.y, 0.07);
+      fieldEl!.style.transform = `translate3d(${trailed.x}px, ${trailed.y}px, 0)`;
+      frame = requestAnimationFrame(tick);
+    }
+    frame = requestAnimationFrame(tick);
+
+    document.addEventListener('pointermove', onMove);
+    document.addEventListener('pointerdown', onDown);
+    document.addEventListener('pointerup', onUp);
+    document.addEventListener('focusin', onFocusIn);
+    document.addEventListener('focusout', onFocusOut);
+    // Invalidé au redimensionnement et au refresh de ScrollTrigger, comme
+    // prévu — pas au défilement : les rectangles sont en coordonnées document.
+    addEventListener('resize', cacheRects);
+    ScrollTrigger.addEventListener('refresh', cacheRects);
+
+    return () => {
+      cancelAnimationFrame(frame);
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerdown', onDown);
+      document.removeEventListener('pointerup', onUp);
+      document.removeEventListener('focusin', onFocusIn);
+      document.removeEventListener('focusout', onFocusOut);
+      removeEventListener('resize', cacheRects);
+      ScrollTrigger.removeEventListener('refresh', cacheRects);
+    };
+  }, [mounted, dict]);
+
+  if (!mounted) return null;
+
+  return (
+    <>
+      {/* Le champ est un SECOND nœud, pas une couche de l'anneau : il porte sa
+          propre position (une traîne plus lente) et l'anneau écrit déjà la
+          sienne à chaque frame. Fusionnés, l'une écraserait l'autre. */}
+      <div ref={field} className={styles.field} aria-hidden="true" />
+      <div ref={ring} className={styles.ring} data-state="idle" aria-hidden="true">
+        {/* Deux couches : `ring` porte la POSITION (translate3d, réécrit à
+          chaque frame), `face` porte l'ÉTAT (échelle, couleur). Séparées,
+          l'une n'écrase pas l'autre. */}
+        <span className={styles.face}>
+          <span ref={labelNode} className={styles.label} />
+        </span>
+      </div>
+    </>
+  );
+}

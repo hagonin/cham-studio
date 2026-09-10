@@ -8,9 +8,18 @@ import type { Locale } from '@/lib/i18n/config';
  */
 export type L10n = Record<Locale, string>;
 
-/** Les quatre prestations sont la source unique de l'offre : la grille de la
- *  page et les clés de tarification en dérivent (Phase 6). */
-export const SERVICE_KEYS = ['vitrine', 'identite', 'application', 'refonte'] as const;
+/**
+ * L'offre, en trois ENGAGEMENTS et non plus en quatre livrables.
+ *
+ * `vitrine · identite · application · refonte` nommaient ce qui sort de
+ * l'atelier ; ces trois-là nomment ce pour quoi on est engagée. Une personne
+ * arrive en se disant « il me faut un MVP », jamais « il me faut une vitrine ».
+ *
+ * Les clés de tarification n'en dérivent plus : `lib/pricing/model.ts` garde
+ * les siennes (`PricingKey`), parce que l'estimateur n'est pas monté et que
+ * coupler une offre publiée à un modèle démonté ferait bouger l'un pour l'autre.
+ */
+export const SERVICE_KEYS = ['mvp', 'websites', 'improvement'] as const;
 export type ServiceKey = (typeof SERVICE_KEYS)[number];
 
 export type Service = {
@@ -18,17 +27,35 @@ export type Service = {
   title: L10n;
   summary: L10n;
   deliverables: L10n[];
-  /** Plancher indicatif en euros. `null` tant que le chiffre n'est pas arrêté :
-   *  un prix inventé est pire qu'un prix absent. */
+  /** Plancher indicatif en euros. `null` PARTOUT depuis la décision 7 : aucun
+   *  chiffre n'est publié, les lignes affichent « Sur devis ». Le champ reste
+   *  typé `number | null` — la décision est commerciale, pas structurelle, et
+   *  la rouvrir ne doit pas demander une migration de type.
+   *  `tests/content.test.ts` vérifie que les trois valent bien `null`. */
   from: number | null;
+};
+
+/**
+ * Le visuel d'un projet. Les dimensions sont OBLIGATOIRES : sans elles le
+ * navigateur ne réserve pas la place avant le chargement et la page saute —
+ * or CLS ~0 est un objectif P1, pas une préférence.
+ *
+ * `alt` est traduit. Une image de projet porte une information ; la décrire en
+ * français à un lecteur anglophone revient à ne pas la décrire.
+ */
+export type Cover = {
+  /** Chemin sous /public. Aucune image trouvée ailleurs : une carte de projet
+   *  affirme un résultat, une image non possédée la dément. */
+  src: string;
+  width: number;
+  height: number;
+  alt: L10n;
 };
 
 export type Project = {
   slug: string;
   year: number;
-  /** Chemin sous /public. Aucune image trouvée ailleurs : une carte de travaux
-   *  affirme un résultat, une image non possédée la dément. */
-  cover: string;
+  cover: Cover;
   title: L10n;
   role: L10n;
   summary: L10n;

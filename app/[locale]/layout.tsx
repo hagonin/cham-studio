@@ -4,7 +4,14 @@ import { locales, isLocale, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/getDictionary';
 import { metadataFor } from '@/lib/i18n/metadata';
 import { fontVariables } from '@/lib/fonts';
-import { LangSwitch } from '@/components/LangSwitch';
+import { MotionProvider } from '@/components/MotionProvider';
+import { ContactCursor } from '@/components/ContactCursor';
+import { Loader } from '@/components/Loader';
+import { ScrollTopButton } from '@/components/ScrollTopButton';
+// Feuille de Lenis, livrée par le paquet. Sans elle, `html.lenis` n'a pas sa
+// règle `height: auto` et les gardes `data-lenis-prevent` sont inertes : le
+// défilement lissé se comporte alors de façon imprévisible selon la page.
+import 'lenis/dist/lenis.css';
 import '../globals.css';
 
 export function generateStaticParams() {
@@ -42,10 +49,14 @@ export default async function LocaleLayout({
         <a className="skip-link contact-link" href="#content">
           {dict.nav.skipToContent}
         </a>
-        <header>
-          <LangSwitch current={locale} dict={dict} />
-        </header>
         <div id="content">{children}</div>
+        {/* Aucun des trois ne rend le contenu du hero : ils décident comment
+            le HTML déjà servi arrive, ou ajoutent un rideau par-dessus.
+            Montés après lui, donc jamais sur son chemin. */}
+        <MotionProvider />
+        <ContactCursor dict={dict} />
+        <Loader dict={dict} />
+        <ScrollTopButton label={dict.nav.top} />
         <footer>
           <p>{dict.footer.location}</p>
         </footer>

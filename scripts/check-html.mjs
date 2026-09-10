@@ -8,7 +8,7 @@
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
-const OUT = 'out';
+const OUT = '.next/server/app';
 const failures = [];
 const fail = (message) => failures.push(message);
 
@@ -21,7 +21,7 @@ function walk(dir, extension) {
 }
 
 const pages = walk(OUT, '.html');
-const css = walk(join(OUT, '_next/static/css'), '.css')
+const css = walk(join('.next', 'static/css'), '.css')
   .map((path) => readFileSync(path, 'utf8'))
   .join('');
 
@@ -66,7 +66,7 @@ for (const page of pages) {
 }
 
 // --- Accordéon accessible ---------------------------------------------------
-for (const page of pages.filter((path) => /\/(fr|en)\/index\.html$/.test(path))) {
+for (const page of pages.filter((path) => /\/(fr|en)\.html$/.test(path))) {
   const html = readFileSync(page, 'utf8');
   const triggers = [...html.matchAll(/<button[^>]*aria-expanded="[^"]*"[^>]*>/g)];
   if (triggers.length === 0) fail(`${page} : aucun déclencheur <button aria-expanded>`);

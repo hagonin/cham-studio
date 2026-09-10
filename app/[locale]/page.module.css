@@ -2,3 +2,21 @@
   width: min(72rem, 100% - 2.5rem);
   margin-inline: auto;
 }
+
+.header {
+  padding: clamp(3rem, 8vw, 6rem) 0 clamp(1rem, 3vw, 2rem);
+}
+
+.heading {
+  font-family: var(--font-display-stack);
+  font-size: var(--display-xl);
+  max-width: 16ch;
+  margin: 0;
+}
+
+.lead {
+  max-width: 48ch;
+  font-size: var(--text);
+  color: var(--ink-2);
+  margin: 1rem 0 0;
+}

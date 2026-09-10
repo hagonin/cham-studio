@@ -5,15 +5,12 @@
  */
 
 export const colors = {
-  paper: '#f5f3f0',
-  panel: '#eae7e2',
-  'panel-2': '#dfdbd4',
-  ink: '#121110',
-  'ink-2': '#4a4642',
-  mute: '#666059',
-  rule: '#d2cdc5',
-  'rule-s': '#8c857c',
-  seal: '#d93a2b',
+  paper: '#f2f0ea',
+  ink: '#111111',
+  'ink-2': '#42433d',
+  muted: '#8a8a84',
+  line: '#cbc9c3',
+  touch: '#e4502c',
 } as const;
 
 export type ColorToken = keyof typeof colors;
@@ -34,23 +31,38 @@ export type ContrastPair = {
 };
 
 /**
- * Les couples réellement utilisés. `--rule` (décoratif) et `--seal` (marque,
- * jamais du texte) n'y figurent pas : ils ne portent aucune information.
- * `--rule-s` n'est listé que sur `--paper` — il tombe à 2.96:1 sur `--panel`,
- * donc les bordures interactives restent sur le fond papier.
+ * Les couples réellement utilisés, sur les DEUX fonds. `--rule` (décoratif)
+ * n'y figure pas : il ne porte aucune information.
+ *
+ * Deux couples changent de rôle selon le fond, et c'est tout l'intérêt du
+ * tableau : `--mute` est une bordure sur papier (3.02:1, sous le seuil texte)
+ * et redevient du texte sur encre (5.39:1) ; `--touch` est un état sur papier
+ * (3.24:1) et du texte lisible sur encre (5.03:1). Poser l'un des deux comme
+ * paragraphe sur papier fait échouer ce fichier.
  */
 export const contrastPairs: ContrastPair[] = [
+  // Fond papier
   { fg: 'ink', bg: 'paper', role: 'text', note: 'texte courant' },
-  { fg: 'ink-2', bg: 'paper', role: 'text', note: 'texte secondaire' },
-  { fg: 'mute', bg: 'paper', role: 'text', note: 'légendes, méta' },
-  { fg: 'ink', bg: 'panel', role: 'text', note: 'texte sur carte' },
-  { fg: 'ink-2', bg: 'panel', role: 'text', note: 'texte secondaire sur carte' },
-  { fg: 'mute', bg: 'panel', role: 'text', note: 'méta sur carte' },
-  { fg: 'ink', bg: 'panel-2', role: 'text', note: 'texte sur panneau appuyé' },
-  { fg: 'ink-2', bg: 'panel-2', role: 'text', note: 'secondaire sur panneau appuyé' },
-  { fg: 'mute', bg: 'panel-2', role: 'text', note: 'méta sur panneau appuyé' },
-  { fg: 'rule-s', bg: 'paper', role: 'ui', note: 'bordure interactive' },
+  { fg: 'ink-2', bg: 'paper', role: 'text', note: 'texte secondaire, descriptions' },
+  {
+    fg: 'muted',
+    bg: 'paper',
+    role: 'ui',
+    note: 'micro-libellés mono, bordure interactive',
+  },
+  {
+    fg: 'touch',
+    bg: 'paper',
+    role: 'ui',
+    note: 'état : survol, courant, point de contact',
+  },
   { fg: 'ink', bg: 'paper', role: 'ui', note: 'anneau de focus' },
+
+  // Fond encre
+  { fg: 'paper', bg: 'ink', role: 'text', note: 'texte courant sur fond sombre' },
+  { fg: 'muted', bg: 'ink', role: 'text', note: 'secondaire sur fond sombre' },
+  { fg: 'touch', bg: 'ink', role: 'text', note: 'accent lisible sur fond sombre' },
+  { fg: 'paper', bg: 'ink', role: 'ui', note: 'anneau de focus sur fond sombre' },
 ];
 
 /** Canal linéarisé, sRGB → luminance (WCAG 2.x). */

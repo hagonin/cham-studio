@@ -1,5 +1,5 @@
-/* Les règles vivent dans app/globals.css (classes .contact-marker*) afin que
-   l'assertion « --seal exactement deux fois » porte sur une seule feuille. */
+/* Les règles vivent dans app/globals.css (classes .contact-marker*) : --touch y
+   marque un point de contact, jamais la couleur d'un texte. */
 .marker {
   composes: contact-marker from global;
 }

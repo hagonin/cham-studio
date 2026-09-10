@@ -1,0 +1,64 @@
+/* Rideau plein écran, jamais interactif : `pointer-events: none` et
+   `aria-hidden` (posé dans le composant) — rien à cliquer, rien à traverser
+   au clavier, jamais de piège de focus (règle 7, phase 06). */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: var(--paper);
+  pointer-events: none;
+  /* Le rideau s'OUVRE, il ne s'efface pas : un fondu d'opacité laisse voir le
+     hero à travers un voile pendant 300 ms, alors qu'un `clip-path` qui remonte
+     découvre la page franchement. Le hero n'a jamais d'état à demi visible. */
+  clip-path: inset(0 0 0 0);
+  transition: clip-path 320ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.leaving {
+  clip-path: inset(0 0 100% 0);
+}
+
+/* Centrage par `inset: 0; margin: auto` et non par `translate(-50%, -50%)` :
+   GSAP écrit `transform` sur ces nœuds, un centrage porté par la même
+   propriété serait écrasé à la première frame. */
+.dot,
+.point,
+.ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  border-radius: 50%;
+}
+
+.dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid var(--line);
+}
+
+/* Le seul accent avant le hero : le point de contact. Les deux cercles qui
+   convergent restent neutres jusqu'à leur rencontre. */
+.point {
+  width: 0.7rem;
+  height: 0.7rem;
+  background: var(--touch);
+  transform: scale(0);
+}
+
+.ring {
+  width: 6rem;
+  height: 6rem;
+  border: 1px solid var(--touch);
+  opacity: 0;
+}
+
+.mark {
+  position: absolute;
+  left: 50%;
+  bottom: 14vh;
+  transform: translateX(-50%);
+  font-family: var(--font-display-stack);
+  font-size: var(--display-s);
+  color: var(--ink);
+  opacity: 0;
+}

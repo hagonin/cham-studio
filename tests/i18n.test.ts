@@ -10,7 +10,10 @@ import {
 } from '../lib/i18n/config';
 import { buildAlternates, robotsFor } from '../lib/i18n/metadata';
 import { getDictionary } from '../lib/i18n/getDictionary';
+import { MOUNTED_SECTIONS, SECTION_KEYS } from '../lib/sections';
 import { formatPrice } from '../lib/i18n/format';
+import { SITE_URL } from '../lib/i18n/config';
+import sitemap from '../app/sitemap';
 
 describe('validation de la locale', () => {
   it('rejette tout segment hors liste blanche', () => {
@@ -37,24 +40,24 @@ describe('hreflang', () => {
   // Un couple réciproque pointant vers une page noindex fait écarter la grappe
   // entière par Google. Tant qu'une seule locale est publiée, on n'annote pas.
   it('n’émet aucune alternative avec une seule locale publiée', () => {
-    const alternates = buildAlternates(['fr'], 'fr', 'travaux');
+    const alternates = buildAlternates(['fr'], 'fr', 'projects');
     expect(alternates?.languages).toBeUndefined();
-    expect(alternates?.canonical).toBe('/fr/travaux/');
+    expect(alternates?.canonical).toBe('/fr/projects/');
   });
 
   it('émet des couples réciproques dès que deux locales sont publiées', () => {
-    const frSide = buildAlternates(['fr', 'en'], 'fr', 'travaux');
-    const enSide = buildAlternates(['fr', 'en'], 'en', 'travaux');
+    const frSide = buildAlternates(['fr', 'en'], 'fr', 'projects');
+    const enSide = buildAlternates(['fr', 'en'], 'en', 'projects');
 
     // Réciprocité : chaque côté annonce exactement les mêmes cibles.
     expect(frSide?.languages).toEqual(enSide?.languages);
     expect(frSide?.languages).toEqual({
-      fr: '/fr/travaux/',
-      en: '/en/travaux/',
-      'x-default': '/fr/travaux/',
+      fr: '/fr/projects/',
+      en: '/en/projects/',
+      'x-default': '/fr/projects/',
     });
-    expect(frSide?.canonical).toBe('/fr/travaux/');
-    expect(enSide?.canonical).toBe('/en/travaux/');
+    expect(frSide?.canonical).toBe('/fr/projects/');
+    expect(enSide?.canonical).toBe('/en/projects/');
   });
 
   it('prend le français comme x-default', () => {
@@ -64,8 +67,8 @@ describe('hreflang', () => {
 
 describe('routes', () => {
   it('garde le même slug dans les deux locales (F7)', () => {
-    expect(localeHref('fr', 'travaux')).toBe('/fr/travaux/');
-    expect(localeHref('en', 'travaux')).toBe('/en/travaux/');
+    expect(localeHref('fr', 'projects')).toBe('/fr/projects/');
+    expect(localeHref('en', 'projects')).toBe('/en/projects/');
   });
 
   it('ramène la racine d’une locale à son segment', () => {
@@ -73,15 +76,15 @@ describe('routes', () => {
   });
 
   it('conserve la page courante au changement de langue', () => {
-    // Le critère de la Phase 3 : depuis /fr/travaux on arrive sur /en/travaux,
+    // Le critère de la Phase 3 : depuis /fr/projects on arrive sur /en/projects,
     // pas sur l'accueil.
-    expect(swapLocale('/fr/travaux/', 'en')).toBe('/en/travaux/');
+    expect(swapLocale('/fr/projects/', 'en')).toBe('/en/projects/');
     expect(swapLocale('/fr/', 'en')).toBe('/en/');
     expect(swapLocale('/fr/mentions-legales/', 'en')).toBe('/en/mentions-legales/');
   });
 
   it('préfixe un chemin sans locale plutôt que d’écraser un segment', () => {
-    expect(swapLocale('/travaux/', 'fr')).toBe('/fr/travaux/');
+    expect(swapLocale('/projects/', 'fr')).toBe('/fr/projects/');
   });
 });
 
@@ -115,5 +118,78 @@ describe('formats localisés', () => {
 describe('couverture', () => {
   it('construit toutes les locales, publiées ou non', () => {
     expect(locales).toEqual(['fr', 'en']);
+  });
+});
+
+/**
+ * La page /projects. Deux règles s'y croisent : le sens de la marque n'est
+ * écrit qu'à un seul endroit du site, et une page dont le contenu principal
+ * manque ne s'annonce pas au moteur.
+ */
+describe('page travaux', () => {
+  it('écrit le sens de la marque dans la prose « à propos », dans les deux locales', () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale);
+      // La phrase est rédigée à la main pour se lire ; la garde vérifie
+      // qu'elle porte bien le sens déclaré dans `brand`, plutôt qu'une
+      // seconde définition qui dériverait de la première.
+      expect(dict.work.about.meaning, locale).toContain(dict.brand.meaning);
+    }
+  });
+
+  it('n’écrit ce sens que là — jamais dans le hero', () => {
+    for (const locale of locales) {
+      const dict = getDictionary(locale);
+      expect(JSON.stringify(dict.home), locale).not.toContain(dict.brand.meaning);
+    }
+  });
+
+  it('remplit la copie de la page dans les deux locales', () => {
+    for (const locale of locales) {
+      const { work } = getDictionary(locale);
+      for (const line of [work.title, work.lead, work.projects.framing]) {
+        expect(line.trim().length, locale).toBeGreaterThan(0);
+      }
+      expect(work.about.creed.length, locale).toBeGreaterThan(0);
+      expect(work.about.body.length, locale).toBeGreaterThan(0);
+    }
+  });
+});
+
+// Une ancre vers un titre absent défile vers rien, et la page répond 200 :
+// aucun test de route ne l'attrape. La garde est donc ici, sur la liste des
+// sections — `about` et `work` n'entrent qu'aux phases 03 et 05.
+describe('navigation de section', () => {
+  it('n’ancre que des sections réellement montées', () => {
+    for (const key of MOUNTED_SECTIONS) {
+      expect(SECTION_KEYS).toContain(key);
+    }
+  });
+
+  it('nomme chaque section dans les deux locales', () => {
+    for (const locale of locales) {
+      const { nav } = getDictionary(locale);
+      expect(nav.label.trim().length, locale).toBeGreaterThan(0);
+      for (const key of SECTION_KEYS) {
+        expect(nav[key].trim().length, `${locale}/${key}`).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
+describe('sitemap', () => {
+  // L'index /projects a été retiré : la page unique porte les travaux. Aucune
+  // route [locale]/[slug] n'existe encore pour les études de cas, donc le
+  // sitemap ne doit annoncer que l'accueil tant que cette page n'est pas là.
+  it('n’annonce que l’accueil', () => {
+    const urls = sitemap().map((entry) => entry.url);
+    expect(urls).toContain(`${SITE_URL}${localeHref('fr')}`);
+    expect(urls.some((url) => url.endsWith('/projects/'))).toBe(false);
+    expect(urls).toHaveLength(PUBLISHED.length);
+  });
+
+  it('n’expose aucune locale non publiée', () => {
+    const urls = sitemap().map((entry) => entry.url);
+    expect(urls.some((url) => url.includes('/en/'))).toBe(false);
   });
 });
