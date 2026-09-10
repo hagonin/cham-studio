@@ -40,7 +40,9 @@ export function HeroMotion() {
       const from = (event as CustomEvent<{ x: number; y: number } | null>).detail;
       if (!from) return;
 
-      for (const target of document.querySelectorAll<HTMLElement>('[data-hero-contact]')) {
+      for (const target of document.querySelectorAll<HTMLElement>(
+        '[data-hero-contact]',
+      )) {
         const box = target.getBoundingClientRect();
         // `from` et non `to` : l'état au repos reste l'état final, donc un
         // tween qui n'arrive jamais ne laisse rien de travers.
