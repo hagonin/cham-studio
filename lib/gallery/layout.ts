@@ -4,11 +4,11 @@
  * c'est celle qui, prise à l'envers, casse la composition — le rendu, lui,
  * se juge à l'œil (même partage que `lib/motion/cursor.ts`).
  *
- * DÉCISION : les emplacements se DÉRIVENT du nombre de projets, ils ne sont
- * pas écrits pour trois. La production en publie deux aujourd'hui
- * (Conversation Copilot attend son visuel) et en publiera trois ensuite ; une
- * composition écrite pour trois se serait affichée de travers entre-temps, et
- * le jour du troisième visuel il aurait fallu re-régler la caméra.
+ * DÉCISION : un emplacement se DÉRIVE de l'écart avec la page ouverte, pas
+ * du rang du projet. La galerie se feuillette comme un livre : la page ouverte
+ * est au centre, droite, et ses voisines s'inclinent vers elle. Le même calcul
+ * sert pour deux projets, trois ou dix, et l'écart peut être fractionnaire
+ * pendant qu'une page tourne — c'est ce qui rend l'animation continue.
  */
 
 export type Slot = {
@@ -30,31 +30,51 @@ export const MAX_TILT = 0.35;
 export const MAX_DEPTH = 0.8;
 
 /**
- * Les emplacements, du plus à gauche au plus à droite, symétriques autour de
- * zéro. Un seul projet ⇒ un écran centré, droit, sans recul : le cas dégénéré
- * doit rester correct, sinon la galerie ne peut pas s'afficher tant que la
- * liste n'est pas complète.
+ * L'emplacement d'une page à `offset` pages de la page ouverte : 0 au centre,
+ * négatif à gauche, positif à droite. Au-delà d'une page d'écart, l'écran
+ * continue de s'éloigner sur X mais ne tourne ni ne recule plus : les pages
+ * lointaines restent parallèles à leurs voisines au lieu de pivoter hors champ.
  */
-export function slotsFor(count: number): Slot[] {
-  if (count <= 0) return [];
+export function slotAt(offset: number): Slot {
+  const ratio = Math.min(Math.max(offset, -1), 1);
+  // `+ 0` normalise le zéro négatif : `-Math.abs(0)` vaut `-0`, qui se
+  // propagerait jusqu'à Three et ferait échouer toute comparaison stricte
+  // sur la page ouverte.
+  return {
+    x: offset * SPACING + 0,
+    z: -Math.abs(ratio) * MAX_DEPTH + 0,
+    // Signe inverse du côté : la page de droite se tourne vers la gauche.
+    rotationY: -ratio * MAX_TILT + 0,
+  };
+}
 
-  const half = (count - 1) / 2;
-  // Sur un seul écran, `half` vaut 0 : diviser par lui donnerait NaN.
-  const extent = half === 0 ? 1 : half;
+/** Distance minimale, en pixels, pour qu'un glissé tourne une page. En deçà,
+ *  c'est un clic dont la main a bougé, pas un geste. */
+export const SWIPE_MIN = 48;
 
-  return Array.from({ length: count }, (_, index) => {
-    const offset = index - half; // négatif à gauche, positif à droite
-    const ratio = offset / extent; // -1 … 1
-    // `+ 0` normalise le zéro négatif : `-Math.abs(0)` vaut `-0`, qui se
-    // propagerait jusqu'à Three et ferait échouer toute comparaison stricte
-    // sur l'écran du centre.
-    return {
-      x: offset * SPACING + 0,
-      z: -Math.abs(ratio) * MAX_DEPTH + 0,
-      // Signe inverse du côté : l'écran de droite se tourne vers la gauche.
-      rotationY: -ratio * MAX_TILT + 0,
-    };
-  });
+/**
+ * La page ouverte après un glissé horizontal de `dx` pixels. Le souris, le
+ * doigt et le pavé tactile passent tous par ici : un seul seuil, un seul sens.
+ * Vers la gauche (dx < 0) on avance, comme on tourne une page. Aux deux bouts
+ * du livre on reste en place — boucler ferait traverser tout l'écran à une
+ * page pour revenir au début.
+ */
+export function pageAfterSwipe(active: number, dx: number, count: number): number {
+  if (Math.abs(dx) < SWIPE_MIN) return active;
+  return turnPage(active, dx < 0 ? 1 : -1, count);
+}
+
+/** Une page vers l'avant (+1) ou vers l'arrière (-1), bornée au livre. Les
+ *  boutons du livre passent par ici, le glissé aussi. */
+export function turnPage(active: number, step: 1 | -1, count: number): number {
+  if (count <= 0) return active;
+  return Math.min(Math.max(active + step, 0), count - 1);
+}
+
+/** L'identifiant HTML de la ligne d'un projet. `ProjectRow` le pose, le livre
+ *  s'en sert pour déplier la bonne ligne : un seul endroit pour le former. */
+export function projectRowId(slug: string): string {
+  return `project-${slug}`;
 }
 
 /**

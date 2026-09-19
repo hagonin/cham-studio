@@ -3,6 +3,7 @@ import type { Project } from '@/content/types';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import type { Locale } from '@/lib/i18n/config';
 import { formatYear } from '@/lib/i18n/format';
+import { projectRowId } from '@/lib/gallery/layout';
 import styles from './ProjectRow.module.css';
 
 /**
@@ -28,7 +29,9 @@ export function ProjectRow({
   const { cover } = project;
 
   return (
-    <li className={styles.row}>
+    // L'identifiant est la cible du livre 3D (`Gallery3DSlot`), qui déplie
+    // cette ligne quand on clique sa page.
+    <li className={styles.row} id={projectRowId(project.slug)}>
       {/* Le rang est décoratif : il ordonne l'œil, il n'ajoute rien à la
           lecture vocale, qui annonce déjà « élément 1 sur n ». */}
       <span className={styles.index} aria-hidden="true">

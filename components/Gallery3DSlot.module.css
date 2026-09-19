@@ -12,4 +12,97 @@
   height: clamp(18rem, 34vw, 30rem);
   background: var(--ink);
   overflow: hidden;
+  /* Le doigt garde le défilement vertical ; l'horizontal revient au livre. */
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
+}
+
+/* Posé par la scène au survol d'une page : elle s'ouvre au clic. */
+.stage[data-hover] {
+  cursor: pointer;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.controls {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  align-items: baseline;
+  gap: 1.5rem;
+  /* Le sol est pleine largeur, le texte ne l'est pas : les commandes se
+     calent sur la colonne de `.page` (app/[locale]/page.module.css). Les
+     pourcentages visent la scène, qui fait 100vw. */
+  padding: 0.75rem calc((100% - min(72rem, 100% - 2.5rem)) / 2);
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+/* --muted est un TEXTE sur --ink (voir contrastPairs) : légal ici. */
+.hint,
+.counter,
+.state::before,
+.state::after {
+  color: var(--muted);
+}
+
+.hint {
+  flex: 1;
+}
+
+.toggle,
+.turn {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0.5rem 0;
+  cursor: pointer;
+}
+
+.toggle {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.state::before {
+  content: '[ ';
+}
+.state::after {
+  content: ' ]';
+}
+
+.turns {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.25rem;
+}
+
+.turn[aria-disabled='true'] {
+  color: var(--muted);
+  cursor: default;
+}
+
+/* --touch ne paraît qu'au toucher, comme partout ailleurs. */
+.toggle:hover,
+.toggle:focus-visible,
+.turn:not([aria-disabled='true']):hover,
+.turn:focus-visible {
+  color: var(--touch);
+}
+
+/* Le contour de focus global est --ink : invisible sur ce sol. */
+.controls :focus-visible {
+  outline-color: var(--paper);
 }

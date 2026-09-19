@@ -71,8 +71,8 @@
   --display-s: clamp(2.25rem, 4.5vw, 4.5rem); /* titres de section — 72 px max */
   /* la revendication — 96 px, le plafond au-delà duquel une page hurle */
   --display-m: clamp(2.75rem, 6vw, 6rem);
-  --display-xl: clamp(3.5rem, 11vw, 10.75rem); /* le nom : le wordmark plein
-    largeur du hero, et lui seul */
+  /* le nom : le wordmark pleine largeur du hero, et lui seul */
+  --display-xl: clamp(3.5rem, 11vw, 10.75rem);
 
   /* Grille — 12 colonnes, asymétrique par composition et non par jeton :
      les compositions placent leurs éléments avec `grid-column`, donc une

@@ -168,6 +168,12 @@ export const fr = {
       yearLabel: 'Année',
       stackLabel: 'Outils',
       visit: 'Voir le projet',
+      // Le livre 3D : n'existe qu'au-dessus de 1024 px, hors reduced-motion.
+      book: {
+        hint: 'Glisser',
+        previous: 'Projet précédent',
+        next: 'Projet suivant',
+      },
     },
     about: {
       title: 'Derrière Chạm',

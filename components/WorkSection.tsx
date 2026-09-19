@@ -16,11 +16,21 @@ import type { Locale } from '@/lib/i18n/config';
  * le HTML porte l'information.
  */
 export function WorkSection({ locale, dict }: { locale: Locale; dict: Dictionary }) {
-  const covers = projectsNewestFirst().map((project) => project.cover.src);
+  const items = projectsNewestFirst().map((project) => ({
+    slug: project.slug,
+    cover: project.cover.src,
+    title: project.title[locale],
+  }));
+  // Déplier / Replier : les mots de l'accordéon des prestations. Une même
+  // action porte le même nom partout sur le site.
+  const { open, close } = dict.home.services;
 
   return (
     <>
-      <Gallery3DSlot covers={covers} />
+      <Gallery3DSlot
+        items={items}
+        labels={{ ...dict.work.projects.book, open, close }}
+      />
       <ProjectList locale={locale} dict={dict} />
     </>
   );

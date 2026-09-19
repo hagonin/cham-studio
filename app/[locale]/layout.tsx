@@ -60,7 +60,8 @@ export default async function LocaleLayout({
         <ScrollTopButton label={dict.nav.top} />
         <footer>
           <p>
-            {dict.footer.location} <Clock locale={locale} label={dict.home.status.clockLabel} />
+            {dict.footer.location}{' '}
+            <Clock locale={locale} label={dict.home.status.clockLabel} />
           </p>
         </footer>
       </body>

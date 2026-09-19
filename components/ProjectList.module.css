@@ -25,3 +25,22 @@
   padding: 0;
   border-bottom: 1px solid var(--line);
 }
+
+/* Sous le livre 3D (`data-book`, posé par Gallery3DSlot), une seule ligne
+   paraît à la fois. `hidden` doit battre le `display: grid` de la ligne, d'où
+   la règle explicite. La ligne qui paraît arrive, elle ne surgit pas : passer
+   de `display: none` à visible relance l'animation à chaque page. */
+.list[data-book] > li[hidden] {
+  display: none;
+}
+
+.list[data-book] > li {
+  animation: page-in 420ms var(--contact);
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+}

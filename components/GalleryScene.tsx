@@ -1,9 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useRef, type RefObject } from 'react';
-import { useFrame, useLoader, useThree } from '@react-three/fiber';
-import { type Group, SRGBColorSpace, TextureLoader } from 'three';
-import { scrollProgress, slotsFor } from '@/lib/gallery/layout';
+import { useEffect, useRef, type RefObject } from 'react';
+import { type ThreeEvent, useFrame, useLoader, useThree } from '@react-three/fiber';
+import { type Group, type Mesh, SRGBColorSpace, TextureLoader } from 'three';
+import { SWIPE_MIN, scrollProgress, slotAt } from '@/lib/gallery/layout';
 
 /** Hauteur d'un écran en unités de scène. La largeur en découle : les visuels
  *  sont tous au même rapport 1,6:1 (garde : `tests/content.test.ts`), et c'est
@@ -21,6 +21,11 @@ const TRAVEL = 1.2;
 /** Vitesse de rattrapage vers la cible. Le mouvement DÉRIVE du défilement,
  *  mais sans lissage il colle au pixel et devient nerveux. */
 const EASE = 0.08;
+/** Vitesse d'une page qui tourne. Plus vive que la dérive au défilement : ici
+ *  la personne a fait un geste et attend une réponse. */
+const TURN_EASE = 0.14;
+/** En deçà, un rattrapage est terminé : on pose la valeur et la boucle s'arrête. */
+const SETTLED = 0.0005;
 
 /**
  * Trois écrans suspendus à des profondeurs différentes, traversés lentement
@@ -28,9 +33,12 @@ const EASE = 0.08;
  * moments signature du site — le loader et celui-ci — et il n'y en a pas de
  * troisième : leur force tient à ce qu'ils soient rares.
  *
- * La scène ne porte AUCUNE information : les titres, rôles, années et liens
- * vivent dans le HTML servi juste dessous (`ProjectList`). Le canvas est
- * `aria-hidden` et n'est jamais le seul chemin vers un projet.
+ * Les écrans se feuillettent comme les pages d'un livre : la page ouverte
+ * (`active`) est au centre, ses voisines s'inclinent vers elle. Un clic sur un
+ * écran le signale à `onPick` ; c'est `Gallery3DSlot` qui décide ce qu'il
+ * ouvre. La scène ne porte toujours AUCUNE information : titres, rôles,
+ * années et liens restent dans le HTML servi dessous (`ProjectList`), et le
+ * canvas est `aria-hidden` — les boutons HTML du livre sont le chemin clavier.
  *
  * `invalidate()` sous `frameloop="demand"` : la scène ne redessine que
  * lorsqu'elle bouge ET qu'elle est visible. Hors écran, plus aucun appel,
@@ -39,12 +47,17 @@ const EASE = 0.08;
  */
 export default function GalleryScene({
   covers,
+  active,
+  onPick,
   anchor,
 }: {
   covers: readonly string[];
+  active: number;
+  onPick: (index: number) => void;
   anchor: RefObject<HTMLElement | null>;
 }) {
   const group = useRef<Group>(null);
+  const pages = useRef<(Mesh | null)[]>([]);
   const invalidate = useThree((state) => state.invalidate);
 
   // `useLoader` met en cache par URL : les mêmes fichiers que la liste HTML,
@@ -54,7 +67,14 @@ export default function GalleryScene({
     for (const texture of textures) texture.colorSpace = SRGBColorSpace;
   }, [textures]);
 
-  const slots = useMemo(() => slotsFor(covers.length), [covers.length]);
+  // La page demandée, et la page AFFICHÉE qui la rattrape en flottant : c'est
+  // l'écart fractionnaire entre les deux qui fait tourner la page.
+  const wanted = useRef(active);
+  const shown = useRef(active);
+  useEffect(() => {
+    wanted.current = active;
+    invalidate();
+  }, [active, invalidate]);
 
   const target = useRef(0);
   const current = useRef(0);
@@ -100,24 +120,55 @@ export default function GalleryScene({
   }, [anchor, invalidate]);
 
   useFrame((state) => {
+    // Les pages se placent AVANT la porte de visibilité : la toute première
+    // frame les trouverait sinon empilées à l'origine.
+    const turning = wanted.current - shown.current;
+    shown.current =
+      Math.abs(turning) < SETTLED
+        ? wanted.current
+        : shown.current + turning * TURN_EASE;
+    pages.current.forEach((mesh, index) => {
+      if (!mesh) return;
+      const slot = slotAt(index - shown.current);
+      mesh.position.set(slot.x, 0, slot.z);
+      mesh.rotation.y = slot.rotationY;
+    });
+
     if (!visible.current || !group.current) return;
 
     const delta = target.current - current.current;
     current.current += delta * EASE;
     group.current.position.z = (current.current - 0.5) * TRAVEL;
 
-    // Tant que le rattrapage n'est pas terminé, redemander une frame. Une fois
-    // posé, plus rien : le défilement suivant relancera la boucle.
-    if (Math.abs(delta) > 0.0005) state.invalidate();
+    // Tant qu'un rattrapage n'est pas terminé, redemander une frame. Une fois
+    // posé, plus rien : le défilement ou le geste suivant relancera la boucle.
+    if (Math.abs(delta) > SETTLED || Math.abs(turning) > SETTLED) state.invalidate();
   });
+
+  const pick = (event: ThreeEvent<MouseEvent>, index: number) => {
+    // Un glissé se termine lui aussi par un clic. Même seuil que le geste :
+    // en deçà c'est un clic, au-delà c'était une page qu'on tournait.
+    if (event.delta >= SWIPE_MIN) return;
+    event.stopPropagation();
+    onPick(index);
+  };
+
+  // Le curseur change au survol d'une page : c'est le seul indice, à l'œil,
+  // qu'un écran s'ouvre au clic. L'attribut vit sur la scène HTML, le CSS fait
+  // le reste.
+  const hover = (on: boolean) => anchor.current?.toggleAttribute('data-hover', on);
 
   return (
     <group ref={group}>
-      {slots.map((slot, index) => (
+      {covers.map((cover, index) => (
         <mesh
-          key={covers[index]}
-          position={[slot.x, 0, slot.z]}
-          rotation={[0, slot.rotationY, 0]}
+          key={cover}
+          ref={(mesh) => {
+            pages.current[index] = mesh;
+          }}
+          onClick={(event) => pick(event, index)}
+          onPointerOver={() => hover(true)}
+          onPointerOut={() => hover(false)}
         >
           <planeGeometry args={[PLANE_W, PLANE_H]} />
           <meshBasicMaterial map={textures[index]} toneMapped={false} />

@@ -133,6 +133,11 @@ export const en = {
       yearLabel: 'Year',
       stackLabel: 'Tools',
       visit: 'View the project',
+      book: {
+        hint: 'Swipe',
+        previous: 'Previous project',
+        next: 'Next project',
+      },
     },
     about: {
       title: 'Behind Chạm',
