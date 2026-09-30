@@ -6,6 +6,7 @@ import { metadataFor } from '@/lib/i18n/metadata';
 import { SectionNav } from '@/components/SectionNav';
 import { MOUNTED_SECTIONS } from '@/lib/sections';
 import { Hero } from '@/components/Hero';
+import { TouchPhilosophy } from '@/components/TouchPhilosophy';
 import { ScrollCue } from '@/components/ScrollCue';
 import { AboutBlock } from '@/components/AboutBlock';
 import { ServiceList } from '@/components/ServiceList';
@@ -73,6 +74,7 @@ export default async function ServicesPage({
       <SectionNav locale={locale} dict={dict} sections={MOUNTED_SECTIONS} />
       <main className={styles.page}>
         <Hero dict={dict} locale={locale} />
+        <TouchPhilosophy {...dict.home.touchPhilosophy} />
         {/* L'indicateur appartient à la charnière entre le hero et la suite,
             pas au hero : il annonce ce qui vient après, donc il vit ici. */}
         <ScrollCue label={dict.nav.scroll} />

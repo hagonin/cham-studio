@@ -93,6 +93,17 @@ export const fr = {
         'Intégration IA',
       ],
     },
+    touchPhilosophy: {
+      label: 'Design × code',
+      hint: 'Approchez. Touchez les mots.',
+      lines: [
+        'JE CONÇOIS DES INTERFACES',
+        'RÉFLÉCHIES ET JE LES',
+        'TRANSFORME EN PRODUITS RÉELS.',
+        'CHẠM NE SE LIT PAS SEULEMENT.',
+        'IL SE TOUCHE.',
+      ],
+    },
     services: {
       title: 'Prestations',
       deliverablesLabel: 'Ce qui est livré',

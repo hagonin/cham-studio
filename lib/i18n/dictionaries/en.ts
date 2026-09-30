@@ -71,6 +71,17 @@ export const en = {
         'AI integration',
       ],
     },
+    touchPhilosophy: {
+      label: 'Design × code',
+      hint: 'Move closer. Touch the words.',
+      lines: [
+        'I DESIGN THOUGHTFUL',
+        'INTERFACES AND BUILD',
+        'THEM INTO REAL PRODUCTS.',
+        'YOU DON’T ONLY READ CHẠM.',
+        'YOU TOUCH IT.',
+      ],
+    },
     services: {
       title: 'Services',
       deliverablesLabel: 'What you get',

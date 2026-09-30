@@ -1,0 +1,139 @@
+.section {
+  position: relative;
+  width: 100vw;
+  height: 670dvh;
+  margin-left: calc(50% - 50vw);
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 38rem;
+  overflow: hidden;
+  background: var(--ink);
+  font-family: var(--font-display-stack);
+}
+
+.meta {
+  position: absolute;
+  z-index: 3;
+  top: clamp(5.5rem, 10vh, 7rem);
+  left: clamp(1.5rem, 5.5vw, 5rem);
+  right: clamp(1.5rem, 5.5vw, 5rem);
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.06em;
+  color: var(--paper);
+}
+
+.staticText {
+  position: absolute;
+  z-index: 1;
+  top: clamp(10rem, 23vh, 13rem);
+  left: clamp(1.5rem, 5.5vw, 5rem);
+  right: clamp(1.5rem, 5.5vw, 5rem);
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-size: clamp(3.1rem, 8vw, 9.375rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.055em;
+}
+
+.staticText span {
+  display: block;
+  color: var(--muted);
+}
+
+.staticText span:first-child,
+.staticText span:nth-last-child(-n + 2) {
+  color: var(--paper);
+}
+
+.canvas {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font-family: var(--font-display-stack);
+  opacity: 0;
+  touch-action: pan-y;
+}
+
+.curtain {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  background: var(--ink);
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+.section[data-enhanced='true'] .canvas {
+  opacity: 1;
+}
+
+.section[data-enhanced='true'] .staticText {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.hint {
+  position: absolute;
+  z-index: 3;
+  right: clamp(1.5rem, 5.5vw, 5rem);
+  bottom: var(--space-6);
+  margin: 0;
+  font-family: var(--font-mono-stack);
+  font-size: var(--label);
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+@media (max-width: 44rem) {
+  .section {
+    height: 520dvh;
+  }
+
+  .stage {
+    min-height: 34rem;
+  }
+
+  .meta span:nth-child(2) {
+    display: none;
+  }
+
+  .staticText {
+    top: 9rem;
+    font-size: clamp(2.9rem, 13.2vw, 5rem);
+  }
+
+  .hint {
+    left: 1.5rem;
+    right: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section {
+    height: 100svh;
+  }
+
+  .canvas {
+    display: none;
+  }
+}
