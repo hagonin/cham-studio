@@ -11,7 +11,12 @@ export function ServiceList({ locale, dict }: { locale: Locale; dict: Dictionary
       <h2 id="services-title" className={styles.title}>
         {dict.home.services.title}
       </h2>
-      <p className={styles.indicative}>{dict.pricing.indicative}</p>
+      {/* « Tarifs indicatifs » n'a de sens que si une ligne affiche un plancher ;
+          tant que tout est « Sur devis », la mention promettrait des chiffres
+          qui n'existent pas. */}
+      {services.some((service) => service.from !== null) && (
+        <p className={styles.indicative}>{dict.pricing.indicative}</p>
+      )}
       <ul className={styles.list}>
         {services.map((service) => (
           <ServiceItem

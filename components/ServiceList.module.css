@@ -10,7 +10,7 @@
      agrandi. Même valeur que AboutBlock et Process — un seul interligne
      d'affichage sur le site. */
   line-height: 0.92;
-  margin: 0;
+  margin: 0 0 1.5rem;
 }
 
 .indicative {
