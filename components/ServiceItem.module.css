@@ -28,6 +28,9 @@
 .name {
   font-family: var(--font-display-stack);
   font-size: var(--display-s);
+  /* Même interligne d'affichage que le titre de section : un intitulé de
+     prestation sur deux lignes ne doit pas se lire comme un paragraphe. */
+  line-height: 0.92;
   flex: 1;
 }
 
