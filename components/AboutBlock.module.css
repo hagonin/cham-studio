@@ -15,29 +15,31 @@
   display: block;
 }
 
-/* IDEA ──●── PRODUCT. Mêmes primitives que ContactLine (rule + point global),
-   à l'échelle du petit libellé plutôt que du titre : c'est une légende du
-   credo, pas un second titre. */
+/* Texte en --ink-2 (--muted ne tient pas 4,5:1 sur papier) ; les filets
+   restent --line, décoratifs. */
 .figure {
+  max-width: 34rem;
+  margin: 0 0 2rem;
+}
+
+.line {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  max-width: 34ch;
-  margin: 0 0 2rem;
   font-family: var(--font-mono-stack);
   font-size: var(--label);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: var(--ink-2);
 }
 
-.figureRule {
+.rule {
   flex: 1;
   height: 1px;
   background: var(--line);
 }
 
-.figureDot {
+.dot {
   composes: contact-marker__dot from global;
 }
 

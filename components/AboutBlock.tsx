@@ -27,16 +27,18 @@ export function AboutBlock({ dict }: { dict: Dictionary }) {
         <span className={styles.titleLine}>{rest.join(' ')}</span>
       </h2>
 
-      {/* IDEA ──●── PRODUCT : le motif du canevas, à l'état joint. Pas de
-          data-contact-line ici — cette figure ne s'anime pas, contrairement à
-          ContactLine (phase 04) dont le sélecteur est singulier. */}
-      <div className={styles.figure}>
-        <span>Idea</span>
-        <span className={styles.figureRule} aria-hidden="true" />
-        <span className={styles.figureDot} aria-hidden="true" />
-        <span className={styles.figureRule} aria-hidden="true" />
-        <span>Product</span>
-      </div>
+      {/* IDEA ──●── PRODUCT : le motif du canevas. Il porte les prises du
+          scrub (`data-contact-*`) — le seul `data-contact-line` du site, comme
+          le veut son sélecteur singulier. Sans JS, il rend son état JOINT. */}
+      <figure className={styles.figure} aria-label={about.diagram.label}>
+        <div className={styles.line} data-contact-line>
+          <span data-contact-end>{about.diagram.idea}</span>
+          <span className={styles.rule} aria-hidden="true" />
+          <span className={styles.dot} data-contact-dot aria-hidden="true" />
+          <span className={styles.rule} aria-hidden="true" />
+          <span data-contact-end>{about.diagram.product}</span>
+        </div>
+      </figure>
 
       {/* Le credo : des affirmations courtes, pas des puces d'agence. */}
       <ul className={styles.creed}>

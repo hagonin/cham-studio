@@ -77,9 +77,10 @@ for (const page of pages.filter((path) => /\/(fr|en)\.html$/.test(path))) {
   }
 
   // --- Lisible sans JavaScript ---------------------------------------------
-  // Le bloc approche doit être complet dans le DOM servi : aucune animation ne
-  // révèle de contenu, et les robots ne défilent pas.
-  if (!/id="approach-title"/.test(html)) fail(`${page} : bloc approche absent du DOM`);
+  // Le bloc « à propos » (relais contre ligne continue) doit être complet dans
+  // le DOM servi : aucune animation ne révèle de contenu, et les robots ne
+  // défilent pas.
+  if (!/id="about-title"/.test(html)) fail(`${page} : bloc à propos absent du DOM`);
   const proseLength = (html.match(/<p[^>]*>([^<]{40,})<\/p>/g) ?? []).length;
   if (proseLength === 0) fail(`${page} : aucune prose rendue côté serveur`);
 }

@@ -10,7 +10,7 @@ import styles from './Process.module.css';
  *
  * Composant serveur, aucun JavaScript : `data-contact-line` n'est pas repris
  * ici (`MotionProvider.tsx` n'en sélectionne qu'un seul, et le motif de
- * `ContactLine` n'est censé apparaître qu'une fois sur le site).
+ * `AboutBlock` n'est censé apparaître qu'une fois sur le site).
  */
 export function Process({ dict }: { dict: Dictionary }) {
   const { process } = dict.home;

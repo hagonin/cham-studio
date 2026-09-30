@@ -91,12 +91,6 @@ export const en = {
       open: 'Expand',
       close: 'Collapse',
     },
-    approach: {
-      problem: 'Problem',
-      solution: 'Solution',
-      title: 'One person, from the first sketch to launch',
-      body: 'No handover between a design studio and a development agency: the hand that draws is the hand that codes. What is promised is what ships, because nobody else has to interpret it.',
-    },
     process: {
       title: ['How', 'I work'],
       steps: [
@@ -152,6 +146,11 @@ export const en = {
     },
     about: {
       title: 'Behind Chạm',
+      diagram: {
+        label: 'One person, from idea to product.',
+        idea: 'Idea',
+        product: 'Product',
+      },
       creed: [
         'One person, from sketch to launch.',
         'What is promised is what ships.',

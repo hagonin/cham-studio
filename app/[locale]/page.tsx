@@ -11,7 +11,6 @@ import { ScrollCue } from '@/components/ScrollCue';
 import { AboutBlock } from '@/components/AboutBlock';
 import { ServiceList } from '@/components/ServiceList';
 import { Process } from '@/components/Process';
-import { ContactLine } from '@/components/ContactLine';
 import { ContactBlock } from '@/components/ContactBlock';
 import { WorkSection } from '@/components/WorkSection';
 import { workSectionIsReady } from '@/content/projects';
@@ -86,7 +85,6 @@ export default async function ServicesPage({
             comme preuve de métier, pas comme section de page. */}
         <Process dict={dict} />
         <AboutBlock dict={dict} />
-        <ContactLine dict={dict} />
         <ContactBlock dict={dict} locale={locale} />
       </main>
     </>

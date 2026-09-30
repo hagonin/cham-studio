@@ -111,14 +111,6 @@ export const fr = {
       open: 'Déplier',
       close: 'Replier',
     },
-    approach: {
-      // ContactLine : PROBLÈME ──────●────── SOLUTION. Le bloc doit se lire
-      // entièrement sans JavaScript, dans son état joint.
-      problem: 'Problème',
-      solution: 'Solution',
-      title: 'Une seule personne, du premier croquis à la mise en ligne',
-      body: 'Pas de relais entre un studio de design et une agence de développement : le geste qui dessine est celui qui code. Ce qui est promis est ce qui est livré, parce que personne d’autre n’a à l’interpréter.',
-    },
     process: {
       // Décision 27 : une ligne continue à cinq points de contact, jamais
       // cinq figures séparées. Le titre tient sur deux lignes, comme
@@ -188,6 +180,14 @@ export const fr = {
     },
     about: {
       title: 'Derrière Chạm',
+      // Le relais habituel contre la ligne continue : deux rangées, un seul
+      // propos. Les libellés sont du texte rendu (pas une image) pour que la
+      // figure se lise sans JavaScript ni description séparée.
+      diagram: {
+        label: 'Une seule personne, de l’idée au produit.',
+        idea: 'Idée',
+        product: 'Produit',
+      },
       // Trois lignes, pas un CV. La page vend une façon de penser ; le CV vend
       // un parcours. Ni historique d'emploi ni barres de compétences.
       creed: [
