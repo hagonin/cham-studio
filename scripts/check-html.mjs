@@ -81,6 +81,12 @@ for (const page of pages.filter((path) => /\/(fr|en)\.html$/.test(path))) {
   // le DOM servi : aucune animation ne révèle de contenu, et les robots ne
   // défilent pas.
   if (!/id="about-title"/.test(html)) fail(`${page} : bloc à propos absent du DOM`);
+  // Une ancre vers un titre absent défile vers rien et la page répond quand même
+  // 200 : chaque `href="#x-title"` de la nav doit avoir son `id="x-title"`.
+  for (const [, anchor] of html.matchAll(/href="#([a-z]+-title)"/g)) {
+    if (!html.includes(`id="${anchor}"`))
+      fail(`${page} : l'ancre #${anchor} n'a pas de titre`);
+  }
   const proseLength = (html.match(/<p[^>]*>([^<]{40,})<\/p>/g) ?? []).length;
   if (proseLength === 0) fail(`${page} : aucune prose rendue côté serveur`);
 }
