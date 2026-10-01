@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { gsap } from 'gsap';
 import { startLenis, stopLenis, scrollToAnchor } from '@/lib/motion/lenis';
 import { revealOnScroll } from '@/lib/motion/reveal';
-import { magnetic } from '@/lib/motion/magnetic';
 import { playPageTransition } from '@/lib/motion/transition';
 import { prefersReducedMotion } from '@/lib/motion/prefs';
 
@@ -36,7 +35,7 @@ export function MotionProvider() {
   }, [pathname]);
 
   useEffect(() => {
-    // Reduced-motion : ni Lenis, ni ScrollTrigger, ni magnétisme. Les états
+    // Reduced-motion : ni Lenis, ni ScrollTrigger. Les états
     // finaux sont déjà ceux du HTML — il n'y a rien à remettre en place.
     if (prefersReducedMotion()) return;
 
@@ -44,19 +43,9 @@ export function MotionProvider() {
     // endroit à corriger si l'ordre d'initialisation change.
     startLenis();
 
-    const cleanups: Array<() => void> = [];
     const context = gsap.context(() => {
       const reveals = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
       if (reveals.length > 0) revealOnScroll(reveals);
-
-      // La VALEUR de `data-magnetic` est la force, quand elle est donnée :
-      // un CTA claque (0,28, le défaut), un lien de nav collante frémit
-      // (0,08). Le réglage vit dans le balisage, à côté de l'élément qu'il
-      // concerne, plutôt que dans une liste de sélecteurs à tenir à jour ici.
-      for (const cta of document.querySelectorAll<HTMLElement>('[data-magnetic]')) {
-        const strength = Number(cta.dataset.magnetic);
-        cleanups.push(magnetic(cta, strength > 0 ? { strength } : {}));
-      }
     });
 
     // Lenis avale le comportement natif de `#ancre` : le lien d'évitement et
@@ -73,7 +62,6 @@ export function MotionProvider() {
 
     return () => {
       document.removeEventListener('click', onAnchorClick);
-      for (const cleanup of cleanups) cleanup();
       context.revert();
       stopLenis();
     };

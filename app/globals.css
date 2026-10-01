@@ -281,39 +281,6 @@ h2[id] {
   }
 }
 
-/* --- ContactMarker --------------------------------------------------------
-   ──────●────── CHẠM. Le point de contact de la marque dans sa forme la plus
-   simple : CSS seul, identique au doigt et à la souris, vivant sans JS. */
-.contact-marker {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.contact-marker__line {
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
-
-.contact-marker__dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  /* --touch au point de contact : c'est le sens de « chạm », pas une décoration. */
-  background: var(--touch);
-  flex: none;
-}
-
-.contact-marker__label {
-  flex: none;
-}
-
 /* --- État de contact interactif -------------------------------------------
    --touch marque le contact, ici celui du pointeur
    ou du clavier avec un élément actionnable. */

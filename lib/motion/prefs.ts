@@ -13,7 +13,6 @@
  * | Système                     | coarse   | reduced-motion | Porte             |
  * |-----------------------------|----------|----------------|-------------------|
  * | Loader                      | actif    | inactif*       | Loader.tsx        |
- * | Magnétisme des CTA          | inactif  | inactif        | magnetic()        |
  * | Séquence du contact (hero)  | actif    | inactif        | HeroContact.tsx   |
  * | Scène tactile (canevas)     | actif    | inactif        | TouchPhilosophy   |
  * | État courant (aria-current) | actif    | actif          | aucune            |
@@ -40,11 +39,4 @@
 export function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined' || !window.matchMedia) return true;
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-
-/** Ce qui suit le pointeur (le magnétisme des CTA) ne se monte que sur un
- *  pointeur fin. Sur un écran tactile il n'a rien à suivre. */
-export function hasFinePointer(): boolean {
-  if (typeof window === 'undefined' || !window.matchMedia) return false;
-  return window.matchMedia('(pointer: fine)').matches;
 }
