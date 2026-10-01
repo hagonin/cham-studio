@@ -56,10 +56,10 @@ export const fr = {
     en: 'English',
   },
   /**
-   * COPIE PROVISOIRE — voir `COPY_CONFIRMED` dans config.ts.
-   * Les 132 chaînes rédigées dans le prototype n'étaient pas disponibles ;
-   * celles-ci tiennent la forme et la mise en page. Elles se remplacent sans
-   * toucher au code : la structure est déjà typée.
+   * COPIE APPROUVÉE — voir `COPY_CONFIRMED` dans config.ts.
+   * L'anglais de la page est celui du dessin, mot pour mot ; le français est
+   * celui du deck `copy-fr.md`, écrit et non traduit. Les textes se remplacent
+   * sans toucher au code : la structure est déjà typée.
    */
   home: {
     status: {

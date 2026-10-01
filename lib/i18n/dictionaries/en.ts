@@ -1,8 +1,9 @@
 import type { Dictionary } from './fr';
 
 /**
- * ATTENTION — PREMIER JET, PAS DE LA COPIE. Cette locale n'est pas publiée
- * (`PUBLISHED` dans config.ts) tant qu'une seconde personne ne l'a pas relue.
+ * Cette locale est publiée (`PUBLISHED` dans config.ts). Le texte de la page est
+ * celui du dessin, mot pour mot ; le reste (l'estimateur de prix, hors page)
+ * est un premier jet qu'une seconde personne n'a pas relu.
  *
  * L'anglais est ADAPTÉ, pas traduit : le français s'appuie sur un vocabulaire
  * de marché — « devis », « mentions légales », « TVA non applicable » — qui ne

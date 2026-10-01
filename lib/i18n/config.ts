@@ -10,9 +10,10 @@ export const defaultLocale: Locale = 'fr';
  * annotations hreflang et les entrées de sitemap. Il n'y a pas de second
  * endroit à ne pas oublier — c'est tout l'intérêt du tableau.
  *
- * EN reste hors ligne tant que la copie n'est pas relue par une seconde
- * personne : une traduction non relue coûte plus cher en crédibilité qu'une
- * langue absente.
+ * Les deux langues sont publiées. L'anglais de la page est celui du dessin,
+ * mot pour mot ; ce qui reste d'un premier jet non relu (l'estimateur de
+ * prix, hors page) ne doit pas être monté tel quel : une traduction non relue
+ * coûte plus cher en crédibilité qu'une langue absente.
  */
 export const PUBLISHED: Locale[] = ['fr', 'en'];
 
@@ -28,12 +29,13 @@ export function isPublished(locale: Locale): boolean {
 /**
  * La copie des dictionnaires est-elle la copie définitive ?
  *
- * `false` : les textes en place tiennent la forme et la mise en page, mais les
- * 132 chaînes rédigées dans le prototype n'ont pas encore été reprises. Ce
- * drapeau ne casse pas le build — il rend l'état visible et sert de garde à la
- * relecture avant la mise en ligne.
+ * `true` : la copie du dessin est en place dans les deux langues (le français
+ * vient du deck `copy-fr.md`, dont chaque cellule a été retrouvée dans les
+ * dictionnaires) et le propriétaire l'a approuvée. Ce drapeau ne casse pas le
+ * build — il rend l'état visible. Il repasse à `false` si de la copie non
+ * relue entre dans les dictionnaires, et ne se rétablit qu'à la relecture.
  */
-export const COPY_CONFIRMED = false;
+export const COPY_CONFIRMED = true;
 
 export const SITE_URL = 'https://cham-studio.fr';
 
