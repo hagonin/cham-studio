@@ -18,16 +18,23 @@ describe('globals.css', () => {
   // Remplace la garde « --seal exactement deux fois », retirée avec le jeton :
   // l'accent apparaît désormais à de nombreux endroits (le ×, les repères, la
   // ligne de contact, l'état courant). Compter les usages ne veut plus rien
-  // dire ; ce qui compte est qu'il reste un ÉTAT. Il ne tient que 3.24:1 sur
-  // papier, donc il ne peut pas poser la couleur d'un texte au repos.
-  it('ne pose --touch comme couleur qu’au sein d’un état', () => {
+  // dire ; ce qui compte est qu'il reste un ÉTAT — ou un GRAND texte. Le
+  // dessin colore en accent les années de la chronologie (36px, graisse 600) :
+  // 3.24:1 sur papier, sous le 4,5:1 du texte courant mais au-dessus du 3:1 du
+  // grand texte. Une règle peut donc poser la couleur d'un texte au repos
+  // seulement si elle fixe aussi une taille d'affichage (`--display-*`) ; un
+  // paragraphe ou un libellé en accent reste refusé.
+  it('ne pose --touch comme couleur qu’au sein d’un état ou à une taille d’affichage', () => {
     const colored = [
-      ...declarations.matchAll(/([^{}]*)\{[^{}]*color:\s*var\(--touch\)/g),
+      ...declarations.matchAll(
+        /([^{}]*)\{([^{}]*color:\s*var\(--touch(?:-hot)?\)[^{}]*)\}/g,
+      ),
     ];
-    for (const [, selector] of colored) {
-      expect(selector).toMatch(
-        /:hover|:focus|:active|aria-current|aria-expanded|\[data-state/,
-      );
+    for (const [, selector, body] of colored) {
+      const isState =
+        /:hover|:focus|:active|aria-current|aria-expanded|\[data-state/.test(selector);
+      const isDisplaySize = /font-size:\s*var\(--display-/.test(body);
+      expect(isState || isDisplaySize, selector.trim()).toBe(true);
     }
   });
 

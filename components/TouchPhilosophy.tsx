@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Matter from 'matter-js';
+import { colors } from '@/lib/tokens';
 import styles from './TouchPhilosophy.module.css';
 
 type Glyph = {
@@ -18,9 +19,11 @@ type Glyph = {
 
 type SceneMode = 'assembled' | 'falling' | 'reassembling';
 
-const INK = '#111111';
-const PAPER = '#f2f0ea';
-const MUTED = '#8a8a84';
+// Le canevas ne lit pas les variables CSS : ses couleurs viennent du miroir TS,
+// que tests/tokens.test.ts garde égal à la feuille de style.
+const INK = colors.ink;
+const PAPER = colors.paper;
+const MUTED = colors.muted;
 const RELEASE_AT = 0.12;
 const CURTAIN_AT = 0.78;
 

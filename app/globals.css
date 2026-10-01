@@ -1,49 +1,89 @@
 /* ---------------------------------------------------------------------------
    Chạm — jetons de conception.
-   DEUX FONDS, UN SEUL THÈME. Le fond papier porte le récit ; le fond encre
-   porte l'espace projet et le contact. Ce n'est pas un mode sombre : il n'y a
-   pas de bascule, chaque section choisit son fond et les DEUX jeux de couples
-   sont testés dans tests/contrast.test.ts. Ajouter une bascule invaliderait le
-   tableau, qui ne vaut que pour des fonds connus à l'avance.
-   Les valeurs hexadécimales sont dupliquées dans lib/tokens.ts pour les tests ;
+   LA PALETTE DU PROTOTYPE, JETON PAR JETON. Le dessin emploie une trentaine de
+   teintes voisines : six gris chauds à quelques unités d'écart, cinq filets,
+   quatre fonds sombres. Les fusionner changerait le rendu, donc chacune garde
+   sa valeur exacte et un nom. Le nom dit un RÔLE (paper, ink, line) ou, quand
+   il n'y en a pas, un rang (--grey-1 le plus sombre … --grey-6 le plus clair).
+   IL RESTE UN SEUL THÈME : le fond papier porte le récit, les fonds encre
+   portent la scène tactile, la galerie et l'invitation. Pas de bascule
+   système : le tableau de contraste (tests/contrast.test.ts) ne vaut que pour
+   des fonds connus à l'avance, et un troisième le rendrait faux en silence.
+   Les valeurs hexadécimales sont dupliquées dans lib/tokens.ts pour les tests
+   et pour le canevas de TouchPhilosophy, qui ne lit pas les variables CSS ;
    les deux doivent bouger ensemble (assertion dans tests/tokens.test.ts).
 --------------------------------------------------------------------------- */
 
 :root {
   color-scheme: light;
 
-  /* Les deux fonds. --ink sert à la fois d'encre sur papier et de fond sombre :
-     c'est la même valeur, donc un seul jeton. Un --ground séparé porterait la
-     même couleur sous un second nom et pourrait dériver. */
-  --paper: #f2f0ea;
-  --ink: #111111;
+  /* Fonds. --ink sert à la fois d'encre sur papier et de fond sombre : c'est la
+     même valeur, donc un seul jeton. Les autres fonds sombres du dessin sont à
+     une ou deux unités de --ink et gardent pourtant leur valeur exacte. */
+  --paper: #f0eee8;
+  --paper-2: #f6f4ef; /* boîte de visualisation agrandie */
+  --ink: #11110f;
+  --ink-gallery: #111110; /* scène de la galerie */
+  --ink-deep: #0d0d0c; /* bloc d'invitation */
 
-  /* Textes.
-     --ink-2 (8.77:1 sur papier) est le SECONDAIRE LISIBLE : paragraphes,
-     descriptions, tout ce qui se lit en continu. Il tombe à 1.89:1 sur le fond
-     encre — il n'y a pas de secondaire sombre, c'est --muted qui prend le
-     relais là-bas.
-     --muted (3.05:1 sur papier) ne tient PAS le 4.5:1 : micro-libellés mono en
-     capitales et bordures interactives uniquement, jamais un paragraphe. Sur
-     le fond encre il monte à 5.78:1 et redevient du texte courant. */
-  --ink-2: #42433d;
-  --muted: #8a8a84;
+  /* Texte sur papier, du plus sombre au plus clair (ratios sur --paper).
+     --ink (16.29:1) est le texte courant ; --ink-2 (12.59:1) le SECONDAIRE
+     LISIBLE : paragraphes, descriptions, légendes.
+     --grey-1 (7.49), --grey-2 (5.65) et --grey-3 (4.51) tiennent le 4,5:1.
+     --grey-4 (3.64), --grey-5 (3.62) et --muted (3.05) NE LE TIENNENT PAS :
+     le dessin les pose pourtant en texte (chapô, paragraphes, outillage), et
+     chaque cas est une exemption écrite dans lib/tokens.ts, pas un seuil
+     abaissé.
+     --muted reste la BORDURE INTERACTIVE et le micro-libellé : il passe le 3:1
+     sur papier de justesse — la marge est mince, ne pas l'éclaircir — et
+     monte à 5.34:1 sur le fond encre, où il redevient du texte courant.
+     --grey-4, plus sombre, n'a PAS ce second rôle : sur encre il tombe à
+     4.47:1, sous le seuil. */
+  --ink-2: #292925;
+  --grey-1: #4e4b45; /* description de projet */
+  --grey-2: #615d55; /* chapô des travaux */
+  --grey-3: #706c63; /* notes du formulaire */
+  --grey-4: #7e7b73; /* chapô « à propos », paragraphe « maintenant » */
+  --grey-5: #807b72; /* numéro et rôle de projet */
+  --muted: #8b8880;
+  --grey-6: #9a978e; /* icône du cadre photo */
 
-  /* Filet décoratif (1.43:1 sur papier) : séparateurs uniquement, jamais une
-     bordure que l'on doit percevoir pour utiliser un composant. Cette
-     bordure-là, c'est --muted, qui passe le 3:1 de justesse (3.05:1) — la
-     marge est mince, ne pas l'éclaircir. */
-  --line: #cbc9c3;
+  /* Clair sur fond sombre (ratios sur le fond qui les porte). */
+  --dim: #9d9a95; /* méta, énoncé et indice de la scène tactile — 6.74:1 sur encre */
+  --dim-2: #aaa79f; /* méta et compteur de la galerie — 7.86:1 sur --ink-gallery */
+  --paper-warm: #f3f0ea; /* énoncé et compteur de la scène tactile */
+  --nav: #efefef; /* en-tête ; sur encre quand le menu mobile est ouvert */
+  --blush: #e8c6b8; /* sur-titre de l'invitation */
+  --paper-80: #f0eee8cc; /* paragraphe de l'invitation : --paper à 80 % */
 
-  /* 90 % de la page est papier / encre / gris. --touch est le seul écart, et
-     son nom dit son emploi : le TOUCHER. Deux usages, pas un de plus :
-     l'interaction (survol, focus, élément courant) et le point de contact —
-     là où deux choses se rejoignent, qui est le sens même de « chạm ».
-     Ni un titre, ni un paragraphe, ni un aplat décoratif.
-     3.36:1 sur papier : il passe comme élément d'interface, il ÉCHOUE comme
-     texte. tests/tokens.test.ts vérifie qu'il ne pose la couleur d'un texte
-     qu'au sein d'un état. Sur le fond encre (4.93:1) il redevient lisible. */
-  --touch: #e4502c;
+  /* Filets et aplats — DÉCORATIFS. Aucun ne tient le 3:1 sur son fond (de
+     1.25 à 1.89:1 sur papier), exprès : tests/contrast.test.ts le vérifie. Une
+     bordure que l'on doit percevoir pour utiliser un composant, c'est --muted,
+     jamais un filet. */
+  --line: #d5d7cf; /* filets de section */
+  --line-2: #c9c6bd; /* contour du cadre photo, pastilles */
+  --line-3: #cac6bc; /* filets des travaux, bouton agrandir */
+  --line-4: #d5d1c5; /* bord des panneaux de la galerie */
+  --line-5: #b4afa3; /* bord de la boîte agrandie */
+  --line-dark: #383832; /* filet du menu mobile, sur encre */
+  --track: #343430; /* rail de progression de la scène tactile */
+  --photo: #dcd9d0; /* aplat des emplacements photo */
+
+  /* 90 % de la page est papier / encre / gris. L'accent est le seul écart, et
+     son nom dit son emploi : le TOUCHER. Deux usages : l'interaction (survol,
+     focus, élément courant) et le point de contact — là où deux choses se
+     rejoignent, qui est le sens même de « chạm ». Jamais un paragraphe ni un
+     aplat décoratif.
+     Le dessin a DEUX teintes, gardées toutes deux : --touch pour le loader et
+     le bloc « à propos » ; --touch-hot pour le point du héros, la scène
+     tactile, les anneaux de focus, les travaux et le contact.
+     Sur papier : --touch 3.24:1, --touch-hot 3.17:1 — des éléments d'interface
+     (3:1) ou du GRAND texte (3:1), jamais du texte courant. Sur encre : 5.03 et
+     5.15:1, lisibles. Au repos, la couleur d'un texte n'est donc posée qu'à
+     une taille d'affichage (les années de la chronologie) ; tests/tokens.test.ts
+     le vérifie. */
+  --touch: #e55235;
+  --touch-hot: #ef4b2f;
 
   /* Familles — chargées par next/font (lib/fonts.ts).
      Schibsted Grotesk n'a pas de sous-ensemble vietnamien : la pile sans passe
