@@ -45,9 +45,13 @@
      qu'au sein d'un état. Sur le fond encre (4.93:1) il redevient lisible. */
   --touch: #e4502c;
 
-  /* Familles — chargées par next/font (lib/fonts.ts) */
+  /* Familles — chargées par next/font (lib/fonts.ts).
+     Schibsted Grotesk n'a pas de sous-ensemble vietnamien : la pile sans passe
+     par Archivo Narrow AVANT toute police système, pour que le « ạ » de
+     « Chạm » vienne d'une police chargée, identique partout. Un mot de marque
+     posé en titre se règle sur --font-display-stack, pas sur cette pile. */
   --font-display-stack: var(--font-display), 'Archivo Narrow', system-ui, sans-serif;
-  --font-sans-stack: var(--font-sans), 'Archivo', system-ui, sans-serif;
+  --font-sans-stack: var(--font-sans), var(--font-display), system-ui, sans-serif;
   --font-mono-stack: var(--font-mono), 'JetBrains Mono', ui-monospace, monospace;
 
   /* Échelle typographique — DEUX GROUPES, ET LE VIDE ENTRE EUX.
