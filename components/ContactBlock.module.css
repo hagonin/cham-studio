@@ -1,60 +1,378 @@
-/* Décision 25 : seul bloc à fond encre du site. --muted (5.78:1 sur encre)
-   remplace --ink-2 (1,89:1 sur encre, illisible) pour le texte secondaire, et
-   l'anneau de focus passe au papier — sinon `:focus-visible` (encre sur
-   encre) devient invisible ici. */
-.block {
-  padding: clamp(3rem, 8vw, 6rem) 0;
-  background: var(--ink);
-  color: var(--paper);
+/* La section contact et son pied de page, valeur pour valeur (`contact.css` du
+   prototype). Les px et les clamp sont ceux du dessin ; les jetons ne servent
+   que là où ils portent la même valeur : #11110f = --ink, #f0eee8 = --paper,
+   #706c63 = --grey-3 (4,51:1 sur papier : il tient le 4,5:1 des petits textes),
+   #ef4b2f = --touch-hot.
+
+   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`)
+   et porte son propre rembourrage, comme le dessin. */
+.section {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 120px 4.45vw 24px;
+  /* Le dessin hérite du 16px / `normal` du navigateur ; le corps de ce dépôt est
+     à 15px / 1,55. Sans cette reprise, un bloc en ligne (le lien de l'e-mail du
+     pied de page) tient sa ligne sur une autre ligne de base et décale tout ce
+     qui suit de quelques dixièmes de pixel. */
+  font-size: 16px;
+  line-height: normal;
+  color: var(--ink);
+  background: var(--paper);
 }
 
-.block :focus-visible {
-  outline-color: var(--paper);
+/* Texte réel hors écran : lu par les technologies d'assistance, jamais vu. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.heading {
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 24px;
+  font: 700 clamp(16px, 1.8vw, 26px) / 1.2 var(--font-display-stack);
 }
 
 .title {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 0.35em;
-  font-family: var(--font-display-stack);
-  font-size: var(--display-s);
-  line-height: 0.9;
-  text-transform: uppercase;
-  margin: 2rem 0 1rem;
+  margin: 0;
 }
 
-/* Le point, en glyphe statique au fil du texte — même traitement que le « × »
-   du hero (décision 22) : --touch marque un contact déjà advenu, pas un état,
-   et `touch` sur `ink` est la paire testée pour du texte (lib/tokens.ts). */
-.dot {
-  color: var(--touch);
-  font-size: 0.55em;
-}
-
-.lead {
-  font-size: var(--text);
-  color: var(--muted);
-  max-width: 42ch;
-  margin: 0 0 1.5rem;
-}
-
-.body {
-  max-width: 52ch;
-  color: var(--muted);
-}
-
-.cta {
-  font-family: var(--font-mono-stack);
-  font-size: var(--text-s);
-}
-
-/* 4:5 : le portrait est le seul cadre du site qui ne soit pas en 16:10. */
-.portrait {
-  --frame-ratio: 4 / 5;
+.reveal {
   display: block;
-  width: min(20rem, 60%);
-  margin-top: 2.5rem;
-  background: var(--paper);
-  border: 1px solid var(--line);
+  overflow: hidden;
+  font: 700 clamp(48px, 8.7vw, 140px) / 1.12 var(--font-display-stack);
+  letter-spacing: -0.045em;
+}
+
+.letter {
+  display: inline-block;
+}
+
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.bridge {
+  display: block;
+  margin: 26px 0;
+  font: 500 12px / 1.5 var(--font-mono-stack);
+  letter-spacing: 1.1em;
+  padding-left: 1.1em;
+}
+
+/* --- Formulaire ------------------------------------------------------------------ */
+.form {
+  width: min(100%, 520px);
+  margin: 88px auto 150px;
+}
+
+.form > label {
+  display: block;
+  margin-bottom: 36px;
+  font: 400 12px / 1.5 var(--font-mono-stack);
+}
+
+.form input:not([type='radio']),
+.form textarea {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--ink);
+  border-radius: 0;
+  background: transparent;
+  padding: 8px 0 12px;
+  color: var(--ink);
+  font: 16px / 1.5 var(--font-sans-stack);
+}
+
+.form textarea {
+  resize: vertical;
+  min-height: 104px;
+}
+
+.optional {
+  color: var(--grey-3);
+  font-size: var(--label-xs);
+}
+
+.form fieldset {
+  padding: 0;
+  border: 0;
+  margin: 44px 0 48px;
+}
+
+.form legend {
+  font: 400 12px / 1.5 var(--font-mono-stack);
+  margin-bottom: 24px;
+}
+
+.budget {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.budget label {
+  position: relative;
+  cursor: pointer;
+  font: 400 12px / 1.5 var(--font-mono-stack);
+}
+
+/* Le bouton radio est invisible mais couvre toute l'étiquette : il reste
+   focalisable et se manœuvre aux flèches. Son état se lit sur le <span>. */
+.budget input {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  cursor: pointer;
+}
+
+.budget span {
+  display: block;
+  padding: 12px 0;
+  border-bottom: 1px solid transparent;
+}
+
+.budget input:checked + span {
+  border-color: var(--ink);
+  font-weight: 600;
+}
+
+.budget input:focus-visible + span {
+  outline: 2px solid var(--touch-hot);
+  outline-offset: 4px;
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  width: fit-content;
+  margin: auto;
+  padding: 0 0 5px;
+  border: 0;
+  border-bottom: 1px solid;
+  color: var(--ink);
+  background: none;
+  cursor: pointer;
+  font: 400 18px / 1.3 var(--font-mono-stack);
+}
+
+.submit span {
+  font-size: 26px;
+  transition: transform 0.3s;
+}
+
+.submit:hover span {
+  transform: translate(4px, -4px);
+}
+
+.note,
+.status {
+  font: 400 var(--label-s) / 1.6 var(--font-mono-stack);
+  color: var(--grey-3);
+  text-align: center;
+  margin: 20px 0 0;
+}
+
+.status:empty {
+  display: none;
+}
+
+.section a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.section :focus-visible {
+  outline: 2px solid var(--touch-hot);
+  outline-offset: 5px;
+}
+
+/* --- Pied de page --------------------------------------------------------------------- */
+.direct {
+  text-align: right;
+}
+
+.direct p {
+  font: 400 12px / 1.5 var(--font-mono-stack);
+  margin: 0 0 12px;
+}
+
+.direct > a {
+  display: inline-block;
+  position: relative;
+  font: 700 clamp(26px, 3.6vw, 54px) / 1.2 var(--font-display-stack);
+}
+
+.direct > a::after,
+.pages a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: currentcolor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+}
+
+.direct > a:hover::after,
+.pages a:hover::after {
+  transform: scaleX(1);
+}
+
+.middle {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 32px;
+  margin: 48px 0;
+}
+
+.pages {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Les libellés viennent de la nav (« À propos », « Works ») : la capitale est
+   posée ici, sur un lien, ce que la garde `check:html` accepte (elle ne refuse
+   que celle d'un `<p>`). */
+.pages a {
+  position: relative;
+  width: fit-content;
+  font: 400 15px / 1.3 var(--font-mono-stack);
+  text-transform: uppercase;
+}
+
+.middle p {
+  margin: 0;
+  font: 400 12px / 1.5 var(--font-mono-stack);
+}
+
+.spread,
+.bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  font: 400 13px / 1.5 var(--font-mono-stack);
+}
+
+/* La signature : chaque lettre est un enfant direct, donc `space-between` les
+   répartit sur toute la largeur. Le texte réel (`.srOnly`) est positionné en
+   absolu et ne prend pas part à cette répartition. */
+.signature {
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  margin: 24px 0 30px;
+  padding-top: 0.1em;
+  font: 600 27vw / 0.95 var(--font-sans-stack);
+  letter-spacing: -0.075em;
+}
+
+.signatureLetter {
+  display: inline-block;
+}
+
+.bottom {
+  font-size: var(--label-xs);
+}
+
+@media (max-width: 43.75rem) {
+  .section {
+    padding: 100px 24px 24px;
+  }
+
+  .reveal {
+    font-size: 10vw;
+    line-height: 1.2;
+  }
+
+  .eyebrow {
+    font-size: 16px;
+  }
+
+  .bridge {
+    font-size: var(--label-xs);
+    letter-spacing: 0.65em;
+    margin: 20px 0;
+  }
+
+  .form {
+    margin: 52px auto 100px;
+  }
+
+  .budget {
+    gap: 8px;
+  }
+
+  .budget label {
+    font-size: var(--label-xs);
+  }
+
+  .submit {
+    font-size: 15px;
+  }
+
+  .direct {
+    text-align: left;
+  }
+
+  .direct > a {
+    font-size: clamp(22px, 6.5vw, 36px);
+  }
+
+  .middle {
+    align-items: start;
+    gap: 24px;
+  }
+
+  .middle p {
+    font-size: var(--label-xs);
+    max-width: 150px;
+  }
+
+  .pages a {
+    font-size: 12px;
+  }
+
+  .spread {
+    font-size: var(--label-2xs);
+    gap: 8px;
+  }
+
+  .signature {
+    font-size: 25vw;
+    margin: 24px 0;
+  }
+
+  .bottom {
+    flex-wrap: wrap;
+    font-size: var(--label-2xs);
+    gap: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section *,
+  .section *::after {
+    transition: none !important;
+  }
 }

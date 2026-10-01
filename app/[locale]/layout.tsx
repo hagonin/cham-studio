@@ -44,7 +44,8 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale satisfies Locale} className={fontVariables}>
-      <body>
+      {/* `#top` : l'ancre du lien « haut de page » du pied de page, comme le <body id="top"> du dessin. */}
+      <body id="top">
         <a className="skip-link contact-link" href="#content">
           {dict.nav.skipToContent}
         </a>

@@ -13,7 +13,7 @@ export const site = {
   /** Surfaces d'affichage : la ville suffit. L'adresse postale complète
    *  n'apparaît que sur les mentions légales. */
   city: { fr: 'Montpellier, France', en: 'Montpellier, France' } satisfies L10n,
-  /** Portrait partagé par le hero et le bloc contact, `null` tant que la
+  /** Portrait du hero, `null` tant que la
    *  photo n'existe pas. Même règle que les champs légaux : l'absence se rend
    *  en ne rendant rien, pas en réservant un rectangle gris. Dans le hero il
    *  est posé sous le wordmark (pas au-dessus) et chargé en `loading="lazy"` :

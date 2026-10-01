@@ -186,9 +186,58 @@ export const fr = {
       ],
     },
     contact: {
-      title: 'Parlons de votre projet',
-      body: 'Décrivez en quelques lignes ce que vous voulez faire. Je réponds sous 24 h, en français ou en anglais.',
-      cta: 'Écrire au studio',
+      // La section contact et son pied de page, tels que le dessin les écrit
+      // (copy-fr.md). Les libellés en capitales sont LITTÉRAUX : un `<p>` en
+      // majuscules par le CSS est refusé par `check:html`, et des capitales
+      // accentuées ne se calculent pas, elles s'écrivent. Les flèches « ↗ » sont
+      // décoratives et vivent dans le balisage, pas ici. Les gabarits du brouillon
+      // portent `{name}`, `{email}`, `{message}`, `{phone}` et `{budget}` ; les
+      // `value` des boutons radio voyagent dans ce brouillon, donc ils sont
+      // localisés eux aussi. Le dernier choix du budget est celui coché d'office.
+      eyebrow: 'ENGAGEONS LA CONVERSATION',
+      title: {
+        first: 'LES GRANDES IDÉES',
+        bridge: 'COMMENCENT PAR',
+        second: 'UNE TOUCHE HUMAINE',
+      },
+      form: {
+        name: 'VOTRE NOM*',
+        phone: 'TÉLÉPHONE',
+        optional: '(FACULTATIF)',
+        email: 'VOTRE E-MAIL*',
+        message: 'COMMENT PUIS-JE VOUS AIDER\u202f?*',
+        budgetLegend: 'BUDGET DU PROJET (EUR)',
+        budget: [
+          { label: 'MOINS DE 5 K€', value: 'Moins de 5 k€' },
+          { label: '5–10 K€', value: '5–10 k€' },
+          { label: '10 K€ ET +', value: '10 k€ et plus' },
+          { label: 'À DISCUTER', value: 'À discuter' },
+        ],
+        submit: 'PARLONS DU PROJET',
+        note: 'Ouvre votre messagerie avec les détails de votre projet. Rien n’est envoyé automatiquement.',
+        ready:
+          'Votre brouillon est prêt. Relisez-le et envoyez-le depuis votre messagerie.',
+        retry: 'Ouvrir le brouillon',
+        draft: {
+          subject: 'Demande de projet — {name}',
+          body: 'Bonjour CHẠM,\n\n{message}\n\nNom : {name}\nE-mail : {email}\nTéléphone : {phone}\nBudget du projet : {budget}',
+          noPhone: 'Non renseigné',
+        },
+      },
+      footer: {
+        direct: 'Une conversation, c’est un bon début.',
+        navLabel: 'Navigation de pied de page',
+        tagline: [
+          'Des interfaces réfléchies.',
+          'Des produits qui fonctionnent.',
+          'Design × développement fullstack.',
+        ],
+        spread: ['[ DESIGN ]', '[ CODE ]'],
+        backToTop: '[ HAUT DE PAGE ↑ ]',
+        meta: ['DESIGN × CODE', 'CONÇU ET DÉVELOPPÉ PAR CHẠM'],
+        rights: 'CHẠM. TOUS DROITS RÉSERVÉS.',
+        signature: 'CHẠM.',
+      },
     },
   },
   /**

@@ -351,8 +351,8 @@ h2[id] {
    mise en page (CLS ~0) et pas d'effet flottant — la parallaxe classique a été
    écartée pour cette raison.
 
-   Global et non modulaire : deux composants s'en servent (le portrait du hero et celui
-   du bloc contact) et une seule définition évite qu'ils divergent. */
+   Global et non modulaire : le portrait du hero s'en sert, avec le ratio qu'il
+   surcharge (`--frame-ratio`). */
 .frame {
   position: relative;
   /* Le ratio verrouille la place AVANT le chargement de l'image : la page ne

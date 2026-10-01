@@ -13,6 +13,7 @@ import {
   wrapIndex,
 } from '@/lib/gallery/carousel';
 import { prefersReducedMotion } from '@/lib/motion/prefs';
+import { fill } from '@/lib/i18n/fill';
 import styles from './WorkGallery.module.css';
 
 export type WorkCover = { src: string; width: number; height: number; alt: string };
@@ -48,9 +49,6 @@ export type WorkCopy = {
   close: string;
   closeLabel: string;
 };
-
-const fill = (template: string, values: Record<string, string | number>) =>
-  template.replace(/\{(\w+)\}/g, (_, key: string) => String(values[key] ?? ''));
 
 const pad = (value: number) => String(value).padStart(2, '0');
 

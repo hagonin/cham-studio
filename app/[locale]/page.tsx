@@ -82,7 +82,7 @@ export default async function ServicesPage({
             travail testé qui vaut comme preuve de métier, pas comme section de
             page. Les monter à côté de `Process` dupliquerait `services-title`. */}
         <Process dict={dict} />
-        <ContactBlock dict={dict} locale={locale} />
+        <ContactBlock dict={dict} />
       </main>
     </>
   );
