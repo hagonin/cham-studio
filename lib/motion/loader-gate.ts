@@ -15,6 +15,8 @@
  * de se monter (reduced-motion) : les deux portes ne sont plus la même, et une
  * galerie qui attendrait un événement jamais émis resterait vide.
  */
+import { prefersReducedMotion } from './prefs';
+
 export const LOADER_SESSION_KEY = 'cham-loader-shown';
 
 /** Émis sur `window` quand le loader libère le canvas. */
@@ -46,4 +48,23 @@ export function markLoaderShown(): void {
 export function canvasIsFree(): boolean {
   if (typeof window === 'undefined') return false;
   return loaderAlreadyShown();
+}
+
+/**
+ * Le rideau va-t-il se jouer ? C'est la porte du dessin (`intro-loader.js`) :
+ * pas sous reduced-motion, pas quand l'URL porte un ancre (arriver sur
+ * `/#contact` ne doit pas imposer quatre secondes devant la section demandée),
+ * pas quand la page est déjà défilée — plus le « une fois par session » du
+ * dépôt.
+ *
+ * UN SEUL arbitre, lu par le rideau ET par ce qui l'attend (la séquence du
+ * contact dans le hero) : deux copies de la règle divergeraient, et le hero
+ * attendrait alors un événement que le rideau, lui, n'a jamais prévu d'émettre.
+ * À lire AVANT que le rideau ne pose son drapeau.
+ */
+export function loaderWillPlay(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (prefersReducedMotion() || window.location.hash || window.scrollY > 80)
+    return false;
+  return !loaderAlreadyShown();
 }

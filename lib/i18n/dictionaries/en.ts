@@ -37,6 +37,10 @@ export const en = {
     meaning: 'to touch, to make contact',
     positioning: 'Design × Code',
   },
+  loader: {
+    label: 'chạm \u00a0 / verb / \u00a0 to touch.',
+    note: 'APPROACH \u00a0·\u00a0 CONTACT \u00a0·\u00a0 REVEAL',
+  },
   footer: {
     location: 'Montpellier, France',
     // « Mentions légales » est une obligation française sans équivalent exact ;

@@ -42,6 +42,12 @@ export const fr = {
     // qui porte la couleur dans le hero.
     positioning: 'Design × Code',
   },
+  // Le rideau d'ouverture. Les espaces insécables sont ceux du dessin : ils
+  // tiennent les barres obliques et les points médians à distance de lecture.
+  loader: {
+    label: 'chạm \u00a0 / verbe / \u00a0 toucher.',
+    note: 'APPROCHE \u00a0·\u00a0 CONTACT \u00a0·\u00a0 RÉVÉLATION',
+  },
   footer: {
     location: 'Montpellier, France',
     legalNotice: 'Mentions légales',

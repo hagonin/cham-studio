@@ -1,64 +1,122 @@
-/* Rideau plein écran, jamais interactif : `pointer-events: none` et
-   `aria-hidden` (posé dans le composant) — rien à cliquer, rien à traverser
-   au clavier, jamais de piège de focus (règle 7, phase 06). */
+/* Le rideau d'ouverture, valeur pour valeur (`intro-loader.css` du prototype).
+   Plein écran, jamais interactif : `pointer-events: none` ici et `aria-hidden`
+   dans le composant — rien à cliquer, rien à traverser au clavier.
+
+   La page se révèle par un MASQUE RADIAL qui s'ouvre depuis le centre
+   (`--reveal`, animé par GSAP), pas par un fondu : on voit la page à travers le
+   point de contact. `black` et non un hex : dans un masque seule compte l'alpha.
+
+   Écart : z-index 50 et non 120. La valeur n'a de sens que relativement aux
+   autres couches de ce dépôt (la barre est à 45, le bouton « haut de page » à
+   40) : le rideau doit rester au-dessus de toutes. */
 .overlay {
+  --reveal: 0px;
   position: fixed;
   inset: 0;
   z-index: 50;
+  display: grid;
+  place-items: center;
   background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans-stack);
   pointer-events: none;
-  /* Le rideau s'OUVRE, il ne s'efface pas : un fondu d'opacité laisse voir le
-     hero à travers un voile pendant 300 ms, alors qu'un `clip-path` qui remonte
-     découvre la page franchement. Le hero n'a jamais d'état à demi visible. */
-  clip-path: inset(0 0 0 0);
-  transition: clip-path 320ms cubic-bezier(0.16, 1, 0.3, 1);
+  -webkit-mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent var(--reveal),
+    black calc(var(--reveal) + 1px)
+  );
+  mask-image: radial-gradient(
+    circle at 50% 50%,
+    transparent var(--reveal),
+    black calc(var(--reveal) + 1px)
+  );
 }
 
-.leaving {
-  clip-path: inset(0 0 100% 0);
-}
-
-/* Centrage par `inset: 0; margin: auto` et non par `translate(-50%, -50%)` :
-   GSAP écrit `transform` sur ces nœuds, un centrage porté par la même
-   propriété serait écrasé à la première frame. */
-.dot,
-.point,
-.ring {
+.label,
+.note {
   position: absolute;
-  inset: 0;
-  margin: auto;
+  top: 56px;
+  margin: 0;
+}
+
+.label {
+  left: 4.45vw;
+  font-size: 1rem;
+  line-height: 20px;
+}
+
+.note {
+  right: 4.45vw;
+  font-size: var(--label-s);
+  line-height: 14px;
+  letter-spacing: 1px;
+  color: var(--ink-2);
+}
+
+.parallax {
+  will-change: transform;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: min(700px, 86vw);
+  height: clamp(64px, 6vw, 86px);
+}
+
+.form {
+  position: absolute;
+  width: clamp(44px, 4.4vw, 64px);
+  height: clamp(44px, 4.4vw, 64px);
+  border: 1px solid var(--ink);
   border-radius: 50%;
+  background: var(--paper);
 }
 
 .dot {
-  width: 0.55rem;
-  height: 0.55rem;
-  border: 1px solid var(--line);
-}
-
-/* Le seul accent avant le hero : le point de contact. Les deux cercles qui
-   convergent restent neutres jusqu'à leur rencontre. */
-.point {
-  width: 0.7rem;
-  height: 0.7rem;
-  background: var(--touch);
-  transform: scale(0);
-}
-
-.ring {
-  width: 6rem;
-  height: 6rem;
-  border: 1px solid var(--touch);
-  opacity: 0;
-}
-
-.mark {
   position: absolute;
-  left: 50%;
-  bottom: 14vh;
-  transform: translateX(-50%);
-  font-family: var(--font-display-stack);
-  font-size: var(--display-s);
-  color: var(--ink);
+  width: clamp(28px, 2.8vw, 40px);
+  height: clamp(28px, 2.8vw, 40px);
+  border-radius: 50%;
+  background: var(--touch);
   opacity: 0;
+}
+
+.ripple {
+  position: absolute;
+  width: clamp(28px, 2.8vw, 40px);
+  height: clamp(28px, 2.8vw, 40px);
+  border: 1px solid var(--touch);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+/* Le mot est posé 84px sous le point de contact. « Ạ » vient d'Archivo Narrow
+   (la pile sans y passe avant toute police système). */
+.word {
+  position: absolute;
+  top: calc(50% + 84px);
+  font-size: clamp(24px, 2.2vw, 32px);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 2px;
+  opacity: 0;
+}
+
+@media (max-width: 43.75rem) {
+  .label,
+  .note {
+    top: 32px;
+  }
+
+  .label {
+    left: 24px;
+    font-size: 0.875rem;
+  }
+
+  .note {
+    right: 24px;
+    font-size: var(--label-2xs);
+  }
 }

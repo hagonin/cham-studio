@@ -2,130 +2,157 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { prefersReducedMotion } from '@/lib/motion/prefs';
 import {
   LOADER_DONE_EVENT,
-  loaderAlreadyShown,
+  loaderWillPlay,
   markLoaderShown,
 } from '@/lib/motion/loader-gate';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import styles from './Loader.module.css';
 
-const ARRIVE_MS = 1500;
-const DISMISS_MS = 1800;
-
 /**
- * Le rideau de contact avant le hero, jamais une porte. Le HTML du hero est
- * déjà complet dans le DOM servi — ce composant ne fait qu'ajouter un rideau
- * qui se retire de lui-même, y compris si GSAP échoue : la dismission est un
- * `setTimeout`, elle ne dépend d'aucun callback d'animation (« un loader qui
- * peut se bloquer est un site blanc »).
+ * Le rideau d'ouverture du dessin (`intro-loader.js`), séquence pour séquence :
+ * deux formes s'approchent, se rejoignent en un point de contact orange, émettent
+ * deux ondes, révèlent le mot CHẠM, puis un masque circulaire s'ouvre DEPUIS le
+ * point de contact sur la page. Environ 3,9 s.
  *
- * DOM et non WebGL (R2) : la séquence — deux cercles qui convergent, un point
- * plein, des ondes — tient en six nœuds transformés. Plus de coût de montage
- * d'un contexte 3D à couvrir, d'où un refus réduit à la seule raison qui reste
- * valable, `prefers-reduced-motion`. Le seuil des 1024 px de `allows3D()` visait
- * ce coût-là : il ne s'applique plus ici.
+ * Jamais une porte. Le HTML du hero est déjà complet dans le DOM servi ; ce
+ * composant n'ajoute qu'un rideau, monté côté client, qui se retire de lui-même.
+ * Une minuterie de 6,5 s le retire même si la séquence est interrompue : « un
+ * loader qui peut se bloquer est un site blanc ». Le rideau n'est pas dans le
+ * HTML serveur, donc rien ne le met entre un lecteur sans JavaScript et la page.
  *
- * Session-once : le drapeau se pose à la DISMISSION, pas au montage — une
- * personne qui quitte pendant l'animation la reverra à son retour.
+ * La porte est `loaderWillPlay()` (reduced-motion, ancre dans l'URL, page déjà
+ * défilée, une fois par session). Quand elle refuse, le drapeau de session est
+ * posé quand même : la galerie attend ce signal, et un rideau qui ne se monte
+ * pas ne l'émettra jamais.
+ *
+ * `immediateRender: false` sur les ondes est PORTEUR : GSAP applique l'état de
+ * départ d'un `fromTo` à la construction de la ligne de temps, pas au décalage
+ * du tween. Sans lui, les deux ondes se peignent à 0,7 d'opacité dès la
+ * première image, bien avant le contact.
  */
 export function Loader({ dict }: { dict: Dictionary }) {
-  const [phase, setPhase] = useState<'hidden' | 'active' | 'leaving'>('hidden');
+  const [active, setActive] = useState(false);
   const overlay = useRef<HTMLDivElement>(null);
-  const point = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion()) {
-      // Le drapeau se pose MÊME en refusant : `Gallery3DSlot` attend cet
-      // événement dès qu'il n'est pas encore posé, et sa propre porte n'est
-      // plus la même que la nôtre. Sans cette ligne, une machine que
-      // `allows3D()` accepterait resterait à attendre un loader jamais monté.
+    if (!loaderWillPlay()) {
+      // Posé MÊME en refusant : `Gallery3DSlot` attend ce signal, et un rideau
+      // qui ne se monte pas ne l'émettra jamais.
       markLoaderShown();
       return;
     }
-    if (loaderAlreadyShown()) return;
-
-    setPhase('active');
-    const arrive = setTimeout(() => setPhase('leaving'), ARRIVE_MS);
-    const dismiss = setTimeout(() => {
-      // Position du contact AVANT de démonter : la phase 03 prolonge ce point
-      // vers le × du logotype, et le nœud n'existe plus une frame plus tard.
-      const box = point.current?.getBoundingClientRect();
-      markLoaderShown();
-      setPhase('hidden');
-      // La galerie attend ce signal pour peindre : rien à dessiner sous un
-      // rideau opaque, et son canvas coûte plus cher que la séquence.
-      window.dispatchEvent(
-        new CustomEvent(LOADER_DONE_EVENT, {
-          detail: box
-            ? { x: box.left + box.width / 2, y: box.top + box.height / 2 }
-            : null,
-        }),
-      );
-    }, DISMISS_MS);
-
-    return () => {
-      clearTimeout(arrive);
-      clearTimeout(dismiss);
-    };
+    setActive(true);
   }, []);
-
-  // Le rideau est monté (`active` ou `leaving`) : la séquence, elle, ne se joue
-  // qu'une fois. Dépendre de `phase` relancerait cet effet au passage en
-  // `leaving` et la révocation replacerait les cercles à leur point de départ,
-  // en pleine ouverture du rideau.
-  const mounted = phase !== 'hidden';
 
   useEffect(() => {
     const root = overlay.current;
-    if (!mounted || !root) return;
+    if (!active || !root) return;
 
-    const q = (name: string) => Array.from(root.querySelectorAll(`.${name}`));
+    const one = (name: string) => root.querySelector<HTMLElement>(`.${styles[name]}`)!;
+    const parallax = one('parallax');
+    const left = one('left');
+    const right = one('right');
+    const dot = one('dot');
+    const ripples = [...root.querySelectorAll<HTMLElement>(`.${styles.ripple}`)];
+    const word = one('word');
+
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      clearTimeout(safety);
+      removeEventListener('pointermove', onPointer);
+      markLoaderShown();
+      setActive(false);
+      window.dispatchEvent(new CustomEvent(LOADER_DONE_EVENT));
+    };
+
+    // Les formes suivent le pointeur d'un peu loin : un décalage lissé, pas
+    // une poursuite. Au doigt il n'y a rien à suivre.
+    const onPointer = (event: PointerEvent) => {
+      if (event.pointerType === 'touch') return;
+      gsap.to(parallax, {
+        x: (event.clientX / innerWidth - 0.5) * 24,
+        y: (event.clientY / innerHeight - 0.5) * 18,
+        duration: 1.1,
+        ease: 'power3.out',
+        overwrite: 'auto',
+      });
+    };
+
+    // Le filet de sécurité : le rideau ne survit jamais à 6,5 s.
+    const safety = setTimeout(finish, 6500);
+    addEventListener('pointermove', onPointer);
+
+    const travel = Math.min(298, innerWidth * 0.34);
     const timeline = gsap
-      .timeline()
-      // Les deux cercles arrivent des bords du cadre. `x` seul : aucune
-      // recomposition de mise en page par frame.
+      .timeline({ onComplete: finish, onInterrupt: finish })
+      .set(left, { x: -travel })
+      .set(right, { x: travel })
+      .to([left, right], { x: 0, duration: 1.65, ease: 'power2.inOut' }, 0.15)
+      .to([left, right], { opacity: 0, duration: 0.15 }, 1.8)
       .fromTo(
-        q(styles.dot),
-        { x: (i: number) => (i === 0 ? '-22vw' : '22vw') },
-        { x: 0, duration: 1, ease: 'power3.out' },
-        0,
+        dot,
+        { opacity: 0, scale: 0.4 },
+        { opacity: 1, scale: 1, duration: 0.25, ease: 'power3.out' },
+        1.8,
       )
-      // Ils s'effacent au profit du point unique : le contact remplace les deux
-      // termes, il ne s'y ajoute pas.
-      .to(q(styles.dot), { scale: 0, opacity: 0, duration: 0.15 }, 1)
-      .to(q(styles.point), { scale: 1, duration: 0.25, ease: 'expo.out' }, 1)
-      // Les ondes reprennent la courbe de l'ancienne scène 3D
-      // (scale 0,2 → 2 ; opacité 0,45 → 0), décalées pour lire comme un écho.
       .fromTo(
-        q(styles.ring),
-        { scale: 0.2, opacity: 0.45 },
-        { scale: 2, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.12 },
-        1,
+        ripples,
+        { scale: 0.35, opacity: 0.7 },
+        {
+          scale: 9,
+          opacity: 0,
+          duration: 1.2,
+          stagger: 0.14,
+          ease: 'power2.out',
+          immediateRender: false,
+        },
+        1.85,
       )
-      .to(q(styles.mark), { opacity: 1, duration: 0.3, ease: 'power3.out' }, 1.05);
+      .fromTo(
+        word,
+        { opacity: 0, y: 16 },
+        { opacity: 1, y: 0, duration: 0.55, ease: 'power3.out' },
+        2,
+      )
+      // La page se révèle À TRAVERS le point de contact : un masque radial, pas
+      // un fondu. C'est toute l'idée de la section.
+      .to(
+        root,
+        {
+          '--reveal': `${Math.hypot(innerWidth, innerHeight)}px`,
+          duration: 1.15,
+          ease: 'power3.inOut',
+        },
+        2.75,
+      );
 
     return () => {
+      clearTimeout(safety);
+      removeEventListener('pointermove', onPointer);
       timeline.kill();
     };
-  }, [mounted]);
+  }, [active]);
 
-  if (phase === 'hidden') return null;
+  if (!active) return null;
 
   return (
-    <div
-      ref={overlay}
-      className={`${styles.overlay} ${phase === 'leaving' ? styles.leaving : ''}`}
-      aria-hidden="true"
-    >
-      <span className={styles.dot} />
-      <span className={styles.dot} />
-      <span ref={point} className={styles.point} />
-      <span className={styles.ring} />
-      <span className={styles.ring} />
-      <span className={styles.ring} />
-      <span className={styles.mark}>{dict.brand.name}</span>
+    <div ref={overlay} className={styles.overlay} aria-hidden="true">
+      <p className={styles.label}>{dict.loader.label}</p>
+      <p className={styles.note}>{dict.loader.note}</p>
+      <div className={styles.parallax}>
+        <div className={styles.stage}>
+          <i className={`${styles.form} ${styles.left}`} />
+          <i className={`${styles.form} ${styles.right}`} />
+          <span className={styles.dot} />
+          <span className={styles.ripple} />
+          <span className={styles.ripple} />
+          <b className={styles.word}>{dict.brand.name.toUpperCase()}</b>
+        </div>
+      </div>
     </div>
   );
 }
