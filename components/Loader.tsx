@@ -38,8 +38,8 @@ export function Loader({ dict }: { dict: Dictionary }) {
 
   useEffect(() => {
     if (!loaderWillPlay()) {
-      // Posé MÊME en refusant : `Gallery3DSlot` attend ce signal, et un rideau
-      // qui ne se monte pas ne l'émettra jamais.
+      // Posé MÊME en refusant : la visite a commencé, le rideau ne doit pas
+      // revenir à la page suivante.
       markLoaderShown();
       return;
     }

@@ -1,19 +1,13 @@
 /**
- * Le passage de témoin entre le rideau et la galerie 3D.
+ * Le passage de témoin entre le rideau d'ouverture et ce qui l'attend : la
+ * séquence du contact du hero (`HeroContact`), qui jouée plus tôt se déroulerait
+ * tout entière derrière lui.
  *
- * Le loader n'est plus WebGL : il n'y a plus de course entre deux contextes à
- * arbitrer. Ce qui reste vrai, c'est qu'il est OPAQUE et qu'il vit dans
- * `app/[locale]/layout.tsx`, au-dessus de la page — monter la galerie pendant
- * qu'il couvre l'écran, c'est payer un canvas, ses textures et son
- * `requestAnimationFrame` pour dessiner sous un rideau que personne ne
- * traverse. La galerie attend donc que la voie soit libre, pas qu'un contexte
- * se libère.
- *
- * Le drapeau de session est posé à la DISMISSION du loader, jamais à son
- * montage : quelqu'un qui recharge pendant l'animation le revoit, et la
- * galerie attend de nouveau son tour. Il est aussi posé quand le loader REFUSE
- * de se monter (reduced-motion) : les deux portes ne sont plus la même, et une
- * galerie qui attendrait un événement jamais émis resterait vide.
+ * Le drapeau de session est posé à la DISMISSION du rideau, jamais à son
+ * montage : quelqu'un qui recharge pendant l'animation le revoit. Il est aussi
+ * posé quand le rideau REFUSE de se jouer (reduced-motion, ancre dans l'URL,
+ * page déjà défilée) : l'arrivée est faite, le rideau ne reviendra pas à la page
+ * suivante de la même visite.
  */
 import { prefersReducedMotion } from './prefs';
 
@@ -42,12 +36,6 @@ export function markLoaderShown(): void {
   } catch {
     // Session non persistée : rien à faire de plus, voir la note ci-dessus.
   }
-}
-
-/** Le loader a-t-il déjà rendu la main dans cette session ? */
-export function canvasIsFree(): boolean {
-  if (typeof window === 'undefined') return false;
-  return loaderAlreadyShown();
 }
 
 /**
