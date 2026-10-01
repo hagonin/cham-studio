@@ -17,7 +17,9 @@ export const en = {
       'Independent studio in Montpellier, France. Marketing sites, brand identities and web applications, designed and built end to end.',
   },
   nav: {
-    label: 'Page sections',
+    label: 'Main navigation',
+    // L'étiquette du wordmark, qui ramène en haut de page.
+    logoLabel: 'CHẠM — back to top',
     about: 'About me',
     work: 'Works',
     services: 'Services',

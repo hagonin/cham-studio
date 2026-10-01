@@ -148,13 +148,13 @@
   /* Grille — 12 colonnes, asymétrique par composition et non par jeton :
      les compositions placent leurs éléments avec `grid-column`, donc une
      colonne ne se nomme pas ici. Le seul réglage partagé est la gouttière. */
-  /* Hauteur de la barre collante. Ce n'est pas une mesure décorative : c'est
-     le décalage dont chaque ancre a besoin pour ne pas atterrir SOUS la nav.
-     Un seul endroit à corriger si le rembourrage de la barre change. */
-  /* 80px : mesuré à 78,19px en 1440px de large (1,25rem de rembourrage haut et
-     bas + la ligne du wordmark). Arrondi AU-DESSUS — sous-estimer cette valeur
-     fait atterrir le titre visé à quelques pixels sous la barre. */
-  --nav-h: 5rem;
+  /* Hauteur de la barre fixe. Ce n'est pas une mesure décorative : c'est le
+     décalage dont chaque ancre a besoin pour ne pas atterrir SOUS la nav, et
+     celui dont le premier bloc a besoin pour ne pas démarrer sous elle. Un seul
+     endroit à corriger si la barre change.
+     96px, copiés du dessin (`navigation.css` : `height: 96px`) ; 80px sous
+     800px, comme le dessin — voir le bloc média plus bas. */
+  --nav-h: 6rem;
   --gutter: clamp(1rem, 2vw, 1.5rem);
   --page: 90rem; /* 1440px, la planche du canvas */
   /* Marge horizontale des sections : 4,45vw dans le dessin (64px à 1440px, 24px
@@ -180,6 +180,13 @@
   /* Le geste : deux bords qui se rejoignent. */
   --contact: cubic-bezier(0.85, 0, 0.15, 1);
   --contact-duration: 620ms;
+}
+
+/* Sous 800px la barre du dessin passe de 96 à 80px (`navigation.css`). */
+@media (max-width: 50rem) {
+  :root {
+    --nav-h: 5rem;
+  }
 }
 
 .grid {

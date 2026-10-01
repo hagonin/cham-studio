@@ -13,7 +13,9 @@ export const fr = {
       'Studio indépendant à Montpellier. Sites vitrines, identités et applications web, conçus et développés de bout en bout.',
   },
   nav: {
-    label: 'Sections de la page',
+    label: 'Navigation principale',
+    // L'étiquette du wordmark, qui ramène en haut de page.
+    logoLabel: 'CHẠM — retour en haut',
     about: 'À propos',
     work: 'Projets',
     services: 'Services',

@@ -1,173 +1,102 @@
 'use client';
 
 import { useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { getLenis } from '@/lib/motion/lenis';
 
 /**
- * Le comportement de la nav, sans rien rendre. `SectionNav` reste serveur.
- *
- * Deux responsabilités, et une seule est du mouvement :
- * 1. `aria-current` sur le lien de la section à l'écran. C'est un ÉTAT, pas une
- *    animation : il n'est donc pas gardé par `prefers-reduced-motion`. Une
- *    barre collante qui ne dit pas où l'on est vaut moins que pas de barre.
- * 2. L'ouverture du menu plein écran, avec Escape, piège de focus et
- *    restitution du focus au bouton.
+ * Le comportement de la barre, sans rien rendre : `SectionNav` reste serveur.
+ * C'est celui de `navigation.js` du prototype, règle pour règle :
+ * 1. `aria-current="location"` sur le lien de la section à l'écran — la
+ *    dernière dont le haut est passé au-dessus de 160px, et « contact » une
+ *    fois le bas de page atteint. C'est un ÉTAT, pas une animation : il n'est
+ *    donc pas gardé par `prefers-reduced-motion`. Au-dessus de la première
+ *    section, personne n'est courant : le hero n'est pas une destination.
+ * 2. Le menu sous 800px : le bouton bascule l'état et son libellé, Échap
+ *    referme et rend le focus au bouton, tout clic sur un lien de la barre
+ *    referme, et élargir la fenêtre au-delà de 800px referme aussi.
  *
  * Le défilement n'est PAS réimplémenté ici : `MotionProvider` intercepte déjà
- * tout `a[href^="#"]`. Le menu ne fait que se fermer — un second chemin de
- * défilement serait un second endroit où perdre le focus.
- *
- * L'observateur passe par ScrollTrigger et non par IntersectionObserver :
- * Lenis pilote déjà `ScrollTrigger.update`, un second observateur lirait des
- * positions désynchronisées du défilement lissé.
+ * tout `a[href^="#"]`. Le menu est un panneau, pas une modale : il ne bloque ni
+ * le défilement ni le focus, comme dans le dessin.
  */
 export function NavMotion() {
   useEffect(() => {
-    const nav = document.querySelector<HTMLElement>('[data-nav]');
-    const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
-    const menu = document.getElementById('nav-menu');
-    if (!nav || !toggle || !menu) return;
+    const header = document.querySelector<HTMLElement>('[data-nav]');
+    const toggle = header?.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+    if (!header || !toggle) return;
 
-    const links = [...menu.querySelectorAll<HTMLAnchorElement>('a[href^="#"]')];
-
-    /* --- État de section courante ------------------------------------------
-       Un déclencheur par section, sur des plages qui ne se CHEVAUCHENT pas :
-       la même ligne de référence (45 % de la fenêtre) sert de début et de fin,
-       donc exactement une section est active à la fois — jamais deux, jamais
-       un clignotement entre les deux. */
-    gsap.registerPlugin(ScrollTrigger);
-    const triggers: ScrollTrigger[] = [];
-    let firstSection: Element | null = null;
-
-    for (const link of links) {
-      const heading = document.querySelector<HTMLElement>(
-        link.getAttribute('href') ?? '',
-      );
-      const section = heading?.closest('section');
-      if (!section) continue;
-      firstSection ??= section;
-
-      triggers.push(
-        ScrollTrigger.create({
-          trigger: section,
-          start: 'top 45%',
-          end: 'bottom 45%',
-          onToggle: (self) => {
-            if (!self.isActive) return;
-            for (const other of links) other.removeAttribute('aria-current');
-            link.setAttribute('aria-current', 'true');
-          },
-        }),
-      );
-    }
-
-    // Le lien courant n'est JAMAIS retiré en sortant d'une section : toutes les
-    // sections de la page ne sont pas ancrées (le bloc « approche » ne l'est
-    // pas), et les effacer au passage laisserait la barre sans état au beau
-    // milieu de la page. Le dernier repère atteint tient jusqu'au suivant.
-    //
-    // Une seule exception, et c'est celle-ci : au-dessus de la première
-    // section ancrée — le hero — personne n'est courant, parce que le hero
-    // n'est pas une destination de la nav.
-    if (firstSection) {
-      triggers.push(
-        ScrollTrigger.create({
-          trigger: firstSection,
-          start: 'top 45%',
-          onLeaveBack: () => {
-            for (const link of links) link.removeAttribute('aria-current');
-          },
-        }),
-      );
-    }
-
-    /* --- Menu plein écran --------------------------------------------------- */
-    let open = false;
-    // Le piège inclut le bouton et le sélecteur de locale : tout ce qui est
-    // visible pendant que le menu couvre l'écran, et rien d'autre.
-    const focusablesIn = () =>
-      [...nav.querySelectorAll<HTMLElement>('a[href], button')].filter(
-        (element) => element.offsetParent !== null,
-      );
-
-    function setOpen(next: boolean) {
-      open = next;
-      toggle!.setAttribute('aria-expanded', String(next));
-      toggle!.textContent = next
-        ? (toggle!.dataset.labelClose ?? '')
-        : (toggle!.dataset.labelOpen ?? '');
-      nav!.dataset.open = String(next);
-      // Le défilement de la page derrière un menu plein écran donne un
-      // deuxième contenu qui bouge sous le premier. Lenis pilote le scroll
-      // par sa propre boucle rAF : `overflow: hidden` seul ne l'arrête pas.
-      document.body.style.overflow = next ? 'hidden' : '';
-      if (next) getLenis()?.stop();
-      else getLenis()?.start();
-      if (!next) toggle!.focus();
-    }
-
-    function onToggleClick() {
-      setOpen(!open);
-    }
-
-    function onKeyDown(event: KeyboardEvent) {
-      if (!open) return;
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setOpen(false);
-        return;
-      }
-      if (event.key !== 'Tab') return;
-
-      // Piège de focus : sans lui, la tabulation continue derrière le menu,
-      // sur des liens que personne ne voit.
-      const focusables = focusablesIn();
-      if (focusables.length === 0) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    }
-
-    // Le clic sur une ancre ferme le menu — il ne défile pas lui-même. L'écoute
-    // est sur la barre et non sur la liste : le bouton « contact » est en dehors
-    // de la liste et reste cliquable menu ouvert.
-    function onMenuClick(event: MouseEvent) {
-      if (!open) return;
-      if ((event.target as Element | null)?.closest('a[href^="#"]')) setOpen(false);
-    }
-
-    // Élargir la fenêtre au-delà de 50rem fait disparaître le bouton avec sa
-    // requête média — sans cette ligne, le menu se refermerait tout seul mais
-    // le verrou de défilement resterait posé sur une page qu'on ne peut plus
-    // débloquer, faute de bouton pour le faire.
-    function onResize() {
-      if (open && toggle!.offsetParent === null) setOpen(false);
-    }
-
-    toggle.addEventListener('click', onToggleClick);
-    nav.addEventListener('click', onMenuClick);
+    /* --- Menu ------------------------------------------------------------- */
+    const setOpen = (open: boolean) => {
+      header.dataset.open = String(open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.textContent = open
+        ? (toggle.dataset.labelClose ?? '')
+        : (toggle.dataset.labelOpen ?? '');
+    };
+    const onToggle = () => setOpen(header.dataset.open !== 'true');
+    const onClick = (event: MouseEvent) => {
+      if ((event.target as Element | null)?.closest('a')) setOpen(false);
+    };
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape' || header.dataset.open !== 'true') return;
+      setOpen(false);
+      toggle.focus();
+    };
+    const wide = matchMedia('(min-width: 801px)');
+    const onWide = (event: MediaQueryListEvent) => {
+      if (event.matches) setOpen(false);
+    };
+    toggle.addEventListener('click', onToggle);
+    header.addEventListener('click', onClick);
     document.addEventListener('keydown', onKeyDown);
-    addEventListener('resize', onResize);
+    wide.addEventListener('change', onWide);
+
+    /* --- Section courante -------------------------------------------------- */
+    const links = [...header.querySelectorAll<HTMLAnchorElement>('nav a[href^="#"]')];
+    const entries = links.flatMap((link) => {
+      const heading = document.querySelector<HTMLElement>(link.hash);
+      const node = heading?.closest('section') ?? heading;
+      return node ? [{ link, node }] : [];
+    });
+    const contact = links.find((link) => link.hash === '#contact-title');
+
+    let scheduled = false;
+    const update = () => {
+      scheduled = false;
+      let active: HTMLAnchorElement | undefined;
+      const byPosition = [...entries].sort(
+        (a, b) =>
+          a.node.getBoundingClientRect().top - b.node.getBoundingClientRect().top,
+      );
+      for (const { link, node } of byPosition) {
+        if (node.getBoundingClientRect().top <= 160) active = link;
+      }
+      if (
+        scrollY > 0 &&
+        scrollY + innerHeight >= document.documentElement.scrollHeight - 4
+      ) {
+        active = contact;
+      }
+      for (const link of links) {
+        if (link === active) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      }
+    };
+    const onScroll = () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(update);
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    update();
 
     return () => {
-      toggle.removeEventListener('click', onToggleClick);
-      nav.removeEventListener('click', onMenuClick);
+      toggle.removeEventListener('click', onToggle);
+      header.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKeyDown);
-      removeEventListener('resize', onResize);
-      for (const trigger of triggers) trigger.kill();
-      // Un menu démonté ouvert laisserait la page bloquée sans rien pour la
-      // débloquer : l'état de défilement du corps et celui de Lenis sont
-      // rendus dans tous les cas.
-      document.body.style.overflow = '';
-      if (open) getLenis()?.start();
+      wide.removeEventListener('change', onWide);
+      removeEventListener('scroll', onScroll);
+      removeEventListener('resize', onScroll);
     };
   }, []);
 

@@ -1,5 +1,8 @@
+/* La barre est FIXE et ne tient plus de place dans la page : le hero démarre
+   sous elle. Le rembourrage haut d'avant s'y ajoute, pour que la composition
+   ne bouge pas tant que le hero n'est pas repris sur le dessin. */
 .hero {
-  padding: clamp(2rem, 5vw, 4rem) 0 clamp(3.5rem, 9vw, 7rem);
+  padding: calc(var(--nav-h) + clamp(2rem, 5vw, 4rem)) 0 clamp(3.5rem, 9vw, 7rem);
 }
 
 /* --- Bandeau de repères ---------------------------------------------------
