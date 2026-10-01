@@ -9,7 +9,6 @@ import { Hero } from '@/components/Hero';
 import { TouchPhilosophy } from '@/components/TouchPhilosophy';
 import { ScrollCue } from '@/components/ScrollCue';
 import { AboutBlock } from '@/components/AboutBlock';
-import { ServiceList } from '@/components/ServiceList';
 import { Process } from '@/components/Process';
 import { ContactBlock } from '@/components/ContactBlock';
 import { WorkSection } from '@/components/WorkSection';
@@ -42,10 +41,11 @@ export async function generateMetadata({
  * rapporte derrière un clic : chaque visite entrante et chaque lien retour
  * arrivent directement dessus.
  *
- * Ordre de lecture (décision 16) : nav → hero → travaux →
- * prestations → process → à propos → contact. La preuve d'abord, l'offre
- * ensuite, comment ça se passe, puis la personne en dernier : un client a
- * besoin de savoir ce qu'il peut confier et comment avant de savoir à qui.
+ * Ordre de lecture, celui du dessin : nav → hero → scène tactile → à propos →
+ * travaux → prestations → contact. La personne vient avant la preuve ; l'ancien
+ * ordre (preuve, offre, méthode, personne en dernier) est abandonné, parce que
+ * le dessin le contredit. Cet ordre vit à deux endroits qui bougent ensemble :
+ * ce JSX et `SECTION_KEYS` dans `lib/sections.ts`, d'où la nav tire le sien.
  *
  * Le bloc « situations » a été retiré : aucune planche du canvas ne le dessine,
  * et il ouvrait la page sur des questions au lieu de la preuve.
@@ -73,18 +73,21 @@ export default async function ServicesPage({
       <SectionNav locale={locale} dict={dict} sections={MOUNTED_SECTIONS} />
       <main className={styles.page}>
         <Hero dict={dict} locale={locale} />
-        <TouchPhilosophy {...dict.home.touchPhilosophy} />
         {/* L'indicateur appartient à la charnière entre le hero et la suite,
-            pas au hero : il annonce ce qui vient après, donc il vit ici. */}
+            pas au hero : il annonce ce qui vient après, donc il vit ici — avant
+            la scène tactile qu'il annonce, comme dans le dessin. */}
         <ScrollCue label={dict.nav.scroll} />
-        {workSectionIsReady() && <WorkSection locale={locale} dict={dict} />}
-        <ServiceList locale={locale} dict={dict} />
-        {/* L'estimateur n'est PAS monté (décision 8) : une fourchette calculée
-            est un chiffre, et la décision 7 n'en publie aucun. Le composant, le
-            modèle et ses tests restent au dépôt — du travail testé qui vaut
-            comme preuve de métier, pas comme section de page. */}
-        <Process dict={dict} />
+        <TouchPhilosophy {...dict.home.touchPhilosophy} />
         <AboutBlock dict={dict} />
+        {workSectionIsReady() && <WorkSection locale={locale} dict={dict} />}
+        {/* Un seul bloc de prestations : les trois disciplines du dessin, rendues
+            par `Process` sous `#services-title`. `ServiceList` n'est PAS monté,
+            et l'estimateur non plus (décision 8) : une fourchette calculée est un
+            chiffre, et la décision 7 n'en publie aucun. Les composants, leurs
+            données (`content/services.ts`) et leurs tests restent au dépôt — du
+            travail testé qui vaut comme preuve de métier, pas comme section de
+            page. Les monter à côté de `Process` dupliquerait `services-title`. */}
+        <Process dict={dict} />
         <ContactBlock dict={dict} locale={locale} />
       </main>
     </>

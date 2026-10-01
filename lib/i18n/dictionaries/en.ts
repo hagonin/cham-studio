@@ -18,11 +18,10 @@ export const en = {
   },
   nav: {
     label: 'Page sections',
-    about: 'About',
+    about: 'About me',
+    work: 'Works',
     services: 'Services',
-    work: 'Work',
-    process: 'Process',
-    contact: 'Contact',
+    contact: 'Connect',
     skipToContent: 'Skip to content',
     top: 'Back to top',
     menu: 'Menu',
@@ -92,27 +91,19 @@ export const en = {
       close: 'Collapse',
     },
     process: {
-      title: ['How', 'I work'],
+      title: ['From first thought', 'to final detail.'],
       steps: [
         {
-          title: 'Discover',
-          body: 'Understand the business, users, constraints and goals.',
+          title: 'Product & UX design',
+          body: 'Flows, prototypes, and interfaces shaped around how people actually use a product.',
         },
         {
-          title: 'Define',
-          body: 'Clarify scope, priorities, flows and technical direction.',
+          title: 'Fullstack development',
+          body: 'Responsive frontends, APIs, and the systems that turn a considered design into a working product.',
         },
         {
-          title: 'Design',
-          body: 'Create structure, interface, interaction and prototype.',
-        },
-        {
-          title: 'Build',
-          body: 'Develop the product and integrate backend services.',
-        },
-        {
-          title: 'Ship',
-          body: 'Deploy, validate, iterate and support launch.',
+          title: 'Interaction & refinement',
+          body: 'Motion, accessibility, and the small responses that make an interface feel considered.',
         },
       ],
     },

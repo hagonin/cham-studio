@@ -15,9 +15,8 @@ export const fr = {
   nav: {
     label: 'Sections de la page',
     about: 'À propos',
-    services: 'Prestations',
-    work: 'Travaux',
-    process: 'Méthode',
+    work: 'Projets',
+    services: 'Services',
     contact: 'Contact',
     skipToContent: 'Aller au contenu',
     top: 'Haut de page',
@@ -112,30 +111,23 @@ export const fr = {
       close: 'Replier',
     },
     process: {
-      // Décision 27 : une ligne continue à cinq points de contact, jamais
-      // cinq figures séparées. Le titre tient sur deux lignes, comme
+      // Le bloc « prestations » du dessin : trois disciplines, pas les offres de
+      // `content/services.ts`, qui n'ont plus de place sur la page. Le composant
+      // s'appelle encore `Process`. Le titre tient sur deux lignes, comme
       // « Derrière / Chạm » — deux éléments distincts, pas une phrase coupée.
-      title: ['Comment', 'je travaille'],
+      title: ['De la première idée', 'au dernier détail.'],
       steps: [
         {
-          title: 'Découvrir',
-          body: 'Comprendre l’activité, les utilisateurs, les contraintes et les objectifs.',
+          title: 'Design produit et UX',
+          body: 'Des parcours, des prototypes et des interfaces pensés pour la façon dont on utilise vraiment un produit.',
         },
         {
-          title: 'Définir',
-          body: 'Clarifier le périmètre, les priorités, les parcours et l’orientation technique.',
+          title: 'Développement fullstack',
+          body: 'Des interfaces responsives, des API et les systèmes qui font d’un design réfléchi un produit qui fonctionne.',
         },
         {
-          title: 'Concevoir',
-          body: 'Construire la structure, l’interface, les interactions et le prototype.',
-        },
-        {
-          title: 'Développer',
-          body: 'Développer le produit et intégrer les services back-end.',
-        },
-        {
-          title: 'Livrer',
-          body: 'Déployer, valider, itérer et accompagner le lancement.',
+          title: 'Interaction et finitions',
+          body: 'Le mouvement, l’accessibilité et les petites réactions qui rendent une interface attentive.',
         },
       ],
     },

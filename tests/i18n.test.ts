@@ -166,6 +166,15 @@ describe('navigation de section', () => {
     }
   });
 
+  // L'ordre est celui du dessin : la personne avant la preuve. Il remplace
+  // l'ancien « preuve d'abord » et vit à deux endroits — cette liste et le JSX
+  // de `app/[locale]/page.tsx` — qui doivent bouger ensemble. Les numéros
+  // affichés à l'écran (02 / 05, 03, 04 / 05) en dépendent. Il n'y a plus de
+  // section « process » : ses prestations sont le bloc `services`.
+  it('suit l’ordre du dessin', () => {
+    expect([...SECTION_KEYS]).toEqual(['about', 'work', 'services', 'contact']);
+  });
+
   it('nomme chaque section dans les deux locales', () => {
     for (const locale of locales) {
       const { nav } = getDictionary(locale);

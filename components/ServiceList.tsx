@@ -4,7 +4,13 @@ import type { Dictionary } from '@/lib/i18n/getDictionary';
 import type { Locale } from '@/lib/i18n/config';
 import styles from './ServiceList.module.css';
 
-/** Composant serveur : seuls les accordéons descendent côté client. */
+/**
+ * Composant serveur : seuls les accordéons descendent côté client.
+ *
+ * NON MONTÉ sur la page : le dessin n'a qu'un bloc de prestations, rendu par
+ * `Process` sous le même `id="services-title"`. Le monter à côté de lui
+ * dupliquerait cet `id` ; `page.tsx` dit pourquoi il reste au dépôt.
+ */
 export function ServiceList({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   return (
     <section data-reveal className={styles.block} aria-labelledby="services-title">
