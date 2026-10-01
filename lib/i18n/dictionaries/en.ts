@@ -22,6 +22,8 @@ export const en = {
     work: 'Works',
     services: 'Services',
     contact: 'Connect',
+    // Le bouton de la barre : même cible que « Connect », hors de la liste.
+    contactMe: 'Contact me',
     skipToContent: 'Skip to content',
     top: 'Back to top',
     menu: 'Menu',

@@ -49,25 +49,6 @@ export function SectionNav({
         {dict.brand.name}
       </Link>
 
-      {/* `aria-controls` n'est pas une formalité : `check-html.mjs` fait
-          échouer le build sur un `aria-expanded` qui n'en a pas. Le bouton est
-          rendu par le serveur avec l'état FERMÉ — c'est l'état sans JS, et sans
-          JS les ancres restent atteignables autrement (le menu n'est masqué que
-          sous 40rem, où la liste redevient visible dès que le CSS s'applique).
-          Les deux libellés voyagent en `data-*` : le composant client bascule
-          le texte sans avoir à connaître la langue de la page. */}
-      <button
-        type="button"
-        className={styles.toggle}
-        aria-expanded="false"
-        aria-controls="nav-menu"
-        data-nav-toggle
-        data-label-open={nav.menu}
-        data-label-close={nav.close}
-      >
-        {nav.menu}
-      </button>
-
       <ul id="nav-menu" className={styles.sections}>
         {items.map(({ href, label }) => (
           <li key={href} className={styles.item}>
@@ -81,6 +62,37 @@ export function SectionNav({
           </li>
         ))}
       </ul>
+
+      {/* Le bouton du dessin : même cible que « contact » dans la liste, mais
+          hors d'elle — il reste visible quand les ancres passent derrière le
+          bouton de menu. Hors de `#nav-menu`, `NavMotion` ne lui pose jamais
+          `aria-current`. Placé avant le bouton de menu dans le DOM, comme à
+          l'écran : l'ordre de tabulation est l'ordre visuel, à toutes les
+          largeurs. La flèche est décorative. */}
+      {sections.includes('contact') && (
+        <a href="#contact-title" className={styles.contact}>
+          {nav.contactMe} <span aria-hidden="true">↗</span>
+        </a>
+      )}
+
+      {/* `aria-controls` n'est pas une formalité : `check-html.mjs` fait
+          échouer le build sur un `aria-expanded` qui n'en a pas. Le bouton est
+          rendu par le serveur avec l'état FERMÉ — c'est l'état sans JS, et sans
+          JS les ancres restent atteignables autrement (le menu n'est masqué que
+          sous 50rem, où la liste redevient visible dès que le CSS s'applique).
+          Les deux libellés voyagent en `data-*` : le composant client bascule
+          le texte sans avoir à connaître la langue de la page. */}
+      <button
+        type="button"
+        className={styles.toggle}
+        aria-expanded="false"
+        aria-controls="nav-menu"
+        data-nav-toggle
+        data-label-open={nav.menu}
+        data-label-close={nav.close}
+      >
+        {nav.menu}
+      </button>
 
       <p className={styles.locales}>
         {locales.map((code, index) => {

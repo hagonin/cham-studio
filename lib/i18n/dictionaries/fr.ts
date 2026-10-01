@@ -18,6 +18,8 @@ export const fr = {
     work: 'Projets',
     services: 'Services',
     contact: 'Contact',
+    // Le bouton de la barre : même cible que « Contact », hors de la liste.
+    contactMe: 'Écrivez-moi',
     skipToContent: 'Aller au contenu',
     top: 'Haut de page',
     // Le bouton porte les deux libellés : c'est le MÊME bouton qui bascule,

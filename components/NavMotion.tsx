@@ -136,13 +136,15 @@ export function NavMotion() {
       }
     }
 
-    // Le clic sur une ancre ferme le menu — il ne défile pas lui-même.
+    // Le clic sur une ancre ferme le menu — il ne défile pas lui-même. L'écoute
+    // est sur la barre et non sur la liste : le bouton « contact » est en dehors
+    // de la liste et reste cliquable menu ouvert.
     function onMenuClick(event: MouseEvent) {
       if (!open) return;
       if ((event.target as Element | null)?.closest('a[href^="#"]')) setOpen(false);
     }
 
-    // Élargir la fenêtre au-delà de 40rem fait disparaître le bouton avec sa
+    // Élargir la fenêtre au-delà de 50rem fait disparaître le bouton avec sa
     // requête média — sans cette ligne, le menu se refermerait tout seul mais
     // le verrou de défilement resterait posé sur une page qu'on ne peut plus
     // débloquer, faute de bouton pour le faire.
@@ -151,13 +153,13 @@ export function NavMotion() {
     }
 
     toggle.addEventListener('click', onToggleClick);
-    menu.addEventListener('click', onMenuClick);
+    nav.addEventListener('click', onMenuClick);
     document.addEventListener('keydown', onKeyDown);
     addEventListener('resize', onResize);
 
     return () => {
       toggle.removeEventListener('click', onToggleClick);
-      menu.removeEventListener('click', onMenuClick);
+      nav.removeEventListener('click', onMenuClick);
       document.removeEventListener('keydown', onKeyDown);
       removeEventListener('resize', onResize);
       for (const trigger of triggers) trigger.kill();

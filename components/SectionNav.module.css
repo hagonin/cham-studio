@@ -107,8 +107,8 @@
   content: '\2022 ]';
 }
 
-/* Le bouton n'existe que sous 40rem (voir le bloc média). Masqué ici par
-   `display: none` et non par un déplacement hors écran : au-dessus de 40rem
+/* Le bouton n'existe que sous 50rem, soit 800px (voir le bloc média). Masqué ici par
+   `display: none` et non par un déplacement hors écran : au-dessus de 50rem
    les ancres sont toutes visibles, il n'y a rien à déplier, donc rien à
    atteindre au clavier non plus. */
 .toggle {
@@ -134,6 +134,35 @@
   color: var(--touch);
 }
 
+/* Le bouton du dessin : le lien le plus direct de la barre, souligné d'un filet
+   plein. La flèche part en diagonale au toucher. --touch n'y paraît qu'au
+   survol et au focus, comme les liens. */
+.contact {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid currentColor;
+  color: var(--ink);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.contact span {
+  display: inline-block;
+  transition: transform 200ms var(--contact);
+}
+
+.contact:hover,
+.contact:focus-visible {
+  color: var(--touch);
+}
+
+.contact:hover span,
+.contact:focus-visible span {
+  transform: translate(3px, -3px);
+}
+
 .locales {
   margin: 0;
   color: var(--muted);
@@ -149,7 +178,23 @@
   color: var(--muted);
 }
 
-/* Sous 640px, les ancres passent derrière un bouton — elles ne DISPARAISSENT
+/* Entre 800 et 1100px la barre complète — liens, bouton, langue — ne tient
+   plus au rythme large (en français elle passe à la ligne sous ~1010px).
+   Le dessin la resserre à cette largeur, pas avant : interlettrage et
+   écarts plus courts, mêmes éléments. Sans cela les libellés se coupent sur
+   deux lignes avant que le bouton de menu ne prenne le relais. */
+@media (max-width: 68.75rem) {
+  .nav {
+    gap: 1.25rem;
+    letter-spacing: 0.12em;
+  }
+
+  .sections {
+    gap: 1rem;
+  }
+}
+
+/* Sous 800px — le seuil du dessin —, les ancres passent derrière un bouton — elles ne DISPARAISSENT
    plus. L'ancien raisonnement (« quatre ancres se rejoignent au défilement, un
    tiroir ajoute un état ») tenait pour une barre qui défilait avec la page :
    masquer des ancres qu'on retrouvait en descendant ne coûtait rien. La barre
@@ -160,7 +205,7 @@
    tabulation. Un menu simplement transparent laisserait le clavier entrer dans
    des liens que personne ne voit — la panne exacte que le piège de focus
    existe pour empêcher. */
-@media (max-width: 40rem) {
+@media (max-width: 50rem) {
   .toggle {
     display: block;
   }
@@ -178,6 +223,25 @@
   }
 
   .locales {
+    margin-inline-start: 0;
+  }
+
+  /* Sous 800px la barre porte : wordmark, bouton, MENU, langue. Le bouton
+     prend la marge automatique (le bouton de menu ne la prend plus) et passe
+     à la taille d'étiquette la plus petite du dessin pour que la ligne tienne
+     à 360px. */
+  .nav {
+    gap: var(--space-4);
+  }
+
+  .contact {
+    margin-inline-start: auto;
+    gap: var(--space-2);
+    font-size: var(--label-xs);
+    letter-spacing: 0.1em;
+  }
+
+  .toggle {
     margin-inline-start: 0;
   }
 

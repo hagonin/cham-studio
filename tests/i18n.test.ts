@@ -179,6 +179,7 @@ describe('navigation de section', () => {
     for (const locale of locales) {
       const { nav } = getDictionary(locale);
       expect(nav.label.trim().length, locale).toBeGreaterThan(0);
+      expect(nav.contactMe.trim().length, locale).toBeGreaterThan(0);
       for (const key of SECTION_KEYS) {
         expect(nav[key].trim().length, `${locale}/${key}`).toBeGreaterThan(0);
       }
