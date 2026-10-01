@@ -107,6 +107,102 @@ describe('dictionnaires', () => {
   });
 });
 
+/**
+ * La copie de la page est ÉCRITE dans les deux langues (`copy-fr.md`), pas
+ * traduite mot à mot. `tsc` garantit que chaque clé existe des deux côtés ; il
+ * ne dit rien d'une valeur laissée en anglais, vide, ou d'un gabarit `{title}`
+ * qui diffère d'une langue à l'autre — et c'est ce qui se perd en silence quand
+ * plus de cent chaînes arrivent d'un coup.
+ */
+describe('copie française', () => {
+  const flatten = (value: unknown, path = '', out: Record<string, string> = {}) => {
+    if (typeof value === 'string') out[path] = value;
+    else if (Array.isArray(value))
+      value.forEach((inner, i) => flatten(inner, `${path}[${i}]`, out));
+    else if (value && typeof value === 'object')
+      for (const [key, inner] of Object.entries(value))
+        flatten(inner, path ? `${path}.${key}` : key, out);
+    return out;
+  };
+  const fr = flatten(getDictionary('fr'));
+  const en = flatten(getDictionary('en'));
+
+  it('remplit chaque chaîne dans les deux langues', () => {
+    for (const [path, text] of Object.entries(fr)) {
+      expect(text.trim().length, `fr ${path}`).toBeGreaterThan(0);
+      expect((en[path] ?? '').trim().length, `en ${path}`).toBeGreaterThan(0);
+    }
+  });
+
+  it('garde les mêmes gabarits {x} d’une langue à l’autre', () => {
+    const tokens = (text: string) =>
+      [...text.matchAll(/\{(\w+)\}/g)]
+        .map((match) => match[1])
+        .sort()
+        .join(',');
+    for (const path of Object.keys(fr)) {
+      expect(tokens(fr[path]), path).toBe(tokens(en[path]));
+    }
+  });
+
+  // Seules ces chaînes sont identiques dans les deux langues, et chacune l'est
+  // pour une raison : verrou de marque, numéro de section, nom d'outil, nom
+  // propre, ou mot qui s'écrit pareil. Une nouvelle chaîne identique n'entre pas
+  // ici par défaut : quelqu'un décide que c'est voulu.
+  const SAME_ON_PURPOSE = new Set([
+    'nav.services',
+    'nav.menu',
+    'brand.name',
+    'brand.positioning',
+    'footer.location',
+    'langSwitch.fr',
+    'langSwitch.en',
+    'home.touchPhilosophy.meta[0]',
+    'home.touchPhilosophy.meta[1]',
+    'home.about.eyebrow[1]',
+    'home.about.photoPair[0]',
+    'home.about.now.chips[0]',
+    'home.about.now.chips[1]',
+    'home.about.now.chips[2]',
+    'home.work.meta[0]',
+    'home.work.meta[2]',
+    'home.contact.footer.spread[0]',
+    'home.contact.footer.spread[1]',
+    'home.contact.footer.meta[0]',
+    'home.contact.footer.signature',
+    'pricing.estimator.scales.simple',
+    'pricing.estimator.scales.standard',
+    'pricing.estimator.designs.signature',
+  ]);
+
+  it('n’a pas de chaîne recopiée de l’anglais', () => {
+    const copied = Object.keys(fr).filter((path) => fr[path] === en[path]);
+    expect(copied.filter((path) => !SAME_ON_PURPOSE.has(path))).toEqual([]);
+  });
+
+  it('ne garde pas dans la liste une chaîne qui a fini par être traduite', () => {
+    // Une liste d'exceptions qui ne rétrécit jamais finit par tout laisser passer.
+    for (const path of SAME_ON_PURPOSE) {
+      expect(fr[path], path).toBe(en[path]);
+    }
+  });
+
+  // « ? ! : ; » et les guillemets prennent une espace fine insécable en
+  // français. Une espace simple laisse le signe tomber seul en début de ligne,
+  // ce que la mise en page à 390px rend visible. Le brouillon d'e-mail est un
+  // texte brut : il garde l'espace simple du deck.
+  it('met une espace insécable avant ? ! : ; dans la copie de la page', () => {
+    const plainTextEmail = 'home.contact.form.draft.body';
+    const offenders = Object.keys(fr).filter(
+      (path) =>
+        path.startsWith('home.') &&
+        path !== plainTextEmail &&
+        /[^\s\u00a0\u202f] [?!:;»]|« /.test(fr[path]),
+    );
+    expect(offenders).toEqual([]);
+  });
+});
+
 describe('formats localisés', () => {
   it('formate les montants selon la locale', () => {
     // Espaces insécables côté français : on compare les chiffres, pas l'espace.
