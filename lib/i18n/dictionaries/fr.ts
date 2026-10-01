@@ -83,14 +83,18 @@ export const fr = {
       scrollLabel: 'Aller à la section 2 sur 5',
     },
     touchPhilosophy: {
-      label: 'Design × code',
-      hint: 'Approchez. Touchez les mots.',
+      // La scène tactile du dessin (copy-fr.md). Le numéro « 02 / 05 » encode la
+      // place de la section dans la page (voir `lib/sections.ts`) sans en être
+      // dérivé : changer l'ordre le périme. Les lignes sont rendues dans un
+      // <h2> — texte réel dans le HTML servi — puis reprises par le canevas.
+      meta: ['02 / 05', 'DESIGN × CODE', 'BOUGER · DÉFILER · TOUCHER'],
+      hint: 'APPROCHEZ. POUSSEZ LES MOTS.',
       lines: [
         'JE CONÇOIS DES INTERFACES',
-        'RÉFLÉCHIES ET JE LES',
-        'TRANSFORME EN PRODUITS RÉELS.',
-        'CHẠM NE SE LIT PAS SEULEMENT.',
-        'IL SE TOUCHE.',
+        'RÉFLÉCHIES ET J’EN FAIS',
+        'DE VRAIS PRODUITS.',
+        'ON NE FAIT PAS QUE LIRE CHẠM.',
+        'ON LE TOUCHE.',
       ],
     },
     services: {

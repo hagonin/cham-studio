@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Matter from 'matter-js';
+import { prefersReducedMotion } from '@/lib/motion/prefs';
 import { colors } from '@/lib/tokens';
 import styles from './TouchPhilosophy.module.css';
 
@@ -13,162 +14,168 @@ type Glyph = {
   homeX: number;
   homeY: number;
   color: string;
-  hidden: boolean;
-  fadeStartedAt: number;
 };
 
-type SceneMode = 'assembled' | 'falling' | 'reassembling';
+type Mode = 'assembled' | 'falling' | 'reassembling';
 
-// Le canevas ne lit pas les variables CSS : ses couleurs viennent du miroir TS,
-// que tests/tokens.test.ts garde égal à la feuille de style.
-const INK = colors.ink;
-const PAPER = colors.paper;
-const MUTED = colors.muted;
-const RELEASE_AT = 0.12;
-const CURTAIN_AT = 0.78;
+// Une couleur par ligne, celles du dessin : deux lignes en retrait, deux
+// claires, la dernière en accent. Le canevas ne lit pas les variables CSS : ses
+// couleurs viennent du miroir TS, que tests/tokens.test.ts garde égal à la
+// feuille de style.
+const LINE_COLORS = [
+  colors.dim,
+  colors.dim,
+  colors['paper-warm'],
+  colors['paper-warm'],
+  colors['touch-hot'],
+];
 
+/**
+ * La scène tactile du dessin (`whole-page.js` du prototype), constante pour
+ * constante : la phrase est posée en lettres Matter.js ; un défilement la
+ * lâche, elle tombe, le pointeur repousse les lettres tant qu'elles tombent, et
+ * elles se recomposent quand on remonte.
+ *
+ * Le texte est du texte RÉEL dans le HTML servi (le <h2>), lisible sans
+ * JavaScript. Le canevas le recouvre une fois la scène montée, et le <h2> passe
+ * alors hors écran (`data-enhanced` sur la section) : le texte d'abord,
+ * l'amélioration ensuite.
+ *
+ * Sous reduced-motion rien ne se monte : la section reste une page, la phrase
+ * en texte statique, sans canevas ni rideau.
+ *
+ * C'est la chose la plus coûteuse de la page. Le rendu s'arrête dès que la
+ * scène n'est plus à l'écran, que l'onglet est caché, ou que rien ne bouge.
+ */
 export function TouchPhilosophy({
-  label,
+  meta,
   hint,
   lines,
 }: {
-  label: string;
+  meta: string[];
   hint: string;
   lines: string[];
 }) {
   const sectionRef = useRef<HTMLElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
-  const [enhanced, setEnhanced] = useState(false);
 
   useEffect(() => {
     const section = sectionRef.current;
+    const stage = stageRef.current;
     const canvas = canvasRef.current;
     const curtain = curtainRef.current;
-    if (
-      !section ||
-      !canvas ||
-      !curtain ||
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    )
-      return;
-
+    if (!section || !stage || !canvas || !curtain || prefersReducedMotion()) return;
     const context = canvas.getContext('2d');
     if (!context) return;
 
-    gsap.registerPlugin(ScrollTrigger);
-    setEnhanced(true);
-
-    let disposed = false;
-    let frame: number | null = null;
-    let lastTime = performance.now();
-    let cssWidth = 0;
-    let cssHeight = 0;
-    let fontSize = 0;
-    let fontFamily = '';
-    let mode: SceneMode = 'assembled';
-    let glyphs: Glyph[] = [];
-    let walls: Matter.Body[] = [];
-
-    const engine = Matter.Engine.create({
-      positionIterations: 8,
-      velocityIterations: 6,
-    });
+    const { Engine, Bodies, Body, Composite } = Matter;
+    const engine = Engine.create({ positionIterations: 8, velocityIterations: 6 });
     engine.gravity.y = 3;
 
+    let glyphs: Glyph[] = [];
+    let width = 0;
+    let height = 0;
+    let fontSize = 0;
+    let mode: Mode = 'assembled';
+    let lastTime = performance.now();
+    let releaseTimer: ReturnType<typeof setTimeout> | undefined;
+    // Lu par `buildScene`, créé plus bas : un objet plutôt qu'un `let` écrit une fois.
+    const scene: { trigger?: ScrollTrigger } = {};
+    let accumulator = 0;
+    let visible = false;
+    let frame = 0;
+    let disposed = false;
+
+    // La famille réellement chargée par `next/font`, lue sur le canevas : il ne
+    // peut pas lire `var(--font-display-stack)`, et un nom écrit en dur
+    // dériverait de `lib/fonts.ts`.
+    const family = getComputedStyle(canvas).fontFamily;
+
     const clearScene = () => {
-      Matter.Composite.clear(engine.world, false, true);
+      Composite.clear(engine.world, false, true);
       glyphs = [];
-      walls = [];
-    };
-
-    const assembleImmediately = () => {
-      mode = 'assembled';
-      for (const glyph of glyphs) {
-        glyph.hidden = false;
-        glyph.fadeStartedAt = 0;
-        glyph.body.collisionFilter.mask = 0xffffffff;
-        Matter.Body.setStatic(glyph.body, true);
-        Matter.Body.setPosition(glyph.body, { x: glyph.homeX, y: glyph.homeY });
-        Matter.Body.setAngle(glyph.body, 0);
-        Matter.Body.setVelocity(glyph.body, { x: 0, y: 0 });
-        Matter.Body.setAngularVelocity(glyph.body, 0);
-      }
-    };
-
-    const beginReassembly = () => {
-      if (mode === 'assembled' || mode === 'reassembling') return;
-      mode = 'reassembling';
-      for (const glyph of glyphs) {
-        glyph.hidden = false;
-        glyph.fadeStartedAt = 0;
-        glyph.body.collisionFilter.mask = 0xffffffff;
-        Matter.Body.setStatic(glyph.body, true);
-        Matter.Body.setVelocity(glyph.body, { x: 0, y: 0 });
-        Matter.Body.setAngularVelocity(glyph.body, 0);
-      }
     };
 
     const release = () => {
       if (mode === 'falling') return;
       mode = 'falling';
-      for (const glyph of glyphs) {
-        if (glyph.hidden) continue;
-        Matter.Body.setStatic(glyph.body, false);
-        Matter.Body.applyForce(glyph.body, glyph.body.position, {
+      for (const { body } of glyphs) {
+        Body.setStatic(body, false);
+        Body.applyForce(body, body.position, {
           x: (Math.random() - 0.5) * 0.02,
           y: Math.random() * 0.003,
         });
       }
     };
 
-    const layout = () => {
-      const wasFalling = mode === 'falling';
-      clearScene();
+    const reassemble = () => {
+      clearTimeout(releaseTimer);
+      if (mode !== 'falling') return;
+      mode = 'reassembling';
+      for (const { body } of glyphs) {
+        Body.setStatic(body, true);
+        Body.setVelocity(body, { x: 0, y: 0 });
+        Body.setAngularVelocity(body, 0);
+      }
+    };
 
-      const rect = canvas.getBoundingClientRect();
+    const reset = () => {
+      clearTimeout(releaseTimer);
+      accumulator = 0;
+      mode = 'assembled';
+      for (const { body, homeX, homeY } of glyphs) {
+        if (!body.isStatic) Body.setStatic(body, true);
+        Body.setPosition(body, { x: homeX, y: homeY });
+        Body.setAngle(body, 0);
+        Body.setVelocity(body, { x: 0, y: 0 });
+        Body.setAngularVelocity(body, 0);
+      }
+    };
+
+    const buildScene = () => {
+      const shouldRelease = mode === 'falling';
+      clearScene();
       const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      cssWidth = Math.max(1, rect.width);
-      cssHeight = Math.max(1, rect.height);
-      canvas.width = Math.round(cssWidth * ratio);
-      canvas.height = Math.round(cssHeight * ratio);
+      const rect = stage.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      canvas.width = Math.round(width * ratio);
+      canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-      const padding = cssWidth < 700 ? 24 : Math.max(40, cssWidth * 0.055);
-      const available = cssWidth - padding * 2;
-      fontFamily = getComputedStyle(canvas).fontFamily;
-      context.font = `800 100px ${fontFamily}`;
+      const padding = width < 700 ? 24 : Math.max(48, width * 0.06);
+      const available = width - padding * 2;
+      context.font = `700 100px ${family}`;
       const longest = Math.max(...lines.map((line) => context.measureText(line).width));
-      fontSize = Math.min(cssWidth < 700 ? 72 : 150, (available / longest) * 100);
-      context.font = `800 ${fontSize}px ${fontFamily}`;
+      fontSize = Math.min(width < 700 ? 68 : 118, (available / longest) * 100);
+      context.font = `700 ${fontSize}px ${family}`;
       context.textBaseline = 'middle';
+      context.textAlign = 'center';
 
-      const top = cssHeight < 760 ? 142 : Math.max(170, cssHeight * 0.24);
-      const lineHeight = fontSize * 0.88;
+      const lineHeight = fontSize * 0.95;
+      const blockHeight = lineHeight * lines.length;
+      const top = Math.max(145, height * 0.49 - blockHeight / 2);
 
       lines.forEach((line, lineIndex) => {
         const widths = [...line].map((char) => context.measureText(char).width);
-        const naturalWidth = widths.reduce((sum, width) => sum + width, 0);
-        const tracking = Math.max(
-          -fontSize * 0.055,
-          (available - naturalWidth) / Math.max(1, line.length - 1),
-        );
-        const lineWidth = naturalWidth + tracking * Math.max(0, line.length - 1);
-        let cursor = padding + Math.max(0, (available - lineWidth) * 0.02);
-        const color = lineIndex === 0 || lineIndex >= lines.length - 2 ? PAPER : MUTED;
+        const natural = widths.reduce((sum, item) => sum + item, 0);
+        const tracking = -fontSize * 0.05;
+        const lineWidth = natural + tracking * Math.max(0, line.length - 1);
+        let cursor = (width - lineWidth) / 2;
 
         [...line].forEach((char, charIndex) => {
-          const width = widths[charIndex];
+          const charWidth = widths[charIndex];
           if (char !== ' ') {
-            const homeX = cursor + width / 2;
-            const homeY = top + lineIndex * lineHeight;
-            const body = Matter.Bodies.rectangle(
-              homeX,
-              homeY,
-              Math.max(2, width - fontSize * 0.045),
-              fontSize * 0.72,
+            const x = cursor + charWidth / 2;
+            const y = top + lineIndex * lineHeight;
+            const body = Bodies.rectangle(
+              x,
+              y,
+              Math.max(1, charWidth + tracking),
+              fontSize * (150 / 170),
               {
-                isStatic: true,
                 restitution: 0.1,
                 friction: 0.01,
                 frictionAir: 0.01,
@@ -176,189 +183,190 @@ export function TouchPhilosophy({
                 render: { visible: false },
               },
             );
+            Body.setStatic(body, true);
             glyphs.push({
               body,
               char,
-              homeX,
-              homeY,
-              color,
-              hidden: false,
-              fadeStartedAt: 0,
+              homeX: x,
+              homeY: y,
+              color: LINE_COLORS[lineIndex] ?? colors['paper-warm'],
             });
-            Matter.Composite.add(engine.world, body);
+            Composite.add(engine.world, body);
           }
-          cursor += width + tracking;
+          cursor += charWidth + tracking;
         });
       });
 
-      const wallThickness = 40;
-      walls = [
-        Matter.Bodies.rectangle(
-          cssWidth / 2,
-          cssHeight + wallThickness / 2,
-          cssWidth * 2,
-          wallThickness,
-          { isStatic: true, restitution: 0, friction: 1, render: { visible: false } },
-        ),
-        Matter.Bodies.rectangle(
-          -wallThickness / 2,
-          cssHeight / 2,
-          wallThickness,
-          cssHeight * 2,
-          { isStatic: true, render: { visible: false } },
-        ),
-        Matter.Bodies.rectangle(
-          cssWidth + wallThickness / 2,
-          cssHeight / 2,
-          wallThickness,
-          cssHeight * 2,
-          { isStatic: true, render: { visible: false } },
-        ),
-      ];
-      Matter.Composite.add(engine.world, walls);
+      const wall = 50;
+      Composite.add(engine.world, [
+        Bodies.rectangle(width / 2, height + wall / 2, width * 2, wall, {
+          isStatic: true,
+          restitution: 0,
+          friction: 1,
+          frictionStatic: 1,
+        }),
+        Bodies.rectangle(-wall / 2, height / 2, wall, height * 2, { isStatic: true }),
+        Bodies.rectangle(width + wall / 2, height / 2, wall, height * 2, {
+          isStatic: true,
+        }),
+      ]);
 
       mode = 'assembled';
-      if (wasFalling) release();
+      if (shouldRelease || (scene.trigger && scene.trigger.progress > 0)) release();
     };
 
-    const draw = (now: number) => {
+    // Le rendu s'arrête hors écran : c'est la garde qui rend la scène supportable.
+    const observer = new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+    });
+    observer.observe(stage);
+
+    const render = (now: number) => {
+      if (disposed) return;
+      frame = requestAnimationFrame(render);
+      if (!visible || document.hidden) {
+        lastTime = now;
+        return;
+      }
       const delta = Math.min(25, Math.max(1, now - lastTime));
       lastTime = now;
+      if (mode === 'falling') {
+        accumulator += delta;
+        while (accumulator >= 1000 / 60) {
+          Engine.update(engine, 1000 / 60);
+          accumulator -= 1000 / 60;
+        }
+      }
 
-      if (mode === 'falling') Matter.Engine.update(engine, delta);
       if (mode === 'reassembling') {
-        let settled = true;
-        for (const glyph of glyphs) {
-          const { body } = glyph;
-          const x = body.position.x + (glyph.homeX - body.position.x) * 0.18;
-          const y = body.position.y + (glyph.homeY - body.position.y) * 0.18;
-          const angle = body.angle + (0 - body.angle) * 0.18;
-          Matter.Body.setPosition(body, { x, y });
-          Matter.Body.setAngle(body, angle);
+        let complete = true;
+        for (const { body, homeX, homeY } of glyphs) {
+          const x = body.position.x + (homeX - body.position.x) * 0.18;
+          const y = body.position.y + (homeY - body.position.y) * 0.18;
+          const angle = body.angle * 0.82;
+          Body.setPosition(body, { x, y });
+          Body.setAngle(body, angle);
           if (
-            Math.abs(x - glyph.homeX) > 0.3 ||
-            Math.abs(y - glyph.homeY) > 0.3 ||
+            Math.abs(x - homeX) > 0.3 ||
+            Math.abs(y - homeY) > 0.3 ||
             Math.abs(angle) > 0.005
           )
-            settled = false;
+            complete = false;
         }
-        if (settled) assembleImmediately();
+        if (complete) reset();
       }
 
-      context.fillStyle = INK;
-      context.fillRect(0, 0, cssWidth, cssHeight);
-      context.font = `800 ${fontSize}px ${fontFamily}`;
+      context.fillStyle = colors.ink;
+      context.fillRect(0, 0, width, height);
+      context.font = `700 ${fontSize}px ${family}`;
       context.textAlign = 'center';
       context.textBaseline = 'middle';
-
-      for (const glyph of glyphs) {
-        const opacity = glyph.hidden
-          ? Math.max(0, 1 - (now - glyph.fadeStartedAt) / 150)
-          : 1;
-        if (opacity <= 0) continue;
+      for (const { body, char, color } of glyphs) {
         context.save();
-        context.globalAlpha = opacity;
-        context.translate(glyph.body.position.x, glyph.body.position.y);
-        context.rotate(glyph.body.angle);
-        context.fillStyle = glyph.color;
-        context.fillText(glyph.char, 0, 0);
+        context.translate(body.position.x, body.position.y);
+        context.rotate(body.angle);
+        context.fillStyle = color;
+        context.fillText(char, 0, 0);
         context.restore();
       }
-
-      if (!disposed) frame = requestAnimationFrame(draw);
     };
 
-    const onPointerMove = (event: PointerEvent) => {
+    // Le pointeur repousse les lettres, et seulement tant qu'elles tombent : une
+    // phrase posée ne se laisse pas pousser.
+    const repel = (event: PointerEvent) => {
+      if (mode !== 'falling') return;
       const rect = canvas.getBoundingClientRect();
-      const pointer = {
-        x: event.clientX - rect.left,
-        y: event.clientY - rect.top,
-      };
-      const now = performance.now();
-
-      for (const glyph of glyphs) {
-        if (glyph.hidden) continue;
-        const dx = glyph.body.position.x - pointer.x;
-        const dy = glyph.body.position.y - pointer.y;
+      const x = ((event.clientX - rect.left) * width) / rect.width;
+      const y = ((event.clientY - rect.top) * height) / rect.height;
+      for (const { body } of glyphs) {
+        const dx = body.position.x - x;
+        const dy = body.position.y - y;
         const distance = Math.hypot(dx, dy) || 1;
-        if (distance > 70) continue;
-        glyph.hidden = true;
-        glyph.fadeStartedAt = now;
-        glyph.body.collisionFilter.mask = 0;
-        Matter.Body.setStatic(glyph.body, true);
-        Matter.Body.setVelocity(glyph.body, { x: 0, y: 0 });
-        Matter.Body.setAngularVelocity(glyph.body, 0);
+        if (distance > 120) continue;
+        const force = (width > 768 ? 0.4 : 0.05) * (1 - distance / 400);
+        Body.applyForce(body, body.position, {
+          x: (dx / distance) * force,
+          y: (dy / distance) * force,
+        });
       }
     };
+    canvas.addEventListener('pointermove', repel);
+    canvas.addEventListener('pointerdown', repel);
 
-    layout();
-    gsap.set(curtain, { yPercent: -100 });
-
-    const physicsTrigger = ScrollTrigger.create({
+    gsap.registerPlugin(ScrollTrigger);
+    // Posé directement sur le DOM, pas par un état React : la hauteur de la
+    // section (350svh) doit être celle que ScrollTrigger mesure, tout de suite.
+    section.dataset.enhanced = 'true';
+    buildScene();
+    gsap.set(curtain, { y: 0, yPercent: -100 });
+    scene.trigger = ScrollTrigger.create({
       trigger: section,
-      start: 'top top',
-      end: 'bottom bottom',
-      onUpdate: (self) => {
-        if (
-          self.direction > 0 &&
-          self.progress >= RELEASE_AT &&
-          self.progress < CURTAIN_AT
-        )
-          release();
-        if (self.direction < 0 && self.progress <= RELEASE_AT) beginReassembly();
+      start: 'top -50%',
+      end: 'top -200%',
+      onEnter() {
+        reset();
+        releaseTimer = setTimeout(release, 40);
       },
-      onLeaveBack: assembleImmediately,
+      onLeaveBack: reassemble,
     });
-
     const curtainTween = gsap.to(curtain, {
       yPercent: 0,
       ease: 'none',
       scrollTrigger: {
         trigger: section,
-        start: '78% top',
-        end: 'bottom bottom',
+        start: 'top -150%',
+        end: 'top -250%',
         scrub: true,
       },
     });
-
-    if (physicsTrigger.progress >= RELEASE_AT && physicsTrigger.progress < CURTAIN_AT)
-      release();
-
-    frame = requestAnimationFrame(draw);
-    canvas.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('resize', layout);
-    ScrollTrigger.refresh();
+    window.addEventListener('resize', buildScene);
+    // La police n'est pas là au premier passage : on recompose dès qu'elle l'est,
+    // sous-ensemble vietnamien compris (le « Ạ » de la ligne 4).
+    void Promise.all([
+      document.fonts.load(`700 100px ${family}`, lines.join(' ')),
+      document.fonts.ready,
+    ]).then(() => {
+      if (disposed) return;
+      buildScene();
+      ScrollTrigger.refresh();
+    });
+    frame = requestAnimationFrame(render);
 
     return () => {
       disposed = true;
-      canvas.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('resize', layout);
-      physicsTrigger.kill();
+      cancelAnimationFrame(frame);
+      clearTimeout(releaseTimer);
+      observer.disconnect();
+      canvas.removeEventListener('pointermove', repel);
+      canvas.removeEventListener('pointerdown', repel);
+      window.removeEventListener('resize', buildScene);
+      scene.trigger?.kill();
       curtainTween.scrollTrigger?.kill();
       curtainTween.kill();
-      if (frame !== null) cancelAnimationFrame(frame);
       clearScene();
-      Matter.Engine.clear(engine);
+      Engine.clear(engine);
+      delete section.dataset.enhanced;
     };
   }, [lines]);
+
+  const [number, label, cue] = meta;
 
   return (
     <section
       id="touch"
       ref={sectionRef}
       className={styles.section}
-      data-enhanced={enhanced ? 'true' : 'false'}
       aria-labelledby="touch-philosophy-title"
     >
-      <div className={styles.stage}>
+      <div ref={stageRef} className={styles.stage}>
         <div className={styles.meta} aria-hidden="true">
-          <span>02 / 05</span>
+          <span>{number}</span>
           <span>{label}</span>
-          <span>CHẠM / TOUCH</span>
+          <span>{cue}</span>
         </div>
         <h2
           id="touch-philosophy-title"
-          className={styles.staticText}
+          className={styles.copy}
           aria-label={lines.join(' ')}
         >
           {lines.map((line) => (
@@ -366,9 +374,9 @@ export function TouchPhilosophy({
           ))}
         </h2>
         <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
-        <p className={styles.hint} aria-hidden="true">
+        <div className={styles.hint} aria-hidden="true">
           {hint}
-        </p>
+        </div>
         <div ref={curtainRef} className={styles.curtain} aria-hidden="true" />
       </div>
     </section>

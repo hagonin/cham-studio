@@ -70,12 +70,12 @@ export const en = {
       scrollLabel: 'Scroll to section 2 of 5',
     },
     touchPhilosophy: {
-      label: 'Design × code',
-      hint: 'Move closer. Touch the words.',
+      meta: ['02 / 05', 'DESIGN × CODE', 'MOVE · SCROLL · TOUCH'],
+      hint: 'MOVE CLOSER. PUSH THE WORDS.',
       lines: [
         'I DESIGN THOUGHTFUL',
-        'INTERFACES AND BUILD',
-        'THEM INTO REAL PRODUCTS.',
+        'INTERFACES AND BUILD THEM',
+        'INTO REAL PRODUCTS.',
         'YOU DON’T ONLY READ CHẠM.',
         'YOU TOUCH IT.',
       ],

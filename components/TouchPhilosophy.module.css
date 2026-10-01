@@ -1,59 +1,88 @@
+/* La scène tactile du dessin, valeur pour valeur (la balise <style> de
+   `index.html`, `hero-contact.css` et `navigation.css` du prototype). Les px et
+   les clamp sont ceux du dessin.
+
+   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`),
+   comme le hero et la galerie.
+
+   SANS JavaScript, ou sous reduced-motion, la section est une page : la scène
+   mesure 100dvh et la phrase s'y lit en texte statique. `data-enhanced` (posé
+   par le composant quand la scène se monte) lui donne sa hauteur de défilement,
+   et fait épingler la scène. */
 .section {
   position: relative;
+  display: block;
   width: 100vw;
-  height: 670dvh;
   margin-left: calc(50% - 50vw);
   background: var(--ink);
-  color: var(--paper);
 }
 
 .stage {
-  position: sticky;
-  top: 0;
-  height: 100svh;
+  position: relative;
+  height: 100dvh;
   min-height: 38rem;
   overflow: hidden;
   background: var(--ink);
-  font-family: var(--font-display-stack);
 }
 
+/* La scène est ÉPINGLÉE pendant le défilement de la section (350svh). */
+.section[data-enhanced='true'] {
+  height: 350svh;
+}
+
+.section[data-enhanced='true'] .stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 0;
+}
+
+/* La méta est en JetBrains Mono, pas en Spline Sans Mono : c'est la police que
+   le dessin lui donne. Sous la barre fixe (116px, 100px sous 800px). */
 .meta {
   position: absolute;
   z-index: 3;
-  top: clamp(5.5rem, 10vh, 7rem);
-  left: clamp(1.5rem, 5.5vw, 5rem);
-  right: clamp(1.5rem, 5.5vw, 5rem);
+  top: 116px;
+  left: clamp(1.5rem, 4vw, 4.75rem);
+  right: clamp(1.5rem, 4vw, 4.75rem);
   display: flex;
   justify-content: space-between;
-  gap: var(--space-4);
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  letter-spacing: 0.06em;
-  color: var(--paper);
+  color: var(--dim);
+  font: 500 clamp(0.66rem, 1vw, 0.88rem) / 1 var(--font-mono-alt-stack);
+  letter-spacing: 0.08em;
 }
 
-.staticText {
+.meta span:first-child {
+  color: var(--paper-warm);
+}
+
+/* La phrase en texte réel, Archivo Narrow 700 (« CHẠM » s'y trouve). Visible
+   tant que la scène n'est pas montée ; hors écran ensuite, le canevas prenant
+   le relais. */
+.copy {
   position: absolute;
   z-index: 1;
-  top: clamp(10rem, 23vh, 13rem);
-  left: clamp(1.5rem, 5.5vw, 5rem);
-  right: clamp(1.5rem, 5.5vw, 5rem);
+  left: 4vw;
+  right: 4vw;
+  top: 36%;
   margin: 0;
-  font-family: var(--font-display-stack);
-  font-size: clamp(3.1rem, 8vw, 9.375rem);
-  font-weight: 800;
-  line-height: 0.88;
-  letter-spacing: -0.055em;
+  color: var(--dim);
+  font: 700 clamp(2.3rem, 6.7vw, 6.8rem) / 0.94 var(--font-display-stack);
+  letter-spacing: -0.05em;
+  text-align: center;
 }
 
-.staticText span {
+.copy span {
   display: block;
-  color: var(--muted);
 }
 
-.staticText span:first-child,
-.staticText span:nth-last-child(-n + 2) {
-  color: var(--paper);
+.copy span:nth-child(3),
+.copy span:nth-child(4) {
+  color: var(--paper-warm);
+}
+
+.copy span:last-child {
+  color: var(--touch-hot);
 }
 
 .canvas {
@@ -67,6 +96,30 @@
   touch-action: pan-y;
 }
 
+.section[data-enhanced='true'] .canvas {
+  opacity: 1;
+}
+
+.section[data-enhanced='true'] .copy {
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.hint {
+  position: absolute;
+  z-index: 3;
+  right: clamp(1.5rem, 4vw, 4.75rem);
+  bottom: 1.75rem;
+  color: var(--dim);
+  font: 500 0.68rem / 1 var(--font-mono-alt-stack);
+  letter-spacing: 0.08em;
+}
+
+/* Le rideau qui referme la scène : il descend d'en haut, tiré par le défilement
+   (GSAP). Au repos il est au-dessus de la scène, donc invisible. */
 .curtain {
   position: absolute;
   z-index: 4;
@@ -76,64 +129,29 @@
   pointer-events: none;
 }
 
-.section[data-enhanced='true'] .canvas {
-  opacity: 1;
+@media (max-width: 50rem) {
+  .meta {
+    top: 100px;
+  }
 }
 
-.section[data-enhanced='true'] .staticText {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.hint {
-  position: absolute;
-  z-index: 3;
-  right: clamp(1.5rem, 5.5vw, 5rem);
-  bottom: var(--space-6);
-  margin: 0;
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  letter-spacing: 0.06em;
-  color: var(--muted);
-}
-
-@media (max-width: 44rem) {
-  .section {
-    height: 520dvh;
+@media (max-width: 43.75rem) {
+  .meta {
+    gap: 12px;
   }
 
-  .stage {
-    min-height: 34rem;
-  }
-
-  .meta span:nth-child(2) {
+  .meta span:last-child {
     display: none;
-  }
-
-  .staticText {
-    top: 9rem;
-    font-size: clamp(2.9rem, 13.2vw, 5rem);
-  }
-
-  .hint {
-    left: 1.5rem;
-    right: auto;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .section {
-    height: 100svh;
+    height: 100dvh;
   }
 
-  .canvas {
+  .canvas,
+  .curtain {
     display: none;
   }
 }
