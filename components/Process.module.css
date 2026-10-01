@@ -1,128 +1,90 @@
-.block {
-  padding: clamp(3rem, 8vw, 6rem) 0;
+/* Le bloc de prestations du dessin, valeur pour valeur (`services.css` du
+   prototype). Les px et les clamp sont ceux du dessin ; les jetons ne servent
+   que là où ils portent la même valeur.
+
+   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`)
+   et porte son propre rembourrage, comme le dessin. */
+.section {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  min-width: 0;
+  padding: 96px 4.45vw;
+  /* Le dessin hérite du 16px / `normal` du navigateur ; le corps de ce dépôt est
+     à 15px / 1,55. Sans cette reprise, un bloc en ligne (le lien de l'e-mail du
+     pied de page) tient sa ligne sur une autre ligne de base et décale tout ce
+     qui suit de quelques dixièmes de pixel. */
+  font-size: 16px;
+  line-height: normal;
+  color: var(--ink);
+  background: var(--paper);
 }
 
-.title {
-  font-family: var(--font-display-stack);
-  font-size: var(--display-s);
-  line-height: 0.92;
-  text-transform: uppercase;
-  margin: 0 0 2.5rem;
+.heading {
+  margin: 0 0 56px;
+  font-size: clamp(30px, 3.9vw, 56px);
+  line-height: 1.14;
+  letter-spacing: -0.036em;
+  font-weight: 600;
 }
 
-.titleLine {
-  display: block;
-}
-
-.steps {
-  position: relative;
+.list {
   list-style: none;
   margin: 0;
   padding: 0;
+  border-bottom: 1px solid var(--line);
 }
 
-/* La ligne continue derrière les cinq marqueurs — un seul filet, pas cinq
-   figures. Alignée sur le centre de la colonne marqueur (3rem de large). */
-.steps::before {
-  content: '';
-  position: absolute;
-  left: 1.5rem;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: var(--line);
-}
-
-.step {
-  position: relative;
+/* La colonne du milieu est `minmax(0, 400px)` et non 400px fixes : une piste
+   fixe déborde dès que le titre est long, ce que les titres français sont. */
+.row {
   display: grid;
-  grid-template-columns: 3rem 1fr;
-  column-gap: 1.25rem;
-  align-items: baseline;
-  padding: 1.5rem 0;
+  grid-template-columns: 48px minmax(0, 400px) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+  padding: 34px 0;
   border-top: 1px solid var(--line);
 }
 
-.step:first-child {
-  border-top: none;
-}
-
-@media (min-width: 60rem) {
-  .step {
-    grid-template-columns: 3rem 14rem 1fr;
-    column-gap: 2rem;
-  }
-}
-
-.marker {
-  grid-row: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-  padding-top: 0.15rem;
-}
-
-.markerNum {
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  color: var(--muted);
-}
-
-/* État de repos = état FINAL (déjà atteint) : sans amélioration progressive,
-   les cinq points se lisent comme un parcours déjà complet — l'animation
-   n'ajoute qu'une façon d'y arriver, elle ne révèle rien. */
-.markerDot {
-  display: block;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--touch);
-  flex: none;
-}
-
-.stepTitle {
-  font-family: var(--font-display-stack);
-  font-size: var(--display-s);
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.stepBody {
-  grid-column: 2 / -1;
-  max-width: 52ch;
+.index {
+  font-size: var(--label-s);
+  line-height: 1.6;
+  letter-spacing: 1px;
   color: var(--ink-2);
-  margin: 0.5rem 0 0;
 }
 
-@media (min-width: 60rem) {
-  .stepBody {
-    grid-column: 3;
-    margin-top: 0;
+.title {
+  margin: 0;
+  font-size: clamp(21px, 1.81vw, 26px);
+  line-height: 1.2;
+  letter-spacing: -0.038em;
+  font-weight: 600;
+}
+
+.description {
+  margin: 0;
+  font-size: clamp(15px, 1.18vw, 17px);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+@media (max-width: 56.25rem) {
+  .section {
+    padding: 72px 24px;
+  }
+
+  .heading {
+    margin-bottom: 36px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 28px 0;
   }
 }
 
-/* Amélioration progressive, jamais porteuse : mêmes deux gardes que le
-   recadrage de `.frame img` (`app/globals.css`). `view()` est un timeline
-   PAR ÉLÉMENT — chaque point anime indépendamment au moment où SA ligne
-   entre dans le viewport, sans second sélecteur ni JavaScript. */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    @keyframes stage-arrive {
-      from {
-        background: var(--line);
-        transform: scale(0.6);
-      }
-      to {
-        background: var(--touch);
-        transform: scale(1);
-      }
-    }
-
-    .markerDot {
-      animation: stage-arrive linear both;
-      animation-timeline: view();
-      animation-range: entry 0% cover 25%;
-    }
+@media (prefers-reduced-motion: reduce) {
+  .section * {
+    transition: none !important;
   }
 }
