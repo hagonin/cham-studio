@@ -53,10 +53,8 @@ export const en = {
       clockLabel: 'Local time in Montpellier',
     },
     hero: {
-      // Decision 18. Written for its own reader, not translated from the
-      // French (decision 17): the EN visitor is an international client who
-      // needs one accountable person across the whole span.
-      title: 'From first interaction to final deployment.',
+      // La phrase du dessin, reprise telle quelle : c'est le <h1> de la page.
+      title: 'A human touch, from idea to product.',
       // DECISION 19 — LOAD-BEARING, NOT SUPPORTING COPY. The headline carries
       // no first person, so this is the only place someone appears in the
       // hero. Last thing cut if the hero is tightened.

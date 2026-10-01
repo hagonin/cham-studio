@@ -64,12 +64,9 @@ export const fr = {
     hero: {
       // La proposition de valeur est au-dessus de la ligne de flottaison et
       // sans image : le LCP est du texte, donc il est déjà chargé.
-      // Décision 18. « Du premier écran à la mise en ligne » est ÉCRIT en
-      // français, pas traduit de l'anglais (décision 17) : « écran » est plus
-      // concret que « interaction », et « mise en ligne » est le registre du
-      // site quand « deployment » est celui de l'ingénierie — d'où « mise en
-      // production » dans la ligne suivante, pour tenir les deux.
-      title: 'Du premier écran à la mise en ligne.',
+      // La phrase du dessin : c'est le <h1> de la page. Le français est celui
+      // de `copy-fr.md`, écrit en français et non traduit mot à mot.
+      title: 'Une touche humaine, de l’idée au produit.',
       // DÉCISION 19 — LIGNE PORTEUSE, PAS DE L'ACCOMPAGNEMENT.
       // Le titre ne contient aucune première personne : c'est ici, et nulle
       // part ailleurs dans le hero, qu'une personne apparaît. Si le hero doit
