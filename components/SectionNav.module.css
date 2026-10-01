@@ -144,12 +144,43 @@
   transform: translate(3px, -3px);
 }
 
-.navToggle {
+/* Le menu sous 800px est un <details> : il s'ouvre sans JavaScript. Au-dessus de
+   800px la barre en ligne tient son rôle, il est donc masqué (un <details> fermé
+   cache son contenu, la barre ne peut pas y vivre). Son <summary> est habillé
+   comme le bouton du dessin ; le triangle du navigateur disparaît. Les deux
+   libellés sont dans le HTML et le CSS en montre un seul selon [open]. */
+.menu {
   display: none;
 }
 
+.menuToggle {
+  display: block;
+  color: inherit;
+  padding: 12px 0 12px 12px;
+  cursor: pointer;
+  font: 400 var(--label) / 1 var(--font-mono-stack);
+  text-transform: uppercase;
+  list-style: none;
+}
+
+.menuToggle::-webkit-details-marker {
+  display: none;
+}
+
+.closeLabel {
+  display: none;
+}
+
+.menu[open] .menuLabel {
+  display: none;
+}
+
+.menu[open] .closeLabel {
+  display: inline;
+}
+
 .header a:focus-visible,
-.navToggle:focus-visible {
+.menuToggle:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 6px;
 }
@@ -169,10 +200,6 @@
   position: absolute;
   top: 12px;
   right: 4vw;
-}
-
-.localesMenu {
-  display: none;
 }
 
 .inert {
@@ -212,15 +239,8 @@
     gap: 8px;
   }
 
-  .navToggle {
+  .menu {
     display: block;
-    color: inherit;
-    background: none;
-    border: 0;
-    padding: 12px 0 12px 12px;
-    cursor: pointer;
-    font: 400 var(--label) / 1 var(--font-mono-stack);
-    text-transform: uppercase;
   }
 
   .locales {
@@ -232,13 +252,15 @@
   }
 
   /* Menu ouvert : la barre quitte le mélange et prend le fond encre, et les
-     liens se déplient en panneau sous elle. */
-  .header[data-open='true'] {
+     liens se déplient en panneau sous elle. `:has()` lit l'état du <details> :
+     aucun script ne pose de drapeau sur la barre. Le panneau n'est rendu que
+     lorsque le <details> est ouvert, il n'a donc pas de règle « fermé ». */
+  .header:has(.menu[open]) {
     mix-blend-mode: normal;
     background: var(--ink);
   }
 
-  .header[data-open='true'] .siteNav {
+  .panel {
     position: absolute;
     top: calc(var(--nav-h) - 1px);
     left: 0;
@@ -253,12 +275,12 @@
     border-bottom: 1px solid var(--line-dark);
   }
 
-  .header[data-open='true'] .navLink {
+  .panel .navLink {
     font-size: 1.375rem;
     padding-inline: 30px;
   }
 
-  .header[data-open='true'] .localesMenu {
+  .localesMenu {
     display: block;
     padding-inline: 30px;
     font-size: var(--label);

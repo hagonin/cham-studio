@@ -12,6 +12,15 @@ import styles from './SectionNav.module.css';
  * le wordmark, quatre liens à lettres qui défilent au survol, le bouton de
  * contact, et sous 800px un bouton MENU qui déplie les liens.
  *
+ * Ce bouton est un `<details>` : il s'ouvre sans JavaScript, ce que le dessin
+ * ne fait pas (son menu est un bouton piloté par script). Un `<details>` fermé
+ * masque son contenu, donc la barre en ligne du bureau ne peut pas y vivre : les
+ * liens existent deux fois dans le HTML, la barre en ligne (au-dessus de 800px) et
+ * le panneau du menu (en dessous), et le CSS n'en affiche jamais qu'un. Le
+ * libellé MENU / CLOSE et la barre qui passe sur fond encre à l'ouverture sont
+ * aussi du CSS : `NavMotion` n'ajoute que Échap, la fermeture au clic sur un
+ * lien et à l'élargissement de la fenêtre.
+ *
  * Deux écarts, et seulement ces deux-là. Le dessin n'a pas de sélecteur de
  * langue ; le site existe en deux langues, il reste donc dans la barre (et dans
  * le menu sous 800px, faute de place). Et la barre passe SOUS le loader, dont
@@ -79,6 +88,26 @@ function Locales({ locale, className }: { locale: Locale; className: string }) {
   );
 }
 
+/** Les liens de section, identiques dans la barre en ligne et dans le panneau. */
+function NavLinks({ items }: { items: { href: string; label: string }[] }) {
+  return (
+    <>
+      {items.map(({ href, label }) => (
+        <a key={href} href={href} className={styles.navLink} aria-label={label}>
+          <span className={styles.navWindow} aria-hidden="true">
+            <span className={styles.navOriginal}>
+              <Letters text={label} />
+            </span>
+            <span className={styles.navClone}>
+              <Letters text={label} />
+            </span>
+          </span>
+        </a>
+      ))}
+    </>
+  );
+}
+
 export function SectionNav({
   locale,
   dict,
@@ -104,20 +133,8 @@ export function SectionNav({
         {dict.brand.name}
       </Link>
 
-      <nav className={styles.siteNav} id="site-navigation" aria-label={nav.label}>
-        {items.map(({ href, label }) => (
-          <a key={href} href={href} className={styles.navLink} aria-label={label}>
-            <span className={styles.navWindow} aria-hidden="true">
-              <span className={styles.navOriginal}>
-                <Letters text={label} />
-              </span>
-              <span className={styles.navClone}>
-                <Letters text={label} />
-              </span>
-            </span>
-          </a>
-        ))}
-        <Locales locale={locale} className={styles.localesMenu} />
+      <nav className={styles.siteNav} aria-label={nav.label}>
+        <NavLinks items={items} />
       </nav>
 
       {/* Même cible que « contact » dans la liste, mais hors d'elle : il reste
@@ -132,24 +149,21 @@ export function SectionNav({
 
       <Locales locale={locale} className={styles.locales} />
 
-      {/* `aria-controls` n'est pas une formalité : `check-html.mjs` fait
-          échouer le build sur un `aria-expanded` qui n'en a pas. Le bouton est
-          rendu avec l'état FERMÉ — c'est l'état sans JS, et sans JS les liens
-          restent atteignables (le menu n'est masqué que sous 800px, où la liste
-          redevient visible dès que le CSS s'applique). Les deux libellés
-          voyagent en `data-*` : le composant client bascule le texte sans avoir
-          à connaître la langue de la page. */}
-      <button
-        type="button"
-        className={styles.navToggle}
-        aria-expanded="false"
-        aria-controls="site-navigation"
-        data-nav-toggle
-        data-label-open={nav.menu}
-        data-label-close={nav.close}
-      >
-        {nav.menu}
-      </button>
+      {/* Sous 800px : le bouton MENU. Un `<summary>`, donc un vrai bouton au
+          clavier, dont l'état (ouvert ou non) est annoncé par le navigateur sans
+          `aria-expanded` ni `aria-controls`. Les deux libellés sont dans le
+          HTML ; le CSS n'en montre qu'un selon `[open]`. Le panneau reprend les
+          liens et porte le sélecteur de langue, faute de place dans la barre. */}
+      <details className={styles.menu} data-menu>
+        <summary className={styles.menuToggle}>
+          <span className={styles.menuLabel}>{nav.menu}</span>
+          <span className={styles.closeLabel}>{nav.close}</span>
+        </summary>
+        <nav className={styles.panel} aria-label={nav.label}>
+          <NavLinks items={items} />
+          <Locales locale={locale} className={styles.localesMenu} />
+        </nav>
+      </details>
 
       <NavMotion />
     </header>

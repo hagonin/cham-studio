@@ -10,9 +10,14 @@ import { useEffect } from 'react';
  *    fois le bas de page atteint. C'est un ÉTAT, pas une animation : il n'est
  *    donc pas gardé par `prefers-reduced-motion`. Au-dessus de la première
  *    section, personne n'est courant : le hero n'est pas une destination.
- * 2. Le menu sous 800px : le bouton bascule l'état et son libellé, Échap
- *    referme et rend le focus au bouton, tout clic sur un lien de la barre
- *    referme, et élargir la fenêtre au-delà de 800px referme aussi.
+ * 2. Le menu sous 800px : Échap referme et rend le focus au bouton, tout clic sur
+ *    un lien de la barre referme, et élargir la fenêtre au-delà de 800px referme
+ *    aussi.
+ *
+ * Le menu est un `<details>` : il s'ouvre, se ferme et change de libellé SANS ce
+ * composant, qui n'ajoute que les trois fermetures ci-dessus. Sans JavaScript, ou
+ * avant l'hydratation, le menu fonctionne ; il reste ouvert après un clic sur un
+ * lien, jusqu'à ce que la personne le referme.
  *
  * Le défilement n'est PAS réimplémenté ici : `MotionProvider` intercepte déjà
  * tout `a[href^="#"]`. Le menu est un panneau, pas une modale : il ne bloque ni
@@ -21,31 +26,25 @@ import { useEffect } from 'react';
 export function NavMotion() {
   useEffect(() => {
     const header = document.querySelector<HTMLElement>('[data-nav]');
-    const toggle = header?.querySelector<HTMLButtonElement>('[data-nav-toggle]');
-    if (!header || !toggle) return;
+    const menu = header?.querySelector<HTMLDetailsElement>('[data-menu]');
+    if (!header || !menu) return;
 
     /* --- Menu ------------------------------------------------------------- */
-    const setOpen = (open: boolean) => {
-      header.dataset.open = String(open);
-      toggle.setAttribute('aria-expanded', String(open));
-      toggle.textContent = open
-        ? (toggle.dataset.labelClose ?? '')
-        : (toggle.dataset.labelOpen ?? '');
+    const close = () => {
+      menu.open = false;
     };
-    const onToggle = () => setOpen(header.dataset.open !== 'true');
     const onClick = (event: MouseEvent) => {
-      if ((event.target as Element | null)?.closest('a')) setOpen(false);
+      if ((event.target as Element | null)?.closest('a')) close();
     };
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || header.dataset.open !== 'true') return;
-      setOpen(false);
-      toggle.focus();
+      if (event.key !== 'Escape' || !menu.open) return;
+      close();
+      menu.querySelector('summary')?.focus();
     };
     const wide = matchMedia('(min-width: 801px)');
     const onWide = (event: MediaQueryListEvent) => {
-      if (event.matches) setOpen(false);
+      if (event.matches) close();
     };
-    toggle.addEventListener('click', onToggle);
     header.addEventListener('click', onClick);
     document.addEventListener('keydown', onKeyDown);
     wide.addEventListener('change', onWide);
@@ -76,8 +75,11 @@ export function NavMotion() {
       ) {
         active = contact;
       }
+      // Les liens existent deux fois (barre en ligne et panneau) : on marque
+      // ceux qui pointent sur la section courante, dans l'un comme dans l'autre.
       for (const link of links) {
-        if (link === active) link.setAttribute('aria-current', 'location');
+        if (active && link.hash === active.hash)
+          link.setAttribute('aria-current', 'location');
         else link.removeAttribute('aria-current');
       }
     };
@@ -91,7 +93,6 @@ export function NavMotion() {
     update();
 
     return () => {
-      toggle.removeEventListener('click', onToggle);
       header.removeEventListener('click', onClick);
       document.removeEventListener('keydown', onKeyDown);
       wide.removeEventListener('change', onWide);

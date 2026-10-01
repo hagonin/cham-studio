@@ -87,6 +87,24 @@ for (const page of pages.filter((path) => /\/(fr|en)\.html$/.test(path))) {
     if (!html.includes(`id="${anchor}"`))
       fail(`${page} : l'ancre #${anchor} n'a pas de titre`);
   }
+  // Le menu sous 800px est un <details> : il s'ouvre sans JavaScript. Chaque lien
+  // de section de la barre, et la bascule de langue, doivent donc se trouver
+  // AUSSI dans son panneau — sans quoi, sans script et sous 800px, une partie du
+  // site n'est plus atteignable, et rien à l'écran ne le signale.
+  const header = /<header\b[\s\S]*?<\/header>/.exec(html)?.[0] ?? '';
+  const menu = /<details\b[^>]*\bdata-menu\b[\s\S]*?<\/details>/.exec(header)?.[0];
+  if (!menu || !/<summary\b/.test(menu)) {
+    fail(`${page} : le menu de la barre n'est pas un <details> avec un <summary>`);
+  } else {
+    for (const [, anchor] of header.matchAll(/href="(#[a-z]+-title)"/g)) {
+      if (!menu.includes(`href="${anchor}"`))
+        fail(`${page} : le lien ${anchor} manque dans le panneau du menu`);
+    }
+    const switches = (markup) => (markup.match(/hreflang="/g) ?? []).length;
+    if (switches(menu) !== switches(header.replace(menu, ''))) {
+      fail(`${page} : la bascule de langue du menu diffère de celle de la barre`);
+    }
+  }
   const proseLength = (html.match(/<p[^>]*>([^<]{40,})<\/p>/g) ?? []).length;
   if (proseLength === 0) fail(`${page} : aucune prose rendue côté serveur`);
 }
