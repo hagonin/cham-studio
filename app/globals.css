@@ -93,11 +93,12 @@
      marque posé en titre se règle sur --font-display-stack, pas sur ces piles.
      --font-mono-alt-stack est JetBrains Mono EN PREMIER : la méta de la scène
      tactile, que le dessin pose dans cette police et non en Spline Sans Mono. */
-  --font-display-stack: var(--font-display), 'Archivo Narrow', system-ui, sans-serif;
-  --font-sans-stack: var(--font-sans), var(--font-display), system-ui, sans-serif;
-  /* Le repli final est le `monospace` générique, comme dans le dessin : les
-     glyphes qu'aucune police chargée n'a (la flèche ↗) viennent de la même
-     police système que chez lui. `ui-monospace` en tirerait une autre. */
+  --font-display-stack: var(--font-display), 'Archivo Narrow', sans-serif;
+  --font-sans-stack: var(--font-sans), var(--font-display), sans-serif;
+  /* Le repli final est le générique (`sans-serif`, `monospace`), comme dans le
+     dessin, jamais `system-ui` ni `ui-monospace` : un glyphe qu'aucune police
+     chargée n'a (la flèche ↗) vient alors de la même police système que chez lui,
+     et ces deux-là en tireraient une autre, plus large. */
   --font-mono-stack: var(--font-mono), var(--font-mono-alt), monospace;
   --font-mono-alt-stack: var(--font-mono-alt), 'JetBrains Mono', monospace;
 
