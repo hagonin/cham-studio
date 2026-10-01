@@ -54,20 +54,35 @@ describe('globals.css', () => {
     expect(css).toContain('prefers-reduced-motion');
   });
 
-  // Les deux groupes de l'échelle et le vide entre eux : le corps s'arrête où
-  // l'affichage commence, sans palier intermédiaire. Un jeton ajouté dans
-  // l'intervalle referme l'écart qui fait la mise en page — la garde le dit.
-  it('garde l’écart entre le corps et l’affichage', () => {
+  // L'ancienne garde protégeait un VIDE : le corps s'arrêtait où l'affichage
+  // commençait, sans palier entre les deux. Le dessin comble ce vide (24 à
+  // 46px), donc l'assertion serait fausse et elle est retirée. Ce qui reste
+  // vrai, et que cette garde protège à la place : l'échelle est ordonnée. Un
+  // palier dont le plafond dépasse celui du suivant est un palier mal placé
+  // ou mal réglé, et deux paliers qui se croisent ne se hiérarchisent plus.
+  it('ordonne l’échelle : chaque plafond finit au plus haut que le précédent', () => {
+    const scale = [
+      'label',
+      'text-s',
+      'text',
+      'text-l',
+      'display-2xs',
+      'display-xs',
+      'display-s',
+      'display-m',
+      'display-xl',
+    ];
     const ceiling = (token: string) => {
       const rule = declarations.match(new RegExp(`--${token}:\\s*([^;]+);`))?.[1] ?? '';
       const values = [...rule.matchAll(/([\d.]+)rem/g)].map((m) => Number(m[1]));
       return Math.max(...values);
     };
-    const floor = (token: string) => {
-      const rule = declarations.match(new RegExp(`--${token}:\\s*([^;]+);`))?.[1] ?? '';
-      return Number(rule.match(/([\d.]+)rem/)?.[1]);
-    };
-    expect(ceiling('text')).toBeLessThan(floor('display-s'));
+    const ceilings = scale.map(ceiling);
+    for (const [index, value] of ceilings.entries()) {
+      expect(value, scale[index]).toBeGreaterThan(0);
+      if (index > 0)
+        expect(value, scale[index]).toBeGreaterThanOrEqual(ceilings[index - 1]);
+    }
   });
 
   it('plancher typographique : aucun clamp ne descend sous 12px', () => {

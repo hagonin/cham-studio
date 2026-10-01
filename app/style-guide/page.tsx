@@ -19,13 +19,16 @@ const typeScale = [
   { label: '--label', value: 'var(--label)' },
   { label: '--text-s', value: 'var(--text-s)' },
   { label: '--text', value: 'var(--text)' },
+  { label: '--text-l', value: 'var(--text-l)' },
+  { label: '--display-2xs', value: 'var(--display-2xs)' },
+  { label: '--display-xs', value: 'var(--display-xs)' },
   { label: '--display-s', value: 'var(--display-s)' },
   { label: '--display-m', value: 'var(--display-m)' },
   { label: '--display-xl', value: 'var(--display-xl)' },
 ] as const;
 
 const spacingScale = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((step) => `--space-${step}`);
-const spacing = ['--gutter', '--page', ...spacingScale] as const;
+const spacing = ['--gutter', '--page', '--page-pad', ...spacingScale] as const;
 const motion = ['--contact', '--contact-duration'] as const;
 
 export default function StyleGuide() {
