@@ -1,65 +1,376 @@
-.block {
-  padding: clamp(3rem, 8vw, 6rem) 0;
+/* Le bloc « à propos » du dessin, valeur pour valeur (`about.css` du
+   prototype). Les px et les clamp sont ceux du dessin ; les jetons ne servent
+   que là où ils portent la même valeur.
+
+   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`)
+   et porte son propre rembourrage, comme le dessin. */
+.section {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 96px 4.45vw;
+  color: var(--ink);
+  background: var(--paper);
 }
 
-.title {
-  font-family: var(--font-display-stack);
-  font-size: var(--display-s);
-  line-height: 0.92;
-  text-transform: uppercase;
-  max-width: 20ch;
-  margin: 2rem 0 1.5rem;
+.iconDefs {
+  position: absolute;
+  width: 0;
+  height: 0;
 }
 
-.titleLine {
-  display: block;
+.eyebrow {
+  margin: 0;
+  font-size: var(--label-s);
+  line-height: 18px;
+  letter-spacing: 1px;
+  color: var(--ink-2);
 }
 
-/* Texte en --ink-2 (--muted ne tient pas 4,5:1 sur papier) ; les filets
-   restent --line, décoratifs. */
-.figure {
-  max-width: 34rem;
-  margin: 0 0 2rem;
+.heading {
+  margin: 34px 0 0;
+  font-size: clamp(30px, 4.03vw, 58px);
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+  font-weight: 600;
 }
 
-.line {
+/* Le chapô est en --grey-4 (#7e7b73) : sous le 4,5:1, porté tel que dessiné — son
+   exemption est écrite dans `lib/tokens.ts`. */
+.lede {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 34px;
+}
+
+.lede p {
+  width: min(100%, 78%);
+  margin: 0;
+  font-size: clamp(16px, 1.39vw, 20px);
+  line-height: 1.65;
+  color: var(--grey-4);
+}
+
+/* --- Origine : photo, chronologie, deux photos ------------------------------ */
+.origin {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 64px;
+  align-items: start;
+  margin-top: 96px;
+}
+
+.photoLead {
+  grid-column: 1;
+  grid-row: 1 / 3;
+}
+
+.timeline {
+  grid-column: 2;
+  grid-row: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.photoPair {
+  grid-column: 2;
+  grid-row: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+
+.photo {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.photoFrame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: clamp(150px, 14vw, 200px);
+  background: var(--photo);
+  outline: 1px solid var(--line-2);
+  outline-offset: -0.5px;
+}
+
+.photoFrame[data-size='lead'] {
+  height: clamp(280px, 30.5vw, 440px);
+}
+
+.photoIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--grey-6);
+}
+
+/* `line-height: normal` : le dessin ne fixe aucune hauteur de ligne à ces petits
+   libellés, alors que le corps de ce dépôt est à 1,55. */
+.photoTag {
+  font-size: var(--label-xs);
+  line-height: normal;
+  letter-spacing: 1px;
+  color: var(--grey-4);
+}
+
+.photo figcaption {
+  font-size: var(--label-l);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.entry + .entry {
+  margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
+}
+
+.entryHead {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+/* L'année en accent sur papier : 36px, graisse 600 — du GRAND texte, qui tient
+   le 3:1 (3,24:1). C'est le seul texte au repos que le jeton d'accent porte. */
+.entryYear {
+  font-size: clamp(27px, 2.5vw, 36px);
+  line-height: 1.1;
+  letter-spacing: -0.028em;
+  font-weight: 600;
+  color: var(--touch);
+}
+
+.entryLabel {
+  font-size: var(--label-s);
+  line-height: normal;
+  letter-spacing: 1px;
+  color: var(--ink-2);
+  text-align: right;
+}
+
+.entry p {
+  margin: 0;
+  font-size: clamp(15px, 1.18vw, 17px);
+  line-height: 1.6;
   color: var(--ink-2);
 }
 
-.rule {
-  flex: 1;
-  height: 1px;
-  background: var(--line);
-}
-
-.dot {
-  composes: contact-marker__dot from global;
-}
-
-.creed {
-  list-style: none;
-  margin: 0 0 2rem;
-  padding: 0;
+/* --- Le présent ---------------------------------------------------------------- */
+.now {
   display: grid;
-  gap: 0.5rem;
-  font-family: var(--font-display-stack);
-  font-size: var(--text);
-  max-width: 34ch;
+  grid-template-columns: 300px 1fr;
+  gap: 64px;
+  align-items: start;
+  margin-top: 96px;
+  padding-top: 36px;
+  border-top: 1px solid var(--line);
 }
 
-.meaning {
-  max-width: 58ch;
-  color: var(--ink);
+.nowLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
-.body {
-  max-width: 58ch;
-  color: var(--ink-2);
+.nowLine {
+  margin: 0;
+  font-size: 15px;
+  line-height: 23px;
+  color: var(--muted);
+}
+
+.nowStatement {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.nowParagraph {
+  margin: 0;
+  font-size: clamp(18px, 1.67vw, 24px);
+  line-height: 1.55;
+  color: var(--grey-4);
+}
+
+.nowTooling {
+  margin: 0;
+  font-size: clamp(15px, 1.18vw, 17px);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.chips li {
+  padding: 11px 16px;
+  outline: 1px solid var(--line-2);
+  outline-offset: -0.5px;
+  font-size: var(--label-s);
+  line-height: normal;
+  letter-spacing: 1px;
+  color: var(--muted);
+}
+
+/* --- L'invitation, sur fond sombre ------------------------------------------ */
+.invite {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 64px;
+  align-items: start;
+  margin-top: 96px;
+  padding: 72px clamp(28px, 4.45vw, 64px);
+  background: var(--ink-deep);
+}
+
+.inviteEyebrow {
+  margin: 0;
+  font-size: var(--label-s);
+  line-height: 18px;
+  letter-spacing: 1px;
+  color: var(--blush);
+}
+
+.inviteStatement {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.inviteHeadline {
+  margin: 0;
+  font-size: clamp(28px, 3.2vw, 46px);
+  line-height: 1.2;
+  letter-spacing: -0.024em;
+  font-weight: 600;
+  color: var(--paper);
+}
+
+.inviteParagraph {
+  margin: 0;
+  font-size: clamp(15px, 1.18vw, 17px);
+  line-height: 1.6;
+  color: var(--paper-80);
+}
+
+.inviteParagraph a {
+  position: relative;
+  color: var(--paper);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.inviteParagraph a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s;
+}
+
+.inviteParagraph a:hover::after {
+  transform: scaleX(1);
+}
+
+.section :focus-visible {
+  outline: 2px solid var(--touch-hot);
+  outline-offset: 5px;
+}
+
+@media (max-width: 56.25rem) {
+  .section {
+    padding: 72px 24px;
+  }
+
+  .heading {
+    margin-top: 26px;
+  }
+
+  .lede {
+    margin-top: 26px;
+  }
+
+  .lede p {
+    width: 100%;
+  }
+
+  .origin {
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-top: 64px;
+  }
+
+  .photoLead,
+  .timeline,
+  .photoPair {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .timeline {
+    margin-top: 36px;
+    padding-top: 36px;
+    border-top: 1px solid var(--line);
+  }
+
+  .now,
+  .invite {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    margin-top: 64px;
+  }
+
+  .invite {
+    padding: 48px 24px;
+  }
+
+  .entryHead {
+    flex-direction: column;
+    align-items: start;
+    gap: 6px;
+  }
+
+  .entryLabel {
+    text-align: left;
+  }
+}
+
+@media (max-width: 32.5rem) {
+  .photoPair {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section *,
+  .section *::after {
+    transition: none !important;
+  }
 }

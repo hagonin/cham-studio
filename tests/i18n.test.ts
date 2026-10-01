@@ -122,36 +122,21 @@ describe('couverture', () => {
 });
 
 /**
- * La page /projects. Deux règles s'y croisent : le sens de la marque n'est
- * écrit qu'à un seul endroit du site, et une page dont le contenu principal
- * manque ne s'annonce pas au moteur.
+ * La page /projects : une page dont le contenu principal manque ne s'annonce
+ * pas au moteur.
+ *
+ * Il n'y a plus de garde sur le sens de « Chạm » : le dessin le glose lui-même
+ * (« CHẠM / VERB / TO TOUCH » dans le hero et le rideau) et n'écrit plus la
+ * phrase longue dans le bloc « à propos ». La règle « le sens n'est écrit
+ * qu'une fois » défendait un choix que le dessin ne fait pas.
  */
 describe('page travaux', () => {
-  it('écrit le sens de la marque dans la prose « à propos », dans les deux locales', () => {
-    for (const locale of locales) {
-      const dict = getDictionary(locale);
-      // La phrase est rédigée à la main pour se lire ; la garde vérifie
-      // qu'elle porte bien le sens déclaré dans `brand`, plutôt qu'une
-      // seconde définition qui dériverait de la première.
-      expect(dict.work.about.meaning, locale).toContain(dict.brand.meaning);
-    }
-  });
-
-  it('n’écrit ce sens que là — jamais dans le hero', () => {
-    for (const locale of locales) {
-      const dict = getDictionary(locale);
-      expect(JSON.stringify(dict.home), locale).not.toContain(dict.brand.meaning);
-    }
-  });
-
   it('remplit la copie de la page dans les deux locales', () => {
     for (const locale of locales) {
       const { work } = getDictionary(locale);
       for (const line of [work.title, work.lead, work.projects.framing]) {
         expect(line.trim().length, locale).toBeGreaterThan(0);
       }
-      expect(work.about.creed.length, locale).toBeGreaterThan(0);
-      expect(work.about.body.length, locale).toBeGreaterThan(0);
     }
   });
 });

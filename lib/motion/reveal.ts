@@ -39,3 +39,41 @@ export function revealOnScroll(targets: Element[]): void {
     });
   }
 }
+
+/**
+ * Les mots d'un titre montent de leur masque, un à un (`about.js` et
+ * `services.js` du prototype). Le titre est rendu par `MaskedLines`, dont chaque
+ * mot est un `[data-mask]` contenant un `<span>` : c'est ce `<span>` qui monte,
+ * le masque coupe.
+ *
+ * `from` : le tween écrit l'état caché à la création, comme le dessin. À appeler
+ * seulement sous `prefers-reduced-motion: no-preference` (voir `AboutMotion`) :
+ * en dehors, le titre reste tel que le HTML l'a livré.
+ */
+export function revealWords(heading: Element): void {
+  gsap.from(heading.querySelectorAll('[data-mask] > span'), {
+    yPercent: 118,
+    duration: 0.9,
+    ease: 'power3.out',
+    stagger: 0.055,
+    scrollTrigger: { trigger: heading, start: 'top 88%' },
+  });
+}
+
+/**
+ * Le reste entre doucement : les éléments `[data-quiet]` d'un bloc paraissent
+ * par fondu et glissement, l'un après l'autre. Même règle : sous
+ * reduced-motion, on n'appelle pas.
+ */
+export function revealQuiet(block: Element, start = 'top 82%'): void {
+  const quiet = block.querySelectorAll('[data-quiet]');
+  if (quiet.length === 0) return;
+  gsap.from(quiet, {
+    opacity: 0,
+    y: 18,
+    duration: 1,
+    ease: 'power2.out',
+    stagger: 0.12,
+    scrollTrigger: { trigger: block, start },
+  });
+}

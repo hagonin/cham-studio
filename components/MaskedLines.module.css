@@ -1,0 +1,25 @@
+/* Un titre en lignes, chaque mot dans son PROPRE masque (`about.css` et
+   `services.css` du prototype, identiques). Un masque par ligne a déjà cassé à
+   390px : « Clear communication. » passe sur deux rangées, le masque devient
+   deux rangées de haut, et chaque mot ne parcourt que 118 % de SA hauteur — la
+   première rangée restait visible à l'état caché. Un masque par mot ne peut pas
+   avoir cette panne par construction.
+
+   Un masque coupe les jambages : `padding-bottom: .14em; margin-bottom: -.14em`
+   les rend sans bouger la ligne. */
+.line {
+  display: block;
+}
+
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: nowrap;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+.word > span {
+  display: inline-block;
+}

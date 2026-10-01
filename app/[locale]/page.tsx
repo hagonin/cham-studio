@@ -73,7 +73,7 @@ export default async function ServicesPage({
       <main className={styles.page}>
         <Hero dict={dict} locale={locale} />
         <TouchPhilosophy {...dict.home.touchPhilosophy} />
-        <AboutBlock dict={dict} />
+        <AboutBlock dict={dict} locale={locale} />
         {workSectionIsReady() && <WorkSection locale={locale} dict={dict} />}
         {/* Un seul bloc de prestations : les trois disciplines du dessin, rendues
             par `Process` sous `#services-title`. `ServiceList` n'est PAS monté,

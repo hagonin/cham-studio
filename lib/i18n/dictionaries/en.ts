@@ -33,7 +33,6 @@ export const en = {
   },
   brand: {
     name: 'Chạm',
-    meaning: 'to touch, to make contact',
     positioning: 'Design × Code',
   },
   loader: {
@@ -78,6 +77,32 @@ export const en = {
         'YOU DON’T ONLY READ CHẠM.',
         'YOU TOUCH IT.',
       ],
+    },
+    about: {
+      eyebrow: ['03 · ABOUT ME', 'DESIGN × CODE'],
+      title: ['I build where visual craft', 'meets what’s under the hood.'],
+      lede: 'I build web interfaces and applications where the visual craft matters as much as what happens under the hood. The detail that makes a page pleasant to use interests me as much as the code that runs it.',
+      photoLead: {
+        tag: 'PHOTO 01 · IN THE MAKING',
+        caption: 'A moment from the process — sketching, prototyping, or building.',
+      },
+      photoPair: ['PHOTO 02 · COLLABORATION', 'PHOTO 03 · IN CONTEXT'],
+      now: {
+        eyebrow: 'NOW · ONGOING',
+        line: ['Learning is part', 'of the practice.'],
+        paragraph:
+          'Since then I keep learning, on both the dev and design sides, because the field moves fast — and that’s part of the fun. What drives me is building solutions that genuinely serve the people using them, with clean code and a polished interface.',
+        tooling:
+          'Day to day, I work with agentic AI tools to move faster, from prototype to refactoring, without ever losing control of code quality and architecture.',
+        chips: ['CLAUDE CODE', 'CODEX', 'ANTIGRAVITY'],
+      },
+      invite: {
+        eyebrow: ['THE NEXT CHAPTER', 'COULD BE OURS.'],
+        headline: ['Meaningful work.', 'Ambitious ideas.', 'Clear communication.'],
+        paragraph:
+          'I’m keen to collaborate on projects that have meaning and ambition, with clear communication at every step. If that’s yours,',
+        link: 'get in touch',
+      },
     },
     services: {
       title: 'Services',
@@ -132,25 +157,6 @@ export const en = {
         previous: 'Previous project',
         next: 'Next project',
       },
-    },
-    about: {
-      title: 'Behind Chạm',
-      diagram: {
-        label: 'One person, from idea to product.',
-        idea: 'Idea',
-        product: 'Product',
-      },
-      creed: [
-        'One person, from sketch to launch.',
-        'What is promised is what ships.',
-        'Nothing goes live that cannot be read without JavaScript.',
-      ],
-      meaning:
-        'Chạm is a Vietnamese word: to touch, to make contact. That is what a site has to do before it does anything else.',
-      body: [
-        'I design and build alone, which removes the place where projects usually get lost: the handover between the person drawing and the person coding. There is nothing to reinterpret, so there is nothing to renegotiate halfway through.',
-        'I take few projects and I finish them. A half-delivered site earns nobody anything, and I would rather turn work down than hand it over incomplete.',
-      ],
     },
   },
   pricing: {

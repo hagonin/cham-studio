@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 import { gsap } from 'gsap';
 import { startLenis, stopLenis, scrollToAnchor } from '@/lib/motion/lenis';
 import { revealOnScroll } from '@/lib/motion/reveal';
-import { scrubContactLine } from '@/lib/motion/contactline';
 import { magnetic } from '@/lib/motion/magnetic';
 import { playPageTransition } from '@/lib/motion/transition';
 import { prefersReducedMotion } from '@/lib/motion/prefs';
@@ -49,9 +48,6 @@ export function MotionProvider() {
     const context = gsap.context(() => {
       const reveals = [...document.querySelectorAll<HTMLElement>('[data-reveal]')];
       if (reveals.length > 0) revealOnScroll(reveals);
-
-      const line = document.querySelector<HTMLElement>('[data-contact-line]');
-      if (line) scrubContactLine(line);
 
       // La VALEUR de `data-magnetic` est la force, quand elle est donnée :
       // un CTA claque (0,28, le défaut), un lien de nav collante frémit

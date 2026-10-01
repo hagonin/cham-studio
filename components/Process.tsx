@@ -13,9 +13,7 @@ import styles from './Process.module.css';
  * l'amélioration progressive n'anime que la façon dont il y arrive, comme
  * `.frame img` (`app/globals.css`) pour le recadrage.
  *
- * Composant serveur, aucun JavaScript : `data-contact-line` n'est pas repris
- * ici (`MotionProvider.tsx` n'en sélectionne qu'un seul, et le motif de
- * `AboutBlock` n'est censé apparaître qu'une fois sur le site).
+ * Composant serveur, aucun JavaScript.
  */
 export function Process({ dict }: { dict: Dictionary }) {
   const { process } = dict.home;

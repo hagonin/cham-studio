@@ -45,6 +45,11 @@ jobs:
           grep -rIlE '\+33[0-9 .-]{9,}' .next/server/app/ && fail "numéro de téléphone personnel dans le build" || true
           grep -rIl 'outlook\.fr' .next/server/app/ && fail "email personnel dans le build" || true
           grep -rIl '000 000 000 00000' .next/server/app/ && fail "SIRET fictif dans le build" || true
+          # `ph-label` garde un emplacement d'image NON rempli, oublié. Les trois
+          # cadres photo du bloc « à propos » sont des emplacements VOULUS par le
+          # dessin : ils sont rendus tels quels, sans cette chaîne, et ne la
+          # contournent pas par hasard — une vraie photo remplace le contenu du
+          # cadre, et rien d'autre ne change.
           grep -rIl 'ph-label' .next/server/app/ && fail "réserve d'image (placeholder) dans le build" || true
           echo "Aucune chaîne interdite trouvée."
 

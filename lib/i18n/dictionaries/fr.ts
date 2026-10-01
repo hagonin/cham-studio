@@ -33,9 +33,6 @@ export const fr = {
   },
   brand: {
     name: 'Chạm',
-    // « Chạm » : toucher, entrer en contact. La marque explique le geste, pas
-    // l'inverse — cette ligne reste courte partout où elle apparaît.
-    meaning: 'toucher, entrer en contact',
     // Verrou de marque, pas de la prose : identique dans les deux locales. Le
     // « × » est le point de contact des deux métiers — c'est lui, et lui seul,
     // qui porte la couleur dans le hero.
@@ -95,6 +92,40 @@ export const fr = {
         'ON NE FAIT PAS QUE LIRE CHẠM.',
         'ON LE TOUCHE.',
       ],
+    },
+    about: {
+      // Le bloc « à propos » du dessin (copy-fr.md). Le numéro « 03 » encode la
+      // place de la section dans la page (voir `lib/sections.ts`) sans en être
+      // dérivé. Les libellés en capitales sont LITTÉRAUX. La chronologie vit
+      // dans `content/about.ts` : ce sont des enregistrements, pas de la prose.
+      eyebrow: ['03 · À PROPOS', 'DESIGN × CODE'],
+      title: ['Je construis là où le visuel', 'rencontre ce qui tourne sous le capot.'],
+      lede: 'Je conçois des interfaces et des applications web où le soin visuel compte autant que ce qui se passe sous le capot. Le détail qui rend une page agréable à utiliser m’intéresse autant que le code qui la fait tourner.',
+      photoLead: {
+        tag: 'PHOTO 01 · EN FABRICATION',
+        caption: 'Un moment du processus — esquisser, prototyper ou construire.',
+      },
+      photoPair: ['PHOTO 02 · COLLABORATION', 'PHOTO 03 · EN SITUATION'],
+      now: {
+        eyebrow: 'MAINTENANT · EN COURS',
+        line: ['Apprendre fait partie', 'de la pratique.'],
+        paragraph:
+          'Depuis, je continue d’apprendre, côté dev comme côté design, parce que le domaine bouge vite — et ça fait partie du plaisir. Ce qui me motive, c’est de construire des solutions vraiment utiles aux personnes qui s’en servent, avec un code propre et une interface soignée.',
+        tooling:
+          'Au quotidien, je travaille avec des outils d’IA agentique pour aller plus vite, du prototype au refactoring, sans jamais perdre la main sur la qualité du code et l’architecture.',
+        chips: ['CLAUDE CODE', 'CODEX', 'ANTIGRAVITY'],
+      },
+      invite: {
+        eyebrow: ['LE PROCHAIN CHAPITRE', 'POURRAIT ÊTRE LE NÔTRE.'],
+        headline: [
+          'Un travail qui a du sens.',
+          'Des idées ambitieuses.',
+          'Une communication claire.',
+        ],
+        paragraph:
+          'J’ai envie de collaborer sur des projets qui ont du sens et de l’ambition, avec une communication claire à chaque étape. Si c’est le vôtre,',
+        link: 'écrivez-moi',
+      },
     },
     services: {
       title: 'Prestations',
@@ -162,32 +193,6 @@ export const fr = {
         previous: 'Projet précédent',
         next: 'Projet suivant',
       },
-    },
-    about: {
-      title: 'Derrière Chạm',
-      // Le relais habituel contre la ligne continue : deux rangées, un seul
-      // propos. Les libellés sont du texte rendu (pas une image) pour que la
-      // figure se lise sans JavaScript ni description séparée.
-      diagram: {
-        label: 'Une seule personne, de l’idée au produit.',
-        idea: 'Idée',
-        product: 'Produit',
-      },
-      // Trois lignes, pas un CV. La page vend une façon de penser ; le CV vend
-      // un parcours. Ni historique d'emploi ni barres de compétences.
-      creed: [
-        'Une seule personne, du croquis à la mise en ligne.',
-        'Ce qui est promis est ce qui est livré.',
-        'Rien en ligne qui ne soit lisible sans JavaScript.',
-      ],
-      // La seule occurrence du sens de la marque sur le site. Le test
-      // tests/i18n.test.ts vérifie qu'elle contient bien brand.meaning.
-      meaning:
-        'Chạm est un mot vietnamien : toucher, entrer en contact. C’est ce qu’un site doit faire avant tout le reste.',
-      body: [
-        'Je conçois et je développe seule, ce qui supprime l’endroit où les projets se perdent d’habitude : la transmission entre celui qui dessine et celui qui code. Il n’y a rien à réinterpréter, donc rien à négocier en cours de route.',
-        'Je travaille en petit nombre et je termine. Un site livré à moitié ne rapporte rien à personne, et je préfère refuser un projet que le rendre incomplet.',
-      ],
     },
   },
   pricing: {
