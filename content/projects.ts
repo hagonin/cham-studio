@@ -1,7 +1,10 @@
 import { type Project } from './types';
 
 /**
- * Les trois projets, avec leurs vrais visuels. Plus de réserve : le fichier
+ * Les trois projets, avec leurs vrais visuels. Le texte (rôle, description, légende
+ * de l'image) est celui du DESSIN, mot pour mot ; les récits plus longs de chaque
+ * projet (chiffres, pile technique) restent dans l'historique git.
+ * Plus de réserve : le fichier
  * `projects.dev.ts` a disparu avec le dernier visuel manquant. Le jour où un
  * quatrième projet attendra son image, le motif se relit dans l'historique —
  * un fichier mort au dépôt aurait pourri avant d'être utile.
@@ -24,18 +27,18 @@ const realProjects: Project[] = [
       width: 1707,
       height: 1067,
       alt: {
-        fr: 'Trois écrans de l’application IMIN : la fiche d’un groupe, la liste des événements et le détail d’un événement avec les réponses des membres.',
-        en: 'Three IMIN screens: a group page, the event list, and an event detail with each member’s response.',
+        fr: 'Découverte d’événements et fiche détaillée sur mobile',
+        en: 'Event discovery and event details on mobile',
       },
     },
     title: { fr: 'IMIN Event', en: 'IMIN Event' },
     role: {
-      fr: 'Refonte d’interface et développement',
-      en: 'Interface redesign and development',
+      fr: 'DESIGN PRODUIT / DÉVELOPPEMENT FULLSTACK',
+      en: 'PRODUCT DESIGN / FULLSTACK DEVELOPMENT',
     },
     summary: {
-      fr: 'Une application de gestion de présence pour clubs, associations et équipes, en ligne sur iOS et Android depuis trois ans. J’ai refait son interface — système de design, bibliothèque de composants, 44 écrans — dans un produit qui avait déjà ses utilisateurs.',
-      en: 'An attendance app for clubs, associations and teams, live on iOS and Android for three years. I rebuilt its interface — a design system, a component library and 44 screens — inside a product that already had users.',
+      fr: 'Du premier parcours utilisateur au produit qui fonctionne. Une expérience événementielle façonnée par le design et le code.',
+      en: 'From the first user flow to the working product. An event experience shaped through design and code.',
     },
     stack: ['Flutter', 'Dart', 'Riverpod', 'Material 3', 'Firebase'],
     url: 'https://apps.apple.com/fr/app/imin-event/id6742787345',
@@ -48,18 +51,18 @@ const realProjects: Project[] = [
       width: 1707,
       height: 1067,
       alt: {
-        fr: 'Le panneau de capture audio de Conversation Copilot : choix du micro, langue de transcription, case « résumé local uniquement » et niveaux séparés pour les deux voix.',
-        en: 'Conversation Copilot’s audio capture panel: microphone choice, transcription language, a “local summary only” checkbox, and separate level meters for the two voices.',
+        fr: 'Aperçu de l’interface Conversation Copilot',
+        en: 'Conversation Copilot interface preview',
       },
     },
     title: { fr: 'Conversation Copilot', en: 'Conversation Copilot' },
     role: {
-      fr: 'Conception et développement, en solo',
-      en: 'Design and development, solo',
+      fr: 'DESIGN D’INTERFACE / DÉVELOPPEMENT',
+      en: 'INTERFACE DESIGN / DEVELOPMENT',
     },
     summary: {
-      fr: 'Un assistant temps réel pour les appels visio : il transcrit les deux voix, répond à partir de mes propres notes, et garde sur un modèle local tout ce qui est marqué confidentiel. Construit pour un seul utilisateur — moi — et mesuré dès le premier jour.',
-      en: 'A real-time assistant for video calls: it transcribes both sides, answers from my own notes, and keeps anything marked confidential on a local model. Built for one user — me — and measured from the first day.',
+      fr: 'Une interface pour des conversations plus claires. Comment un design réfléchi fait entrer l’IA dans le travail de tous les jours.',
+      en: 'An interface for clearer conversations. Exploring how considered design brings AI into everyday work.',
     },
     stack: ['React', 'TypeScript', 'FastAPI', 'Python', 'PostgreSQL', 'Deepgram'],
   },
@@ -71,18 +74,18 @@ const realProjects: Project[] = [
       width: 1707,
       height: 1067,
       alt: {
-        fr: 'La carte d’Airsen sur Clermont-Ferrand : indice de qualité de l’air à 2 (moyen) et graphique des polluants détectés, à côté de la carte de la commune.',
-        en: 'Airsen’s map over Clermont-Ferrand: an air quality index of 2 (moderate) and a chart of detected pollutants, beside the commune map.',
+        fr: 'Aperçu de l’application web Airsen',
+        en: 'Airsen web application preview',
       },
     },
     title: { fr: 'Airsen', en: 'Airsen' },
     role: {
-      fr: 'Conception UI/UX et développement full-stack',
-      en: 'UI/UX design and full-stack development',
+      fr: 'UX / APPLICATION WEB',
+      en: 'UX / WEB APPLICATION',
     },
     summary: {
-      fr: 'Une plateforme de qualité de l’air et de météo qui couvre toutes les communes françaises, y compris les 15 000 sans station de mesure. Construite à trois développeurs ; j’ai conçu l’interface et pris en charge la carte, l’authentification et le système d’alertes. Toujours en développement.',
-      en: 'An air quality and weather platform covering every French commune, including the 15,000 with no monitoring station of their own. Built with two other developers; I designed the interface and owned the map, authentication and the alerting system. Still in development.',
+      fr: 'Une application web explorée par l’expérience utilisateur, le design d’interface et le souci du détail.',
+      en: 'A web application explored through user experience, interface design, and attention to detail.',
     },
     stack: ['Java', 'Spring Boot', 'Angular', 'MariaDB', 'Redis', 'Docker'],
   },

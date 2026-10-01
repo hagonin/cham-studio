@@ -104,6 +104,27 @@ export const en = {
         link: 'get in touch',
       },
     },
+    work: {
+      meta: ['04 / 05', 'SELECTED WORKS', 'DESIGN × CODE'],
+      carouselLabel: 'Selected project previews. Drag or use arrow keys to explore.',
+      hint: 'DRAG TO EXPLORE',
+      unfold: '[ UNFOLD + ]',
+      fold: '[ FOLD − ]',
+      previous: 'Previous project',
+      next: 'Next project',
+      select: 'Select {title}',
+      unfoldLabel: 'Unfold {title} project details',
+      foldLabel: 'Fold {title} project details',
+      announceOpen: '{n} of {total}: {title}. Details open.',
+      announceClosed: '{n} of {total}: {title}. Select to unfold details.',
+      title: 'Selected works',
+      lead: ['A few selected projects.', 'From the first idea to the working product.'],
+      explore: 'EXPLORE THE INTERFACE ↗',
+      enlarge: 'Enlarge {title} preview',
+      lightbox: 'Project preview',
+      close: 'CLOSE ×',
+      closeLabel: 'Close preview',
+    },
     services: {
       title: 'Services',
       deliverablesLabel: 'What you get',
@@ -134,29 +155,6 @@ export const en = {
       title: 'Let us talk about your project',
       body: 'Describe in a few lines what you want to build. I reply within 24 hours, in English or in French.',
       cta: 'Write to the studio',
-    },
-  },
-  work: {
-    meta: {
-      title: 'Work — Chạm Studio',
-      description:
-        'Personal projects, designed and built end to end. Independent studio in Montpellier, France.',
-    },
-    title: 'What I have built',
-    lead: 'Personal projects, carried from the first sketch to launch.',
-    projects: {
-      title: 'Work',
-      framing:
-        'Few projects, each one finished. These are personal builds — they show how I design and how I code, not a client list.',
-      roleLabel: 'Role',
-      yearLabel: 'Year',
-      stackLabel: 'Tools',
-      visit: 'View the project',
-      book: {
-        hint: 'Swipe',
-        previous: 'Previous project',
-        next: 'Next project',
-      },
     },
   },
   pricing: {

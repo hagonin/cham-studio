@@ -121,26 +121,6 @@ describe('couverture', () => {
   });
 });
 
-/**
- * La page /projects : une page dont le contenu principal manque ne s'annonce
- * pas au moteur.
- *
- * Il n'y a plus de garde sur le sens de « Chạm » : le dessin le glose lui-même
- * (« CHẠM / VERB / TO TOUCH » dans le hero et le rideau) et n'écrit plus la
- * phrase longue dans le bloc « à propos ». La règle « le sens n'est écrit
- * qu'une fois » défendait un choix que le dessin ne fait pas.
- */
-describe('page travaux', () => {
-  it('remplit la copie de la page dans les deux locales', () => {
-    for (const locale of locales) {
-      const { work } = getDictionary(locale);
-      for (const line of [work.title, work.lead, work.projects.framing]) {
-        expect(line.trim().length, locale).toBeGreaterThan(0);
-      }
-    }
-  });
-});
-
 // Une ancre vers un titre absent défile vers rien, et la page répond 200 :
 // aucun test de route ne l'attrape. La garde est donc ici, sur la liste des
 // sections — `about` et `work` n'entrent qu'aux phases 03 et 05.

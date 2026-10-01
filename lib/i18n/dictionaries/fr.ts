@@ -127,6 +127,36 @@ export const fr = {
         link: 'écrivez-moi',
       },
     },
+    work: {
+      // La section « travaux » du dessin (copy-fr.md). Les gabarits portent
+      // `{title}`, `{n}` et `{total}` : la phrase s'écrit en entier dans chaque
+      // langue. Les libellés en capitales sont LITTÉRAUX. Le « 04 » encode la
+      // place de la section dans la page (voir `lib/sections.ts`).
+      meta: ['04 / 05', 'PROJETS CHOISIS', 'DESIGN × CODE'],
+      carouselLabel:
+        'Aperçus des projets choisis. Faites glisser ou utilisez les flèches pour explorer.',
+      hint: 'GLISSER POUR EXPLORER',
+      unfold: '[ DÉPLIER + ]',
+      fold: '[ REPLIER − ]',
+      previous: 'Projet précédent',
+      next: 'Projet suivant',
+      select: 'Sélectionner {title}',
+      unfoldLabel: 'Déplier les détails du projet {title}',
+      foldLabel: 'Replier les détails du projet {title}',
+      announceOpen: '{n} sur {total}\u202f: {title}. Détails ouverts.',
+      announceClosed:
+        '{n} sur {total}\u202f: {title}. Sélectionnez pour déplier les détails.',
+      title: 'Projets choisis',
+      lead: [
+        'Quelques projets choisis.',
+        'De la première idée au produit qui fonctionne.',
+      ],
+      explore: 'EXPLORER L’INTERFACE ↗',
+      enlarge: 'Agrandir l’aperçu de {title}',
+      lightbox: 'Aperçu du projet',
+      close: 'FERMER ×',
+      closeLabel: 'Fermer l’aperçu',
+    },
     services: {
       title: 'Prestations',
       deliverablesLabel: 'Ce qui est livré',
@@ -169,32 +199,6 @@ export const fr = {
    * comme petits et terminés, se lisent comme un choix. Les mêmes projets
    * gonflés pour ressembler à des missions clientes se lisent comme du vide.
    */
-  work: {
-    meta: {
-      title: 'Travaux — Chạm Studio',
-      description:
-        'Projets personnels, conçus et développés de bout en bout. Studio indépendant à Montpellier.',
-    },
-    title: 'Ce que j’ai construit',
-    lead: 'Des projets personnels, menés du premier croquis à la mise en ligne.',
-    projects: {
-      title: 'Travaux',
-      // Nommer la taille désamorce la question. Ne jamais laisser entendre
-      // qu'il s'agit de missions clientes : c'est faux, et cela s'apprend.
-      framing:
-        'Peu de projets, chacun terminé. Ce sont des travaux personnels — ils montrent comment je conçois et comment je code, pas une liste de références.',
-      roleLabel: 'Rôle',
-      yearLabel: 'Année',
-      stackLabel: 'Outils',
-      visit: 'Voir le projet',
-      // Le livre 3D : n'existe qu'au-dessus de 1024 px, hors reduced-motion.
-      book: {
-        hint: 'Glisser',
-        previous: 'Projet précédent',
-        next: 'Projet suivant',
-      },
-    },
-  },
   pricing: {
     // Les coefficients reposent sur un échantillon de deux : la mention rend le
     // provisoire visible au prospect plutôt qu'à nous seuls.

@@ -75,11 +75,10 @@ describe('projects', () => {
   });
 
   /**
-   * La galerie 3D dessine des plans d'un rapport FIXE (`GalleryScene`,
-   * `PLANE_W = PLANE_H * 1.6`). Un visuel d'un autre rapport ne casse rien —
-   * il s'étire, en silence, et seul l'œil le remarque. La contrainte était
-   * écrite dans `cover-specs.md` ; elle est ici parce qu'un document ne
-   * refuse pas un fichier.
+   * Les panneaux de la galerie ont un rapport FIXE (`aspect-ratio: 1.6` dans
+   * `WorkGallery.module.css`). Un visuel d'un autre rapport ne casse rien — il
+   * flotte dans son cadre avec des marges inégales, et seul l'œil le remarque.
+   * La contrainte est ici parce qu'un document ne refuse pas un fichier.
    */
   it('donne à tous les visuels le même rapport, celui de la galerie', () => {
     for (const project of projects) {

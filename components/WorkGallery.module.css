@@ -1,0 +1,460 @@
+/* La section « travaux » du dessin, valeur pour valeur (`selected-work.css` du
+   prototype). Les px et les clamp sont ceux du dessin ; les jetons ne servent que
+   là où ils portent la même valeur.
+
+   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`) et
+   la scène sombre va d'un bord à l'autre, comme le dessin. */
+.section {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  color: var(--ink);
+}
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  padding: 36px 0 24px;
+  background: var(--ink-gallery);
+  color: var(--paper);
+}
+
+.meta,
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  width: 80%;
+  margin: 0 auto;
+  font: 400 var(--label-xs) / 1.6 var(--font-mono-stack);
+  letter-spacing: 0.18em;
+}
+
+.meta {
+  color: var(--dim-2);
+}
+
+.meta span:first-child {
+  color: var(--paper);
+}
+
+/* `touch-action: pan-y` : le navigateur garde le défilement vertical, le glissé
+   horizontal est pris par les gestionnaires du composant. */
+.viewport {
+  position: relative;
+  height: clamp(340px, 32vw, 510px);
+  perspective: 1400px;
+  touch-action: pan-y;
+  cursor: grab;
+  outline-offset: -8px;
+}
+
+.dragging {
+  cursor: grabbing;
+}
+
+.scene {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+  transform: translateX(var(--drag-x, 0px)) rotateX(var(--tilt-x, 0deg));
+  transition: transform 0.75s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.dragging .scene {
+  transition: none;
+}
+
+/* L'ombre est le noir du dessin à 53 % puis 73 % d'alpha (`#0008`, `#000b`). */
+.panel {
+  --panel-width: min(27vw, 420px);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--panel-width);
+  aspect-ratio: 1.6;
+  padding: 16px;
+  border: 1px solid var(--line-4);
+  border-radius: 0;
+  background: var(--paper);
+  cursor: pointer;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition:
+    transform 0.9s cubic-bezier(0.2, 0.75, 0.25, 1),
+    filter 0.9s,
+    box-shadow 0.4s;
+  box-shadow: 0 24px 40px -25px rgb(0 0 0 / 53.3%);
+}
+
+.panel img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.panel[data-slot='-1'] {
+  transform: translate(-154%, -50%) translateZ(-70px) rotateY(24deg);
+  filter: brightness(0.94);
+  z-index: 1;
+}
+
+.panel[data-slot='0'] {
+  transform: translate(-50%, -50%) translateZ(35px);
+  z-index: 3;
+}
+
+.panel[data-slot='1'] {
+  transform: translate(54%, -50%) translateZ(-70px) rotateY(-24deg);
+  filter: brightness(0.94);
+  z-index: 1;
+}
+
+/* Au-delà de trois projets, les panneaux d'emplacement 2, 3… n'ont pas de place
+   dans le dessin : ils attendent leur tour hors de vue, au lieu de s'empiler au
+   centre. */
+.panel:not([data-slot='-1'], [data-slot='0'], [data-slot='1']) {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.panel[data-slot='0']:hover {
+  box-shadow: 0 28px 55px -20px rgb(0 0 0 / 73.3%);
+}
+
+.panel:focus-visible {
+  outline: 2px solid var(--touch-hot);
+  outline-offset: 8px;
+}
+
+.controls {
+  min-height: 48px;
+}
+
+.hint,
+.counter {
+  color: var(--dim-2);
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  color: inherit;
+  padding: 12px 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.toggleLabel {
+  white-space: nowrap;
+  color: var(--dim-2);
+}
+
+.toggle:hover .toggleLabel {
+  color: var(--paper);
+}
+
+.arrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrows button {
+  color: var(--paper);
+  background: none;
+  border: 0;
+  width: 40px;
+  height: 44px;
+  font: 24px/1 serif;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.prev:hover {
+  transform: translateX(-4px);
+}
+
+.next:hover {
+  transform: translateX(4px);
+}
+
+.announcement {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* --- Bloc éditorial ------------------------------------------------------------ */
+.editorial {
+  padding: 64px 10% 76px;
+}
+
+.workHeading {
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--line-3);
+}
+
+.workHeading h2 {
+  margin: 0 0 16px;
+  font-size: clamp(38px, 4.5vw, 66px);
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+  font-weight: 600;
+}
+
+.workHeading p {
+  max-width: 510px;
+  margin: 0;
+  color: var(--grey-2);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.detail {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: clamp(32px, 7vw, 100px);
+  padding: 40px 0;
+  border-bottom: 1px solid var(--line-3);
+}
+
+.detail[hidden] {
+  display: none;
+}
+
+.detailCopy {
+  position: relative;
+  padding-left: 40px;
+}
+
+.number {
+  position: absolute;
+  top: 9px;
+  left: 0;
+  color: var(--grey-5);
+  font: var(--label-s) / 1.5 var(--font-mono-stack);
+}
+
+.detail h3 {
+  margin: 0 0 30px;
+  font-size: clamp(28px, 3.4vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+.role {
+  margin: 0 0 18px;
+  color: var(--grey-5);
+  font: var(--label-s) / 1.7 var(--font-mono-stack);
+}
+
+.description {
+  margin: 0;
+  color: var(--grey-1);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.enlarge {
+  padding: 16px;
+  background: transparent;
+  border: 1px solid var(--line-3);
+  cursor: pointer;
+  align-self: start;
+  color: var(--grey-2);
+}
+
+.enlarge img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+}
+
+.enlarge span {
+  display: block;
+  margin-top: 16px;
+  font: var(--label-xs) / 1.5 var(--font-mono-stack);
+  letter-spacing: 0.08em;
+}
+
+/* Le détail se déplie : `0fr` → `1fr` sur la hauteur de la ligne de grille, le
+   conteneur intérieur à `min-height: 0; overflow: hidden`. Seulement une fois la
+   section améliorée : sans JavaScript, les trois fiches restent dépliées. */
+.enhanced .details {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.7s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+
+.enhanced .details.open {
+  grid-template-rows: 1fr;
+}
+
+.enhanced .detailsInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.enhanced .detail {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.4s,
+    transform 0.6s;
+}
+
+.enhanced .open .detail {
+  opacity: 1;
+  transform: none;
+}
+
+.section button:focus-visible,
+.viewport:focus-visible {
+  outline: 2px solid var(--touch-hot);
+  outline-offset: 5px;
+}
+
+/* --- Visionneuse ------------------------------------------------------------------ */
+.lightbox {
+  padding: 48px 24px 24px;
+  width: min(1200px, 94vw);
+  max-height: 92dvh;
+  border: 1px solid var(--line-5);
+  background: var(--paper-2);
+}
+
+.lightbox::backdrop {
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+}
+
+.lightbox img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 75dvh;
+  object-fit: contain;
+}
+
+.lightboxClose {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: 0;
+  font: 14px var(--font-mono-stack);
+  padding: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 47.5rem) {
+  .stage {
+    padding: 28px 0 20px;
+  }
+
+  .meta,
+  .controls {
+    width: auto;
+    margin-inline: 24px;
+    gap: 12px;
+    font-size: var(--label-2xs);
+  }
+
+  .meta span:last-child {
+    display: none;
+  }
+
+  .viewport {
+    height: 300px;
+    perspective: 900px;
+  }
+
+  .panel {
+    --panel-width: 61vw;
+    padding: 10px;
+  }
+
+  .panel[data-slot='-1'] {
+    transform: translate(-142%, -50%) translateZ(-100px) rotateY(32deg);
+  }
+
+  .panel[data-slot='1'] {
+    transform: translate(42%, -50%) translateZ(-100px) rotateY(-32deg);
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr auto;
+  }
+
+  .hint {
+    display: none;
+  }
+
+  .toggle {
+    justify-content: start;
+    gap: 8px 10px;
+    text-align: left;
+    font-size: var(--label-2xs);
+    letter-spacing: 0.09em;
+  }
+
+  .toggleLabel {
+    width: 100%;
+    padding-left: 0;
+  }
+
+  .arrows {
+    gap: 0;
+  }
+
+  .arrows button {
+    width: 34px;
+  }
+
+  .editorial {
+    padding: 36px 24px 48px;
+  }
+
+  .workHeading p {
+    font-size: 14px;
+  }
+
+  .detail {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-block: 28px;
+  }
+
+  .detailCopy {
+    padding-left: 30px;
+  }
+
+  .detail h3 {
+    margin-bottom: 22px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .section * {
+    transition: none !important;
+  }
+}

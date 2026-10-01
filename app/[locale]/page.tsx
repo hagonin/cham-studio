@@ -49,11 +49,10 @@ export async function generateMetadata({
  * Le bloc « situations » a été retiré : aucune planche du canvas ne le dessine,
  * et il ouvrait la page sur des questions au lieu de la preuve.
  *
- * Les travaux s'insèrent quand leur contenu existe — `workSectionIsReady()`,
- * la même condition qui décide de l'ancre dans `lib/sections.ts`. Aucune
- * section vide en attendant : en production la liste est encore `[]`, donc
- * rien ne paraît ; sous `pnpm dev` la réserve la remplit et la mise en page
- * se juge sur pièce.
+ * Les travaux s'insèrent quand leur contenu existe — `workSectionIsReady()`, la
+ * même condition qui décide de l'ancre dans `lib/sections.ts`. Aucune section vide
+ * en attendant : elle ne paraît qu'à partir de deux projets, et les trois projets
+ * actuels la montent.
  */
 export default async function ServicesPage({
   params,
