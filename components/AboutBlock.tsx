@@ -127,11 +127,12 @@ export function AboutBlock({ dict, locale }: { dict: Dictionary; locale: Locale 
           {about.invite.eyebrow[1]}
         </p>
         <div className={styles.inviteStatement}>
-          <p
-            className={styles.inviteHeadline}
-            aria-label={about.invite.headline.join(' ')}
-            data-words
-          >
+          {/* Un <p> ne peut pas porter `aria-label` (ARIA interdit de nommer un
+              paragraphe) et ses mots sont en `aria-hidden` : sans texte réel, la
+              phrase serait muette pour un lecteur d'écran. Le dessin fait ce
+              choix ; ici le texte entier est posé en clair, hors écran. */}
+          <p className={styles.inviteHeadline} data-words>
+            <span className={styles.srOnly}>{about.invite.headline.join(' ')}</span>
             <MaskedLines lines={about.invite.headline} />
           </p>
           <p className={styles.inviteParagraph} data-quiet>
