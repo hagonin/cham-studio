@@ -27,11 +27,17 @@ export function Clock({ locale, label }: { locale: Locale; label: string }) {
     return () => window.clearInterval(id);
   }, [locale]);
 
-  // `suppressHydrationWarning` n'est pas nécessaire : le serveur et le premier
-  // rendu client produisent tous deux la même valeur vide.
+  // Rien tant que l'heure n'est pas connue : le serveur et le premier rendu
+  // client produisent la même valeur vide (donc pas de divergence d'hydratation),
+  // et le libellé ne reste jamais seul, sans heure à côté.
+  if (time === null) return null;
+
+  // Le nom est du TEXTE hors écran, pas un `aria-label` : cet attribut n'est pas
+  // permis sur un `<span>` (rôle générique), les lecteurs d'écran l'ignorent
+  // alors et l'heure se lisait sans dire de quelle heure il s'agit.
   return (
-    <span aria-label={label}>
-      <time suppressHydrationWarning>{time ?? ''}</time>
+    <span>
+      <span className="sr-only">{label}</span> <time>{time}</time>
     </span>
   );
 }

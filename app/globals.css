@@ -312,6 +312,21 @@ h2[id] {
   z-index: 10;
 }
 
+/* Texte réel hors écran : lu par les technologies d'assistance, jamais vu. Il
+   nomme ce qu'un `aria-label` ne peut pas nommer — un `<span>` ou un `<div>`
+   sans rôle. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* --- Cadre et recadrage ----------------------------------------------------
    Le seul effet de défilement du site : un glissement du cadrage À L'INTÉRIEUR
    d'un cadre fixe. Rien ne bouge par rapport à la page, donc pas de décalage de
