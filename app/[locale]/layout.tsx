@@ -12,6 +12,7 @@ import { Clock } from '@/components/Clock';
 // défilement lissé se comporte alors de façon imprévisible selon la page.
 import 'lenis/dist/lenis.css';
 import '../globals.css';
+import styles from './layout.module.css';
 
 export function generateStaticParams() {
   // Les deux locales sont CONSTRUITES ; seules les locales publiées sont
@@ -55,11 +56,11 @@ export default async function LocaleLayout({
             Montés après lui, donc jamais sur son chemin. */}
         <MotionProvider />
         <Loader dict={dict} />
-        <footer>
-          <p>
-            {dict.footer.location}{' '}
+        <footer className={styles.footer}>
+          <div className={styles.row}>
+            <span>{dict.footer.location}</span>
             <Clock locale={locale} label={dict.home.status.clockLabel} />
-          </p>
+          </div>
         </footer>
       </body>
     </html>

@@ -1,0 +1,32 @@
+/* Le pied de la mise en page : le lieu et l'heure locale. Le dessin n'en a pas ;
+   il est posé dans le registre du pied de page du dessin (`contact.css`) pour
+   lui faire suite sans rupture : même gouttière que la section qui le précède
+   (4.45vw, 24px sous 700px), mono de 10px (9px sous 700px), deux libellés courts
+   répartis sur la largeur comme la dernière rangée du dessin.
+
+   Les capitales sont posées sur un `<div>`, pas sur un `<p>` : `check:html`
+   refuse une capitale CSS sur un paragraphe, pas sur un libellé. */
+.footer {
+  padding: 0 4.45vw 24px;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  font: 400 var(--label-xs) / 1.5 var(--font-mono-stack);
+  text-transform: uppercase;
+}
+
+@media (max-width: 43.75rem) {
+  .footer {
+    padding: 0 24px 24px;
+  }
+
+  .row {
+    font-size: var(--label-2xs);
+  }
+}
