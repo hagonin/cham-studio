@@ -5,9 +5,7 @@ import { getDictionary } from '@/lib/i18n/getDictionary';
 import { metadataFor } from '@/lib/i18n/metadata';
 import { fontVariables } from '@/lib/fonts';
 import { MotionProvider } from '@/components/MotionProvider';
-import { ContactCursor } from '@/components/ContactCursor';
 import { Loader } from '@/components/Loader';
-import { ScrollTopButton } from '@/components/ScrollTopButton';
 import { Clock } from '@/components/Clock';
 // Feuille de Lenis, livrée par le paquet. Sans elle, `html.lenis` n'a pas sa
 // règle `height: auto` et les gardes `data-lenis-prevent` sont inertes : le
@@ -51,13 +49,11 @@ export default async function LocaleLayout({
           {dict.nav.skipToContent}
         </a>
         <div id="content">{children}</div>
-        {/* Aucun des trois ne rend le contenu du hero : ils décident comment
+        {/* Aucun des deux ne rend le contenu du hero : ils décident comment
             le HTML déjà servi arrive, ou ajoutent un rideau par-dessus.
             Montés après lui, donc jamais sur son chemin. */}
         <MotionProvider />
-        <ContactCursor dict={dict} />
         <Loader dict={dict} />
-        <ScrollTopButton label={dict.nav.top} />
         <footer>
           <p>
             {dict.footer.location}{' '}

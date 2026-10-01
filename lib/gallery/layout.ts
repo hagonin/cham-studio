@@ -2,7 +2,7 @@
  * La géométrie de la galerie, en logique pure : ni Three, ni DOM, ni rAF.
  * C'est la seule partie du morceau 3D qui se vérifie sans navigateur, et
  * c'est celle qui, prise à l'envers, casse la composition — le rendu, lui,
- * se juge à l'œil (même partage que `lib/motion/cursor.ts`).
+ * se juge à l'œil (même partage que `lib/sections.ts`).
  *
  * DÉCISION : un emplacement se DÉRIVE de l'écart avec la page ouverte, pas
  * du rang du projet. La galerie se feuillette comme un livre : la page ouverte

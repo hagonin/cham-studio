@@ -23,7 +23,6 @@ export const fr = {
     // Le bouton de la barre : même cible que « Contact », hors de la liste.
     contactMe: 'Écrivez-moi',
     skipToContent: 'Aller au contenu',
-    top: 'Haut de page',
     // Le bouton porte les deux libellés : c'est le MÊME bouton qui bascule,
     // pas deux commandes. `aria-expanded` dit l'état, le libellé dit l'action.
     menu: 'Menu',
@@ -237,19 +236,6 @@ export const fr = {
       cta: 'Envoyer cette configuration',
       mailSubject: 'Estimation — Chạm Studio',
       mailIntro: 'Bonjour, voici la configuration estimée sur le site :',
-    },
-  },
-  /**
-   * Libellés du curseur de contact (Phase 10). Ils nomment l'ACTION dans la
-   * langue de la page — jamais le mot « touch ». C'est le geste qui porte la
-   * marque ; une légende qui l'explique serait le paragraphe que toute cette
-   * idée existe pour éviter.
-   */
-  motion: {
-    cursor: {
-      read: 'Voir',
-      write: 'Écrire',
-      open: 'Ouvrir',
     },
   },
   notFound: {

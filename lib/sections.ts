@@ -6,7 +6,7 @@ import { workSectionIsReady } from '@/content/projects';
  *
  * Dans un `.ts` et non dans le composant : les tests importent ces listes, et
  * un fichier `.tsx` ne se parse pas sous Vitest (`jsx: preserve` pour Next).
- * Même raison que `lib/motion/cursor.ts` — la logique qui doit se vérifier vit
+ * Même raison que `lib/gallery/layout.ts` — la logique qui doit se vérifier vit
  * à part du rendu.
  *
  * L'écart entre les deux listes est le sujet : une ancre vers un titre absent

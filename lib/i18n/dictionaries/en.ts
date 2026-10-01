@@ -27,7 +27,6 @@ export const en = {
     // Le bouton de la barre : même cible que « Connect », hors de la liste.
     contactMe: 'Contact me',
     skipToContent: 'Skip to content',
-    top: 'Back to top',
     menu: 'Menu',
     close: 'Close',
     scroll: 'Scroll',
@@ -191,13 +190,6 @@ export const en = {
       cta: 'Send this configuration',
       mailSubject: 'Estimate — Chạm Studio',
       mailIntro: 'Hello, here is the configuration estimated on the site:',
-    },
-  },
-  motion: {
-    cursor: {
-      read: 'View',
-      write: 'Write',
-      open: 'Open',
     },
   },
   notFound: {

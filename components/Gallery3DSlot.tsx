@@ -130,7 +130,7 @@ export function Gallery3DSlot({
     );
 
     // La page vient de changer de hauteur : les déclencheurs de révélation
-    // plus bas, et les zones mises en cache par le curseur, se recalent.
+    // plus bas se recalent.
     ScrollTrigger.refresh();
     const row = rows[active];
     if (scrollPending.current && open && row) bringIntoView(row);

@@ -7,7 +7,6 @@ import { startLenis, stopLenis, scrollToAnchor } from '@/lib/motion/lenis';
 import { revealOnScroll } from '@/lib/motion/reveal';
 import { scrubContactLine } from '@/lib/motion/contactline';
 import { magnetic } from '@/lib/motion/magnetic';
-import { parallax } from '@/lib/motion/pointer';
 import { playPageTransition } from '@/lib/motion/transition';
 import { prefersReducedMotion } from '@/lib/motion/prefs';
 
@@ -62,15 +61,6 @@ export function MotionProvider() {
         const strength = Number(cta.dataset.magnetic);
         cleanups.push(magnetic(cta, strength > 0 ? { strength } : {}));
       }
-
-      // Un SEUL appel pour toutes les couches : `parallax()` n'ouvre qu'un
-      // ScrollTrigger. La profondeur est déclarée dans le markup
-      // (`data-parallax="0.6"`), pas ici — le composant sait ce qui est au fond.
-      const layers = [...document.querySelectorAll<HTMLElement>('[data-parallax]')].map(
-        (layer) =>
-          [layer, Number(layer.dataset.parallax) || 0] as [HTMLElement, number],
-      );
-      if (layers.length > 0) cleanups.push(parallax(layers));
     });
 
     // Lenis avale le comportement natif de `#ancre` : le lien d'évitement et

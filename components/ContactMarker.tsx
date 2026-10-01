@@ -9,8 +9,7 @@ type Props = {
  * ──────●────── CHẠM
  *
  * Le point de contact de la marque, en CSS seul : pas de JavaScript, même
- * rendu au doigt et à la souris. Le curseur de la Phase 10 prolonge cette idée,
- * il ne l'introduit pas.
+ * rendu au doigt et à la souris.
  */
 export function ContactMarker({ label }: Props) {
   return (

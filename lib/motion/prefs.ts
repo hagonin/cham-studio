@@ -13,10 +13,9 @@
  * | Système                     | coarse   | reduced-motion | Porte             |
  * |-----------------------------|----------|----------------|-------------------|
  * | Loader                      | actif    | inactif*       | Loader.tsx        |
- * | Curseur + champ + onde      | inactif  | inactif        | ContactCursor.tsx |
  * | Magnétisme des CTA          | inactif  | inactif        | magnetic()        |
  * | Séquence du contact (hero)  | actif    | inactif        | HeroContact.tsx   |
- * | Parallaxe au défilement     | ACTIF    | inactif        | parallax()        |
+ * | Scène tactile (canevas)     | actif    | inactif        | TouchPhilosophy   |
  * | État courant (aria-current) | actif    | actif          | aucune            |
  * | Menu déplié (sous 800px)    | actif    | actif          | aucune            |
  *
@@ -24,17 +23,10 @@
  *     un événement jamais émis. La séquence du contact attend ce même événement,
  *     et ne le fait que si `loaderWillPlay()` dit que le rideau va se jouer.
  *
- * Aucun élément ne porte plus `data-parallax` depuis que le hero suit le
- * dessin, qui n'a pas de parallaxe : la porte reste, prête pour le prochain.
- *
- * Deux lignes demandent une décision plutôt qu'une lecture :
- *
- * 1. **La parallaxe reste active au doigt** (décision V1). Elle suit le
- *    DÉFILEMENT, pas le pointeur : la gater sur `hasFinePointer()` la
- *    perdrait sur tablette sans que rien ne le justifie.
- * 2. **L'état courant et le menu survivent à reduced-motion.** Ce sont des
- *    informations de navigation, pas des effets ; les couper priverait de
- *    repères précisément les personnes qui ont demandé moins de mouvement.
+ * Une ligne demande une décision plutôt qu'une lecture : **l'état courant et
+ * le menu survivent à reduced-motion.** Ce sont des informations de navigation,
+ * pas des effets ; les couper priverait de repères précisément les personnes
+ * qui ont demandé moins de mouvement.
  *
  * Aucune porte n'écoute le CHANGEMENT de préférence : toutes lisent au
  * montage. Activer reduced-motion en cours de session ne retire donc rien
@@ -50,8 +42,8 @@ export function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
-/** Le curseur ne se monte que sur un pointeur fin. Sur un écran tactile il n'a
- *  rien à suivre, et le marqueur CSS de la Phase 2 porte déjà l'idée. */
+/** Ce qui suit le pointeur (le magnétisme des CTA) ne se monte que sur un
+ *  pointeur fin. Sur un écran tactile il n'a rien à suivre. */
 export function hasFinePointer(): boolean {
   if (typeof window === 'undefined' || !window.matchMedia) return false;
   return window.matchMedia('(pointer: fine)').matches;
