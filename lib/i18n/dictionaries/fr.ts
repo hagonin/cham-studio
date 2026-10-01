@@ -70,34 +70,17 @@ export const fr = {
       clockLabel: 'Heure locale à Montpellier',
     },
     hero: {
-      // La proposition de valeur est au-dessus de la ligne de flottaison et
-      // sans image : le LCP est du texte, donc il est déjà chargé.
-      // La phrase du dessin : c'est le <h1> de la page. Le français est celui
-      // de `copy-fr.md`, écrit en français et non traduit mot à mot.
-      title: 'Une touche humaine, de l’idée au produit.',
-      // DÉCISION 19 — LIGNE PORTEUSE, PAS DE L'ACCOMPAGNEMENT.
-      // Le titre ne contient aucune première personne : c'est ici, et nulle
-      // part ailleurs dans le hero, qu'une personne apparaît. Si le hero doit
-      // être resserré, cette ligne est la DERNIÈRE à couper — sans elle le
-      // bloc énonce une portée que personne n'assume, exactement la voix
-      // passive que docs/positioning.md §6 interdit.
-      lead: 'Je conçois et je développe des produits numériques pensés pour durer : une interface claire, un code fiable, une mise en production maîtrisée.',
-      cta: 'Parler de votre projet',
-      // La phrase de marque. Elle dit le GESTE, jamais la traduction du mot :
-      // tests/i18n.test.ts vérifie que le sens de « Chạm » n'est écrit qu'une
-      // fois sur le site, dans le bloc « à propos ».
-      tagline: 'On ne fait pas que lire Chạm. On le touche.',
-      studio: 'Studio indépendant',
-      // Cartouche de la figure, dans la langue des planches techniques.
-      figureLabel: 'Fig. 01',
-      // Le périmètre — PAS une barre de compétences : ni niveau, ni
-      // pourcentage, ni logo. Ce que la liste dit, les projets le prouvent.
-      expertise: [
-        'UI / UX Design',
-        'Développement front-end',
-        'Produits full-stack',
-        'Intégration IA',
-      ],
+      // Le hero du dessin, et rien d'autre : une ligne de repères, le logotype
+      // DESIGN × CODE avec son bouton de contact, le portrait, la phrase et son
+      // paragraphe, l'indicateur de défilement. Les libellés en capitales sont
+      // LITTÉRAUX (copy-fr.md), pour que « Chạm » y garde son « Ạ ».
+      eyebrow: ['CHẠM / VERBE / TOUCHER', 'UNE IDÉE DEVIENT UN PRODUIT AU CONTACT.'],
+      contactLabel: 'Établir le contact',
+      // La phrase du dessin : c'est le <h1> de la page, sur deux lignes.
+      title: ['Une touche humaine,', 'de l’idée au produit.'],
+      intro:
+        'Chạm, c’est ma pratique, à la croisée de l’UX, du design et du développement fullstack. Des interfaces réfléchies. Des produits qui fonctionnent.',
+      scrollLabel: 'Aller à la section 2 sur 5',
     },
     touchPhilosophy: {
       label: 'Design × code',

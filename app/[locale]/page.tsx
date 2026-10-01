@@ -7,7 +7,6 @@ import { SectionNav } from '@/components/SectionNav';
 import { MOUNTED_SECTIONS } from '@/lib/sections';
 import { Hero } from '@/components/Hero';
 import { TouchPhilosophy } from '@/components/TouchPhilosophy';
-import { ScrollCue } from '@/components/ScrollCue';
 import { AboutBlock } from '@/components/AboutBlock';
 import { Process } from '@/components/Process';
 import { ContactBlock } from '@/components/ContactBlock';
@@ -73,10 +72,6 @@ export default async function ServicesPage({
       <SectionNav locale={locale} dict={dict} sections={MOUNTED_SECTIONS} />
       <main className={styles.page}>
         <Hero dict={dict} locale={locale} />
-        {/* L'indicateur appartient à la charnière entre le hero et la suite,
-            pas au hero : il annonce ce qui vient après, donc il vit ici — avant
-            la scène tactile qu'il annonce, comme dans le dessin. */}
-        <ScrollCue label={dict.nav.scroll} />
         <TouchPhilosophy {...dict.home.touchPhilosophy} />
         <AboutBlock dict={dict} />
         {workSectionIsReady() && <WorkSection locale={locale} dict={dict} />}

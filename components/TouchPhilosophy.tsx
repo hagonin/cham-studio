@@ -344,7 +344,7 @@ export function TouchPhilosophy({
 
   return (
     <section
-      id="touch-philosophy"
+      id="touch"
       ref={sectionRef}
       className={styles.section}
       data-enhanced={enhanced ? 'true' : 'false'}

@@ -14,20 +14,18 @@
  * |-----------------------------|----------|----------------|-------------------|
  * | Loader                      | actif    | inactif*       | Loader.tsx        |
  * | Curseur + champ + onde      | inactif  | inactif        | ContactCursor.tsx |
- * | Réaction par caractère      | inactif  | inactif        | interne HeroMotion|
- * | Magnétisme CTA + liens nav  | inactif  | inactif        | magnetic()        |
- * | Continuité loader → ×       | actif    | inactif**      | interne HeroMotion|
+ * | Magnétisme des CTA          | inactif  | inactif        | magnetic()        |
+ * | Séquence du contact (hero)  | actif    | inactif        | HeroContact.tsx   |
  * | Parallaxe au défilement     | ACTIF    | inactif        | parallax()        |
  * | État courant (aria-current) | actif    | actif          | aucune            |
- * | Menu plein écran            | actif    | actif***       | aucune            |
- * | Indicateur de défilement    | actif    | statique       | ScrollCue.tsx     |
+ * | Menu déplié (sous 800px)    | actif    | actif          | aucune            |
  *
  *   * le drapeau de session est posé quand même, sinon la galerie attendrait
- *     un événement jamais émis.
- *  ** aucun événement n'est émis, donc rien à prolonger : l'état au repos du
- *     logotype est déjà l'état final.
- * *** il s'ouvre et se ferme, sans révélation séquentielle — la règle globale
- *     de `globals.css` ramène les durées d'animation à ~0.
+ *     un événement jamais émis. La séquence du contact attend ce même événement,
+ *     et ne le fait que si `loaderWillPlay()` dit que le rideau va se jouer.
+ *
+ * Aucun élément ne porte plus `data-parallax` depuis que le hero suit le
+ * dessin, qui n'a pas de parallaxe : la porte reste, prête pour le prochain.
  *
  * Deux lignes demandent une décision plutôt qu'une lecture :
  *
@@ -37,12 +35,6 @@
  * 2. **L'état courant et le menu survivent à reduced-motion.** Ce sont des
  *    informations de navigation, pas des effets ; les couper priverait de
  *    repères précisément les personnes qui ont demandé moins de mouvement.
- *
- * `HeroMotion` est la seule ligne où « le composant est monté » ne veut pas
- * dire « tous ses effets tournent » : il monte sous `!prefersReducedMotion()`
- * seul, et porte `hasFinePointer()` À L'INTÉRIEUR, sur la réaction par
- * caractère. Cela se vérifie en lisant le code — à l'écran, un effet inerte et
- * un composant absent se ressemblent.
  *
  * Aucune porte n'écoute le CHANGEMENT de préférence : toutes lisent au
  * montage. Activer reduced-motion en cours de session ne retire donc rien

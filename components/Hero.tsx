@@ -2,122 +2,59 @@ import Image from 'next/image';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import type { Locale } from '@/lib/i18n/config';
 import { site } from '@/content/site';
-import { HeroMotion } from './HeroMotion';
+import { HeroContact } from './HeroContact';
 import styles from './Hero.module.css';
 
 /**
- * Le mot du logotype, découpé caractère par caractère AU RENDU SERVEUR.
+ * Le hero du dessin, et rien d'autre (`index.html`, `hero-contact.css`,
+ * `navigation.css` du prototype) : une ligne de repères, le logotype
+ * DESIGN × CODE avec son bouton de contact, le portrait remonté sous les mots,
+ * la phrase et son paragraphe, l'indicateur de défilement.
  *
- * Découper après hydratation viderait le HTML servi que
- * `scripts/check-html.mjs` inspecte, et laisserait le logotype sans mouvement
- * possible tant que le JS n'a pas répondu. Les `<span>` restent enfants du
- * MÊME élément : les lecteurs d'écran concatènent les nœuds texte d'un même
- * nœud, donc le nom accessible demeure « DESIGN × CODE » et non une épellation.
- * Si une vérification VoiceOver montre le contraire, le repli est écrit dans la
- * phase 03 (aria-hidden sur les caractères + un unique frère `sr-only`).
+ * Composant SERVEUR : toute la copie est dans le HTML servi, et le seul nœud
+ * client (`HeroContact`) ne porte que la séquence du bouton. JS coupé,
+ * hydratation ratée ou reduced-motion laissent la composition exactement telle
+ * qu'elle est peinte.
  *
- * Le découpage ne sort JAMAIS de ces deux mots : appliqué à de la prose il
- * casserait la césure et l'équilibrage des lignes.
- */
-function SplitWord({ word }: { word: string }) {
-  return (
-    <span className={styles.word}>
-      {[...word].map((char, index) => (
-        <span key={`${char}-${index}`} data-char className={styles.char}>
-          {char}
-        </span>
-      ))}
-    </span>
-  );
-}
-
-/**
- * Pas d'image porteuse : le LCP est le titre, donc il est peint dès la première
- * passe. Le h1 est le seul de la page — la suite descend en h2 puis h3, sans
- * saut.
+ * Le logotype n'est PAS le titre de la page : c'est un nom. Le <h1> est la
+ * phrase plus bas, qui dit ce que fait ce site — un document dont le titre est
+ * une marque n'annonce rien à qui ne la connaît pas. Un seul <h1> par page
+ * (`check-html.mjs`), et aucun niveau sauté.
  *
- * AUCUN `data-reveal` ici, volontairement : le titre est le LCP et ne doit
- * jamais être animé depuis une opacité nulle ni attendre un échange de police
- * pour devenir visible. Seul l'appel à l'action est magnétique.
- *
- * La composition tient les deux mots aux bords et pose la figure entre eux : le
- * « × » NOMME le contact, la figure le MONTRE, au même endroit. La couleur de
- * marque n'apparaît que là : le point de la figure au repos, et le « × »
- * uniquement pendant qu'on touche le logotype — --touch ne tient pas le
- * contraste d'un texte au repos.
+ * Le portrait reste un `next/image` dans le cadre partagé `.frame`, qui verrouille
+ * le ratio AVANT le chargement (pas de décalage de mise en page) ; le dessin, lui,
+ * utilise un fond CSS. Le recadrage animé de `.frame` est neutralisé ici : le
+ * dessin cadre l'image au centre, et l'image ne bouge pas.
  */
 export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { hero } = dict.home;
   const { portrait } = site;
   const [before, after] = dict.brand.positioning.split('×');
-  // Le « × » est la charnière du logotype (voir plus haut) : un dictionnaire
-  // qui l'omet casserait `after.trim()` avec un message qui ne dit pas où
-  // chercher. Un contenu manquant doit rater fort, pas produire une page à
-  // moitié rendue (voir CLAUDE.md, « contenu qui ne doit jamais partir »).
+  // Le « × » est la charnière du logotype : un dictionnaire qui l'omet casserait
+  // `after.trim()` avec un message qui ne dit pas où chercher. Un contenu
+  // manquant doit rater fort, pas produire une page à moitié rendue.
   if (after === undefined) {
     throw new Error(
       `dict.brand.positioning doit contenir « × » : "${dict.brand.positioning}"`,
     );
   }
+  const [eyebrowLeft, eyebrowRight] = hero.eyebrow;
+  const [titleFirst, titleRest] = hero.title;
 
   return (
-    <section className={styles.hero}>
-      {/* Bandeau de repères : l'identité à gauche, le cadre à droite. Le SENS
-          de « Chạm » n'y figure pas — tests/i18n.test.ts vérifie qu'il n'est
-          écrit qu'à un seul endroit du site, le bloc « à propos ». Ici, la
-          prononciation suffit à poser le mot. */}
-      <div className={styles.meta} data-parallax="0.2">
-        <span className={styles.metaBlock}>
-          <span className={styles.pron}>/tʃam/</span>
-        </span>
-        <span className={`${styles.metaBlock} ${styles.metaRight}`}>
-          {hero.studio}
-          <br />
-          {site.city[locale]}
-        </span>
+    <section className={styles.hero} data-hero>
+      <div className={styles.eyebrow}>
+        <span>{eyebrowLeft}</span>
+        <span className={styles.eyebrowRight}>{eyebrowRight}</span>
       </div>
 
-      {/* Le bloc de marque n'est PAS le titre de la page : c'est un logotype.
-          Le <h1> est la phrase qui dit ce que fait ce site, plus bas — un
-          document dont le titre est un nom de marque n'annonce rien à qui ne
-          connaît pas la marque, et docs/positioning.md §2 fait de cette
-          phrase le message, pas de « Chạm ».
-          Reste un seul <h1> par page (`check-html.mjs`), et aucun niveau
-          sauté : les titres de section restent en <h2>. */}
-      {/* `data-parallax` porte la PROFONDEUR, pas l'effet : `MotionProvider`
-          ramasse toutes les couches marquées et n'ouvre qu'un ScrollTrigger
-          pour l'ensemble. Le <h1> n'en porte jamais — il est le LCP, et le
-          décaler au défilement le ferait mesurer comme un élément animé. */}
-      <p className={styles.title} data-parallax="0.08">
-        {/* Zone d'onde : le pointeur laisse un cercle là où il touche le
-            logotype. `position: relative` est donc obligatoire ici — les nœuds
-            d'onde sont positionnés en absolu par rapport à cette boîte. */}
-        <span className={styles.positioning} data-ripple-zone>
-          <SplitWord word={before.trim()} />
+      <div className={styles.wordmark}>
+        <span className={`${styles.word} ${styles.wordLeft}`}>{before.trim()}</span>
+        <HeroContact label={hero.contactLabel} />
+        <span className={`${styles.word} ${styles.wordRight}`}>{after.trim()}</span>
+      </div>
 
-          {/* Le × est la charnière : c'est le point du loader arrivé à
-              destination. `data-state` lui donne --touch au contact seulement
-              (voir le module CSS). */}
-          <span className={styles.contact} data-hero-contact data-state="idle">
-            ×
-          </span>
-          <SplitWord word={after.trim()} />
-        </span>
-      </p>
-
-      {/* Périmètre + portrait, côte à côte sous le wordmark. Le périmètre est
-          toujours rendu — ce n'est pas une barre de compétences, ni niveau ni
-          pourcentage : ce que la liste annonce, les projets le prouvent. La
-          photo, elle, ne paraît que si `content/site.ts` en fournit une : pas
-          de cadre vide en attendant. */}
-      <div className={styles.showcase}>
-        <ul className={styles.scope}>
-          {hero.expertise.map((item) => (
-            <li key={item} className={styles.scopeItem}>
-              {item}
-            </li>
-          ))}
-        </ul>
+      <div className={styles.portrait}>
         {portrait ? (
           <span className={`${styles.portraitFrame} frame`}>
             <Image
@@ -125,38 +62,28 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
               alt={portrait.alt[locale]}
               width={portrait.width}
               height={portrait.height}
-              sizes="(max-width: 48rem) 70vw, 16rem"
+              sizes="(max-width: 43.75rem) 216px, 262px"
               loading="lazy"
             />
           </span>
         ) : null}
       </div>
 
-      <div className={styles.statement}>
-        {/* LE titre de la page. Il était en <p> : la phrase qui porte tout le
-            positionnement n'entrait alors dans aucun plan du document, ni pour
-            un lecteur d'écran ni pour un moteur. */}
-        <h1 className={styles.claim}>{hero.title}</h1>
-        {/* DÉCISION 19. Le titre au-dessus n'a pas de première personne : cette
-            ligne est le SEUL endroit du hero où quelqu'un apparaît. Elle n'est
-            pas de l'accompagnement — sans elle le bloc énonce une portée que
-            personne n'assume, la voix passive que docs/positioning.md §6
-            interdit. Dernière ligne à couper si le hero doit être resserré. */}
-        <p className={styles.lead}>{hero.lead}</p>
-        <p className={styles.tagline}>{hero.tagline}</p>
-        <a
-          className={`${styles.cta} contact-link`}
-          href={`mailto:${site.email}`}
-          data-magnetic
-        >
-          {hero.cta}
-        </a>
+      <div className={styles.intro}>
+        <h1 className={styles.claim}>
+          {titleFirst}
+          <br />
+          {titleRest}
+        </h1>
+        <p className={styles.paragraph}>{hero.intro}</p>
       </div>
 
-      {/* Le seul nœud client du hero, et il ne rend RIEN : il s'attache aux
-          nœuds ci-dessus. Sans lui, `Hero` deviendrait un composant client et
-          toute cette copie sortirait du HTML servi. Motif de MotionProvider. */}
-      <HeroMotion />
+      <a className={styles.scroll} href="#touch" aria-label={hero.scrollLabel}>
+        <span>{dict.nav.scroll}</span>
+        <span className={styles.scrollTrack} aria-hidden="true">
+          <i />
+        </span>
+      </a>
     </section>
   );
 }

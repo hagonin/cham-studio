@@ -59,22 +59,15 @@ export const en = {
       clockLabel: 'Local time in Montpellier',
     },
     hero: {
-      // La phrase du dessin, reprise telle quelle : c'est le <h1> de la page.
-      title: 'A human touch, from idea to product.',
-      // DECISION 19 — LOAD-BEARING, NOT SUPPORTING COPY. The headline carries
-      // no first person, so this is the only place someone appears in the
-      // hero. Last thing cut if the hero is tightened.
-      lead: 'I design and develop digital products that feel considered, work reliably and are ready for real users.',
-      cta: 'Talk about your project',
-      tagline: 'You don’t only read Chạm. You touch it.',
-      studio: 'Independent studio',
-      figureLabel: 'Fig. 01',
-      expertise: [
-        'UI/UX Design',
-        'Front-end development',
-        'Full-stack products',
-        'AI integration',
+      eyebrow: [
+        'CHẠM / VERB / TO TOUCH',
+        'AN IDEA BECOMES A PRODUCT THROUGH CONNECTION.',
       ],
+      contactLabel: 'Make contact',
+      title: ['A human touch,', 'from idea to product.'],
+      intro:
+        'Chạm is my practice at the meeting point of UX, design, and fullstack development. Thoughtful interfaces. Working products.',
+      scrollLabel: 'Scroll to section 2 of 5',
     },
     touchPhilosophy: {
       label: 'Design × code',

@@ -1,248 +1,334 @@
-/* La barre est FIXE et ne tient plus de place dans la page : le hero démarre
-   sous elle. Le rembourrage haut d'avant s'y ajoute, pour que la composition
-   ne bouge pas tant que le hero n'est pas repris sur le dessin. */
+/* Le hero du dessin, valeur pour valeur (`index.html`, `hero-contact.css` et
+   `navigation.css` du prototype). Les px sont ceux du dessin ; les jetons ne
+   servent que là où ils portent la même valeur.
+
+   144px en haut : la barre est FIXE et ne tient plus de place dans la page, le
+   dessin laisse donc son hauteur (96px) plus 48px avant la première ligne. */
+/* Pleine largeur : le dessin n'a pas de colonne centrée, chaque section porte son
+   propre rembourrage. `<main>` en a encore une (`page.module.css`), dont les
+   sections pas encore reprises dépendent : le hero en sort comme la scène tactile
+   et la galerie, par `100vw`. */
 .hero {
-  padding: calc(var(--nav-h) + clamp(2rem, 5vw, 4rem)) 0 clamp(3.5rem, 9vw, 7rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 44px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 144px 64px 72px;
 }
 
-/* --- Bandeau de repères ---------------------------------------------------
-   Deux blocs tenus aux bords. `flex` + `gap` plutôt que des marges : le bloc
-   de droite se replie sous celui de gauche sans qu'aucun espacement ne se
-   double ni ne s'annule. */
-.meta {
+/* --- Ligne de repères ------------------------------------------------------ */
+.eyebrow {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  gap: 1rem 2rem;
-  margin-bottom: clamp(3rem, 9vw, 7rem);
-}
-
-.metaBlock {
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  line-height: 1.8;
-  letter-spacing: 0.06em;
-  color: var(--ink-2);
-}
-
-.metaRight {
-  text-align: right;
-  margin-left: auto;
-}
-
-.pron {
-  color: var(--ink-2);
-}
-
-/* --- Titre -----------------------------------------------------------------
-   DESIGN et CODE tenus aux deux bords, la figure au milieu. `space-between`
-   fait le travail : aucune largeur n'est codée en dur, donc la composition
-   tient de 20rem à 90rem sans point de rupture intermédiaire. */
-.title {
-  margin: 0;
-  font-family: var(--font-display-stack);
-  line-height: 0.82;
-  letter-spacing: -0.045em;
-}
-
-/* --- Positionnement --------------------------------------------------------
-   DESIGN et CODE tenus l'un contre l'autre, le × entre les deux comme
-   charnière. La figure du milieu a disparu ; `space-between` n'a donc plus
-   rien à répartir et écarterait les mots aux bords du bloc — `flex-start` +
-   `gap` les garde au contact, quelle que soit la largeur. */
-.positioning {
-  display: flex;
-  /* Repère des nœuds d'onde, posés en absolu par `ripple()` : sans lui ils se
-     placeraient par rapport au premier ancêtre positionné, quel qu'il soit. */
-  position: relative;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.06em;
-  margin-top: clamp(1rem, 2.5vw, 2rem);
-  /* Troisième cran : le wordmark tient le rang que --display-xl lui réserve
-     dans globals.css (« le nom, et lui seul ») — la seule dimension de la
-     page qui crie. */
-  font-size: var(--display-xl);
-  /* Même graisse que `.wordmark` du nav (`SectionNav.module.css`) : les deux
-     rendent le même logotype, dans la même police — rien ne justifie qu'ils
-     divergent en épaisseur. */
-  font-weight: 700;
-  /* Ne se replie pas : deux mots sur deux lignes casseraient le point de
-     contact au milieu, qui est tout le propos de la composition. */
-  flex-wrap: nowrap;
-  /* Sort du conteneur `main.page` (72rem) pour tenir toute la largeur de
-     l'écran — le calc casse la marge auto du conteneur parent, `body` porte
-     `overflow-x: hidden` pour absorber la barre de défilement réservée. */
-  width: 100vw;
-  margin-inline: calc(50% - 50vw);
-  padding-inline: clamp(1rem, 4vw, 2.5rem);
-}
-
-.word {
-  flex: none;
-  /* Les capitales condensées portent leur propre gouttière optique ; on la
-     reprend pour aligner le fût sur la colonne, pas la marge du glyphe. */
-  margin-inline: -0.02em;
-}
-
-/* Chaque caractère du logotype est transformable, donc `inline-block` : un
-   `<span>` en ligne ignore purement et simplement `transform`. Rien d'autre ne
-   change ici — le texte, la casse et l'interlettrage restent ceux du mot. */
-.char {
-  display: inline-block;
-}
-
-/* Le « × » vit à sa propre échelle : au corps du titre il pèserait autant que
-   les mots, alors qu'il est la charnière entre eux.
-
-   AU REPOS il est en --ink, pas en --touch : --touch ne tient que 3,24:1 sur
-   papier (lib/tokens.ts) — assez pour de l'UI, jamais pour un signe au repos.
-   Il ne prend l'accent que sous [data-state='contact'], c'est-à-dire au
-   moment où quelqu'un touche le logotype. C'est exactement ce que la garde de
-   `tests/tokens.test.ts` protège dans globals.css ; un module CSS n'y est pas
-   soumis, on s'y tient quand même. */
-.contact {
-  flex: none;
-  font-size: 0.34em;
+  gap: 16px;
+  width: 100%;
+  font-size: var(--label-s);
+  letter-spacing: 1px;
+  line-height: normal;
+  white-space: nowrap;
   color: var(--ink);
-  align-self: center;
-  transition: color 180ms var(--contact);
 }
 
-.contact[data-state='contact'] {
-  color: var(--touch);
+.eyebrowRight {
+  color: var(--ink-2);
 }
 
-/* --- Photo + périmètre -------------------------------------------------------
-   Le périmètre (ex-liste de compétences) tient le bord gauche, la photo à sa
-   droite — la même relation spatiale que la référence transmise en chat,
-   plutôt qu'un empilement vertical. C'est un ajout délibéré : `content/site.ts`
-   documentait « jamais dans le hero » pour des raisons de LCP (un visage ne
-   doit pas concurrencer le titre texte comme plus gros contentful paint).
-   `loading="lazy"` tient cette contrainte : le <h1> reste peint avant. */
-.showcase {
+/* --- Logotype et bouton de contact ----------------------------------------- *
+   `z-index: 2` : les mots passent DEVANT le portrait, qui remonte sous eux. */
+.wordmark {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
-  gap: clamp(2rem, 5vw, 3.5rem);
-  margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+  justify-content: center;
+  gap: clamp(12px, 2.2vw, 32px);
+  width: 100%;
+  padding-block: 16px;
+}
+
+/* Les mots sont en Schibsted Grotesk 600, pas en Archivo Narrow : c'est la
+   police du dessin, et DESIGN / CODE n'ont pas de glyphe vietnamien. */
+.word {
+  font-size: var(--display-xl);
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  line-height: normal;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.contact {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(44px, 5vw, 72px);
+  height: clamp(44px, 6vw, 86px);
+  flex-shrink: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.cross {
+  font: 400 var(--display-m) / 1 var(--font-sans-stack);
+}
+
+.dot {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--touch-hot);
+  opacity: 0;
+}
+
+.contact:hover {
+  color: var(--touch-hot);
+}
+
+.contact:focus-visible {
+  outline: 2px solid var(--touch-hot);
+  outline-offset: 6px;
+}
+
+/* La séquence : 2,8s, posée par `HeroContact` via `data-playing`.
+   Les mots partent d'un peu plus loin et se rejoignent à 65 % ; le point paraît
+   à 52-63 %, tient jusqu'à 77 % et s'efface à 90 % ; le × revient de 77 % à
+   100 %. `both` : le × est caché pendant les 77 premiers pour cent. */
+.hero[data-playing='true'] .wordLeft {
+  animation: approachLeft 2.8s both;
+}
+
+.hero[data-playing='true'] .wordRight {
+  animation: approachRight 2.8s both;
+}
+
+.hero[data-playing='true'] .dot {
+  animation: contactDot 2.8s both;
+}
+
+.hero[data-playing='true'] .cross {
+  animation: contactCross 2.8s both;
+}
+
+@keyframes approachLeft {
+  0%,
+  15% {
+    transform: translateX(clamp(-70px, -5vw, -12px));
+  }
+  48% {
+    transform: translateX(-20px);
+  }
+  65%,
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes approachRight {
+  0%,
+  15% {
+    transform: translateX(clamp(12px, 5vw, 70px));
+  }
+  48% {
+    transform: translateX(20px);
+  }
+  65%,
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes contactDot {
+  0%,
+  52% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  63%,
+  77% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+@keyframes contactCross {
+  0%,
+  77% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* --- Portrait --------------------------------------------------------------- *
+   Remonté de 104px sous les mots (68px sous 800px), qui le recouvrent. */
+.portrait {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  width: 100%;
+  margin-top: -104px;
 }
 
 .portraitFrame {
-  /* Même mécanique que le portrait du bloc contact (`ContactBlock.module.css`) :
-     la classe globale `frame` (globals.css) pose le recadrage et l'animation
-     de défilement, `--frame-ratio` est le seul réglage propre à ce cadre. */
-  --frame-ratio: 4 / 5;
+  --frame-ratio: 262 / 340;
   display: block;
-  flex: none;
-  width: min(60vw, 16rem);
+  flex-shrink: 0;
+  width: 262px;
 }
 
-/* Une ligne de filets, pas des barres de compétence : rien à comparer, rien à
-   quantifier. Aucun état de survol ne révèle d'information, donc son absence
-   au doigt et au clavier ne coûte rien. */
-.scope {
-  list-style: none;
-  flex: none;
-  margin: 0;
-  padding: 0;
+/* Le dessin cadre l'image au centre, sans mouvement : on neutralise le
+   recadrage de `.frame img` (échelle, décalage et animation au défilement). */
+.hero .portraitFrame img {
+  transform: none;
+  animation: none;
+}
+
+/* --- Phrase et paragraphe ---------------------------------------------------- */
+.intro {
   display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-}
-
-/* Le « / » est un filet, pas un mot : il est décoratif, donc il vit dans un
-   ::before et n'entre pas dans le texte lu. Le <li> est conservé — la liste
-   reste une liste, et `check-html.mjs` échoue sur un <p> en majuscules. */
-.scopeItem::before {
-  content: '/ ';
-  color: var(--muted);
-}
-
-.scopeItem {
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: var(--ink-2);
-}
-
-/* --- Propos ---------------------------------------------------------------- */
-/* Fin de la diagonale : en bas, à droite. Aucun centrage vertical — la page
-   n'a pas de hauteur fixe, et un bloc centré verticalement se décale à chaque
-   ligne de texte qui se replie. */
-.statement {
-  margin: clamp(3rem, 9vw, 7rem) 0 0 auto;
-  width: min(100%, 78%);
-  display: grid;
-  gap: 1.25rem;
-  justify-items: start;
-}
-
-/* La ligne qui porte la personne (décision 19). En corps et non en affichage :
-   le titre affirme la portée, celle-ci l'assume — deux registres, pas deux
-   tailles du même. */
-.lead {
-  margin: 0;
-  max-width: 52ch;
-  font-size: var(--text);
-  line-height: 1.55;
-  color: var(--ink-2);
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 64px;
+  width: 100%;
 }
 
 .claim {
+  flex: 1 1 0;
+  min-width: 0;
   margin: 0;
-  font-family: var(--font-display-stack);
-  font-size: var(--display-m);
-  line-height: 1.15;
-  max-width: 34ch;
-  text-wrap: balance;
+  font-size: 2.375rem;
+  font-weight: 600;
+  letter-spacing: -1px;
+  line-height: 44px;
+  color: var(--ink);
 }
 
-/* La phrase de marque, dans la voix technique du site : mono, en retrait de
-   couleur. Elle commente le geste — elle ne le remplace pas.
-
-   `--ink-2` et NON `--muted` : mesuré à 3,05:1 sur papier, `--muted` ne tient
-   pas le 4,5:1 exigé d'un texte courant. Le commentaire de `lib/tokens.ts` le
-   réserve d'ailleurs aux micro-libellés mono en capitales ; ceci est une
-   phrase, en minuscules, qui se lit. `--ink-2` la donne à 8,77:1 sans rien
-   changer au retrait visuel voulu. */
-.tagline {
+.paragraph {
+  flex: 1 1 0;
+  min-width: 0;
   margin: 0;
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
-  letter-spacing: 0.06em;
+  font-size: 1.0625rem;
+  line-height: 27px;
   color: var(--ink-2);
 }
 
-.cta {
-  font-family: var(--font-mono-stack);
-  font-size: var(--label);
+/* --- Indicateur de défilement ------------------------------------------------ *
+   Un lien, comme dans le dessin : SCROLL, un trait, un cercle qui descend d'un
+   cran au survol. */
+.scroll {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 18px;
+  color: var(--ink);
+  text-decoration: none;
+  font: 400 var(--label-xs) / 1 var(--font-mono-stack);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 
-@media (max-width: 48rem) {
-  .metaRight {
-    text-align: left;
-    margin-left: 0;
+.scrollTrack {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 64px;
+  margin-top: 11px;
+  background: currentColor;
+}
+
+.scrollTrack i {
+  position: absolute;
+  left: -5px;
+  top: -11px;
+  width: 11px;
+  height: 11px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  background: var(--paper);
+  transition: transform 0.45s;
+}
+
+.scroll:hover .scrollTrack i {
+  transform: translateY(14px);
+}
+
+.scroll:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 6px;
+}
+
+@media (max-width: 50rem) {
+  .hero {
+    padding-top: 112px;
   }
 
-  /* La diagonale demande de la largeur : sous 48rem elle ne se lit plus comme
-     une composition, seulement comme une colonne étroite et un vide à gauche. */
-  .statement {
-    width: 100%;
-    margin-inline-start: 0;
+  .portrait {
+    margin-top: -68px;
+  }
+}
+
+@media (max-width: 43.75rem) {
+  .hero {
+    gap: 32px;
+    padding-inline: 24px;
+    padding-bottom: 48px;
   }
 
-  /* Photo et périmètre côte à côte ont besoin de largeur pour respirer : en
-     dessous, la photo passe au-dessus du périmètre, chacun sur toute la
-     largeur disponible. */
-  .showcase {
+  .eyebrow {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .eyebrowRight {
+    white-space: normal;
   }
 
   .portraitFrame {
-    width: min(70vw, 14rem);
+    width: 216px;
+  }
+
+  .intro {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .claim,
+  .paragraph {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero[data-playing='true'] .wordLeft,
+  .hero[data-playing='true'] .wordRight,
+  .hero[data-playing='true'] .dot,
+  .hero[data-playing='true'] .cross {
+    animation: none;
+  }
+
+  .scrollTrack i {
+    transition: none;
   }
 }
