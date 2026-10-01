@@ -284,5 +284,11 @@ export function contrastRatio(fg: string, bg: string): number {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-/** Plancher typographique : 12px. Aucun clamp ne descend en dessous. */
+/** Plancher des tailles FLUIDES : 12px. Aucun clamp ne descend en dessous. */
 export const MIN_FONT_REM = 0.75;
+
+/**
+ * Plancher des étiquettes à taille FIXE : 9px, le plus petit que le dessin
+ * emploie. Un palier d'étiquette plus petit n'a pas de modèle dans le dessin.
+ */
+export const MIN_LABEL_REM = 0.5625;

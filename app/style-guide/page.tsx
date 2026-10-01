@@ -16,7 +16,11 @@ export const metadata = {
 };
 
 const typeScale = [
+  { label: '--label-2xs', value: 'var(--label-2xs)' },
+  { label: '--label-xs', value: 'var(--label-xs)' },
+  { label: '--label-s', value: 'var(--label-s)' },
   { label: '--label', value: 'var(--label)' },
+  { label: '--label-l', value: 'var(--label-l)' },
   { label: '--text-s', value: 'var(--text-s)' },
   { label: '--text', value: 'var(--text)' },
   { label: '--text-l', value: 'var(--text-l)' },

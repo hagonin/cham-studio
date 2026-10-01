@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { colors, MIN_FONT_REM } from '../lib/tokens';
+import { colors, MIN_FONT_REM, MIN_LABEL_REM } from '../lib/tokens';
 
 const css = readFileSync(join(process.cwd(), 'app/globals.css'), 'utf8');
 // Les commentaires nomment les règles qu'ils décrivent : les retirer évite
@@ -62,7 +62,11 @@ describe('globals.css', () => {
   // ou mal réglé, et deux paliers qui se croisent ne se hiérarchisent plus.
   it('ordonne l’échelle : chaque plafond finit au plus haut que le précédent', () => {
     const scale = [
+      'label-2xs',
+      'label-xs',
+      'label-s',
       'label',
+      'label-l',
       'text-s',
       'text',
       'text-l',
@@ -82,6 +86,17 @@ describe('globals.css', () => {
       expect(value, scale[index]).toBeGreaterThan(0);
       if (index > 0)
         expect(value, scale[index]).toBeGreaterThanOrEqual(ceilings[index - 1]);
+    }
+  });
+
+  // Le dessin pose ses étiquettes à 9, 10, 11, 12 et 13px, fixes. Elles ne
+  // sont pas des clamp, donc la garde des tailles fluides ne les voit pas :
+  // celle-ci leur donne leur propre plancher, celui du dessin.
+  it('étiquettes : chaque palier fixe tient le plancher du dessin (9px)', () => {
+    const labels = [...declarations.matchAll(/--(label[a-z0-9-]*):\s*([\d.]+)rem;/g)];
+    expect(labels.length).toBeGreaterThanOrEqual(5);
+    for (const [, name, rem] of labels) {
+      expect(Number(rem), name).toBeGreaterThanOrEqual(MIN_LABEL_REM);
     }
   });
 

@@ -111,13 +111,21 @@
                             (46px) le règlent dans leur composant
        --display-m    86px  la croix du héros
        --display-xl  118px  le wordmark du héros, et lui seul
-     Les méta du dessin sont à 9, 10 et 11px : --label reste à 12px. Écart
-     assumé, c'est le plancher de lisibilité que la garde protège.
-     Chaque plancher est ≥ 0.75rem (12px) — vérifié par tests/tokens.test.ts. */
+     Les ÉTIQUETTES (méta, sur-titres, légendes mono) sont de taille FIXE dans
+     le dessin : 9, 10, 11, 12 et 13px, une marche par pixel. Elles ont leur
+     propre plancher — 9px, le plus petit que le dessin emploie — et les
+     tailles fluides (clamp) gardent le leur : chaque plancher de clamp est
+     ≥ 0.75rem (12px). Les deux sont vérifiés par tests/tokens.test.ts. */
 
-  /* Corps */
+  /* Étiquettes */
+  --label-2xs: 0.5625rem; /* 9px — méta sur mobile (galerie, pied de page, loader) */
+  --label-xs: 0.625rem; /* 10px — étiquette photo, méta de galerie, indice de défilement */
+  --label-s: 0.6875rem; /* 11px — sur-titres, index, pastilles */
   --label: 0.75rem; /* mono, capitales, méta. 12px fixe : à cette taille un
                        clamp ne gagne rien et le plancher est le plancher. */
+  --label-l: 0.8125rem; /* 13px — légende photo, pied de page */
+
+  /* Corps */
   --text-s: clamp(0.875rem, 0.85rem + 0.12vw, 0.9375rem);
   --text: clamp(1rem, 0.94rem + 0.28vw, 1.25rem);
   --text-l: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
