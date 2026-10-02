@@ -60,10 +60,10 @@ export const en = {
     hero: {
       eyebrow: [
         'CHẠM / VERB / TO TOUCH',
-        'AN IDEA BECOMES A PRODUCT THROUGH CONNECTION.',
+        'AN IDEA BECOMES A PRODUCT THROUGH CONNECTION',
       ],
       contactLabel: 'Make contact',
-      title: ['A human touch,', 'from idea to product.'],
+      title: ['A human touch,', 'from idea to product'],
       intro:
         'Chạm is my practice at the meeting point of UX, design, and fullstack development. Thoughtful interfaces. Working products.',
       scrollLabel: 'Scroll to section 2 of 5',
