@@ -254,11 +254,11 @@
 }
 
 /* --- Bas du hero : collaboration + indicateur, puis « À propos » ------------- *
-   Une rangée en grille : [vide | collaboration | indicateur], tout à droite
-   (décision du 2026-10-02, d'après le site d'Olha Lazarieva). */
+   Une rangée en grille : [collaboration | vide | indicateur] — l'adresse à
+   gauche, l'indicateur à droite (décisions du 2026-10-02). */
 .outro {
   display: grid;
-  grid-template-columns: 1fr auto auto;
+  grid-template-columns: auto 1fr auto;
   align-items: end;
   column-gap: 48px;
   width: 100%;
@@ -268,7 +268,7 @@
    au survol, et le filet sort par la droite pendant qu'un autre entre par la
    gauche. */
 .collab {
-  grid-column: 2;
+  grid-column: 1;
   color: var(--ink);
   text-decoration: none;
 }
@@ -345,9 +345,10 @@
 }
 
 /* Les lettres géantes viennent de `LetterLine` (même ligne que le titre
-   contact) ; le lien ne fait que les mettre en capitales. */
+   contact) ; le lien les met en capitales et les centre. */
 .aboutLine {
   width: 100%;
+  text-align: center;
   color: var(--ink);
   text-decoration: none;
   text-transform: uppercase;
@@ -388,7 +389,7 @@
   height: 11px;
   border: 1px solid currentColor;
   border-radius: 50%;
-  background: var(--paper);
+  background: currentColor;
   /* `transform` suit le défilement, sans transition : le scrub doit coller à
      la barre. Le survol passe par `translate`, qui s'ajoute au lieu d'écraser. */
   transform: translateY(calc(var(--progress, 0) * 64px));

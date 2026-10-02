@@ -69,7 +69,18 @@
   color: var(--dim);
   font: 700 clamp(2.3rem, 6.7vw, 6.8rem) / 0.94 var(--font-display-stack);
   letter-spacing: -0.05em;
-  text-align: center;
+  text-align: left;
+}
+
+/* Même retrait que le canevas (`TouchPhilosophy.tsx`, d'après le site d'Olha
+   Lazarieva) : le texte part à ~30 % de la largeur au-delà de 1100px. La place
+   restante est de 65,8vw et la ligne la plus longue (fr) mesure 12,02em
+   (mesuré le 2026-10-02) : au-delà de 5,47vw elle se casserait en deux. */
+@media (min-width: 68.75rem) {
+  .copy {
+    left: 30.2vw;
+    font-size: 5.4vw;
+  }
 }
 
 .copy span {

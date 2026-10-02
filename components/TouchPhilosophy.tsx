@@ -146,7 +146,11 @@ export function TouchPhilosophy({
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
       const padding = width < 700 ? 24 : Math.max(48, width * 0.06);
-      const available = width - padding * 2;
+      // Alignée à gauche avec un retrait, comme le site d'Olha Lazarieva
+      // (décision du 2026-10-02) : au-delà de 1100px le texte part à 580/1920
+      // de la largeur (~30 %) ; en dessous, au bord du rembourrage.
+      const left = width > 1100 ? width * (580 / 1920) : padding;
+      const available = width - left - padding;
       context.font = `700 100px ${family}`;
       const longest = Math.max(...lines.map((line) => context.measureText(line).width));
       fontSize = Math.min(width < 700 ? 68 : 118, (available / longest) * 100);
@@ -160,10 +164,8 @@ export function TouchPhilosophy({
 
       lines.forEach((line, lineIndex) => {
         const widths = [...line].map((char) => context.measureText(char).width);
-        const natural = widths.reduce((sum, item) => sum + item, 0);
         const tracking = -fontSize * 0.05;
-        const lineWidth = natural + tracking * Math.max(0, line.length - 1);
-        let cursor = (width - lineWidth) / 2;
+        let cursor = left;
 
         [...line].forEach((char, charIndex) => {
           const charWidth = widths[charIndex];
