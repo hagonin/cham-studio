@@ -145,7 +145,7 @@
   gap: 22px;
   width: fit-content;
   margin: auto;
-  padding: 0 0 5px;
+  padding: 0 0 2px;
   border: 0;
   border-bottom: 1px solid;
   color: var(--ink);
@@ -154,8 +154,12 @@
   font: 400 18px / 1.3 var(--font-mono-stack);
 }
 
+/* `line-height: 0.9` resserre la boîte de la flèche (26px) sous celle du
+   texte (18px/1.3 ≈ 23px) : même ajustement que `.navContact span` dans la
+   barre, pour le même espace sous le trait (2-3px). */
 .submit span {
   font-size: 26px;
+  line-height: 0.9;
   transition: transform 0.3s;
 }
 
