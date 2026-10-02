@@ -3,13 +3,16 @@ import type { Dictionary } from '@/lib/i18n/getDictionary';
 import type { Locale } from '@/lib/i18n/config';
 import { site } from '@/content/site';
 import { HeroContact } from './HeroContact';
+import { HeroMotion } from './HeroMotion';
+import { LetterLine } from './LetterLine';
 import styles from './Hero.module.css';
 
 /**
  * Le hero du dessin, et rien d'autre (`index.html`, `hero-contact.css`,
  * `navigation.css` du prototype) : une ligne de repères, le logotype
  * DESIGN × CODE avec son bouton de contact, le portrait remonté sous les mots,
- * la phrase et son paragraphe, l'indicateur de défilement.
+ * la phrase, son chapeau et son paragraphe, l'adresse de collaboration et
+ * l'indicateur de défilement, puis la ligne « À propos ».
  *
  * Composant SERVEUR : toute la copie est dans le HTML servi, et le seul nœud
  * client (`HeroContact`) ne porte que la séquence du bouton. JS coupé,
@@ -75,15 +78,45 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           <br />
           {titleRest}
         </h1>
-        <p className={styles.paragraph}>{hero.intro}</p>
+        <div className={styles.copy}>
+          <p className={styles.lead}>{hero.intro.lead}</p>
+          <p className={styles.paragraph}>{hero.intro.body}</p>
+        </div>
       </div>
 
-      <a className={styles.scroll} href="#touch" aria-label={hero.scrollLabel}>
-        <span>{dict.nav.scroll}</span>
-        <span className={styles.scrollTrack} aria-hidden="true">
-          <i />
-        </span>
+      {/* Le bas du hero (décision du 2026-10-02, d'après le site d'Olha
+          Lazarieva) : l'adresse de collaboration et l'indicateur à droite, puis
+          « À propos » en lettres géantes, qui descendent au défilement. */}
+      <div className={styles.outro}>
+        <a className={styles.collab} href={`mailto:${site.email}`}>
+          <span className={styles.collabLabel}>
+            {hero.collab}
+            <span className={styles.collabArrow} aria-hidden="true">
+              ↗
+            </span>
+          </span>
+          <span className={styles.collabEmail}>{site.email}</span>
+        </a>
+        <a
+          className={styles.scroll}
+          href="#touch"
+          aria-label={hero.scrollLabel}
+          data-scroll-indicator
+        >
+          <span>{dict.nav.scroll}</span>
+          <span className={styles.scrollTrack} aria-hidden="true">
+            <i />
+          </span>
+        </a>
+      </div>
+
+      {/* Un lien, pas un titre : la section garde son <h2 id="about-title">,
+          et l'ordre des titres de la page ne bouge pas (`check:html`). */}
+      <a className={styles.aboutLine} href="#about-title">
+        <LetterLine text={dict.nav.about} />
       </a>
+
+      <HeroMotion />
     </section>
   );
 }

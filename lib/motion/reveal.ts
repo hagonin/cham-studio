@@ -77,3 +77,32 @@ export function revealQuiet(block: Element, start = 'top 82%'): void {
     scrollTrigger: { trigger: block, start },
   });
 }
+
+/**
+ * Les lettres d'une `LetterLine` descendent de leur masque en SUIVANT le
+ * défilement (`contact.js` du prototype, `animation-title` du site d'Olha
+ * Lazarieva) : `scrub` lie le tween à la barre de défilement, donc remonter la
+ * page le rejoue à l'envers et les lettres ressortent. Partagé par le titre
+ * contact et la ligne « À propos » du hero : une seule configuration.
+ *
+ * Même règle que les autres : à n'appeler que sous
+ * `prefers-reduced-motion: no-preference`.
+ */
+export function revealLettersOnScroll(line: Element): void {
+  gsap.fromTo(
+    line.querySelectorAll('[data-letter]'),
+    { yPercent: -120 },
+    {
+      yPercent: 0,
+      duration: 1,
+      ease: 'power3.out',
+      stagger: { each: 0.05, from: 'center' },
+      scrollTrigger: {
+        trigger: line,
+        start: 'top 100%',
+        end: 'bottom 30%',
+        scrub: true,
+      },
+    },
+  );
+}

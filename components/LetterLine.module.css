@@ -1,0 +1,25 @@
+/* La ligne géante du titre contact (`contact.css` du prototype), partagée avec
+   la ligne « À propos » du hero. `overflow: hidden` est le masque : les lettres
+   partent à -120 % au-dessus et descendent à leur place. */
+.reveal {
+  display: block;
+  overflow: hidden;
+  font: 700 clamp(48px, 8.7vw, 140px) / 1.12 var(--font-display-stack);
+  letter-spacing: -0.045em;
+}
+
+.letter {
+  display: inline-block;
+}
+
+.word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+@media (max-width: 43.75rem) {
+  .reveal {
+    font-size: 10vw;
+    line-height: 1.2;
+  }
+}

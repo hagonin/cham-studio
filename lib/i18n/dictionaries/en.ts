@@ -64,9 +64,12 @@ export const en = {
       ],
       contactLabel: 'Make contact',
       title: ['A human touch,', 'from idea to product'],
-      intro:
-        'Chạm is my practice at the meeting point of UX, design, and fullstack development. Thoughtful interfaces. Working products.',
+      intro: {
+        lead: 'Chạm is where design and technology come together to turn early ideas into meaningful digital products.',
+        body: 'I work across the full product journey - shaping the concept, designing the experience and interface, building the product, and taking it through to launch.',
+      },
       scrollLabel: 'Scroll to section 2 of 5',
+      collab: 'AVAILABLE FOR COLLABORATION',
     },
     touchPhilosophy: {
       meta: ['02 / 05', 'DESIGN × CODE', 'MOVE · SCROLL · TOUCH'],

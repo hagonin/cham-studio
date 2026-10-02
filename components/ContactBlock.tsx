@@ -1,47 +1,14 @@
-import { Fragment } from 'react';
 import { site } from '@/content/site';
 import { MOUNTED_SECTIONS } from '@/lib/sections';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import { ContactForm } from './ContactForm';
 import { ContactMotion } from './ContactMotion';
+import { LetterLine } from './LetterLine';
 import styles from './ContactBlock.module.css';
 
 // L'ordre du pied de page est celui du dessin (à propos, services, travaux),
 // pas celui de la barre. « travaux » n'y figure que si la section est montée.
 const FOOTER_PAGES = ['about', 'services', 'work'] as const;
-
-/**
- * Une ligne du titre, lettre par lettre, rendue côté SERVEUR (`contact.js` du
- * prototype les découpe en JS). Les lettres sont en `aria-hidden` et le vrai
- * texte est posé hors écran : `aria-label` n'est pas permis sur un `<span>`, et
- * des lettres isolées ne doivent pas arriver aux lecteurs d'écran en fragments.
- * Les lettres d'un mot restent groupées (`.word`, sans coupure) : une ligne ne
- * se brise qu'entre deux mots.
- */
-function TitleLine({ text }: { text: string }) {
-  return (
-    <span className={styles.reveal} data-title-line>
-      <span className={styles.srOnly}>{text}</span>
-      {text.split(' ').map((word, index) => (
-        <Fragment key={index}>
-          {index > 0 ? ' ' : null}
-          <span className={styles.word}>
-            {[...word].map((char, position) => (
-              <span
-                key={position}
-                className={styles.letter}
-                data-letter
-                aria-hidden="true"
-              >
-                {char}
-              </span>
-            ))}
-          </span>
-        </Fragment>
-      ))}
-    </span>
-  );
-}
 
 /**
  * La section contact et le pied de page du dessin (`index.html`, `contact.css`,
@@ -71,9 +38,9 @@ export function ContactBlock({ dict }: { dict: Dictionary }) {
       <div className={styles.heading}>
         <p className={styles.eyebrow}>{contact.eyebrow}</p>
         <h2 id="contact-title" className={styles.title}>
-          <TitleLine text={contact.title.first} />
+          <LetterLine text={contact.title.first} />
           <span className={styles.bridge}>{contact.title.bridge}</span>
-          <TitleLine text={contact.title.second} />
+          <LetterLine text={contact.title.second} />
         </h2>
       </div>
 

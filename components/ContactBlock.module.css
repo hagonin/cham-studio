@@ -46,22 +46,6 @@
   margin: 0;
 }
 
-.reveal {
-  display: block;
-  overflow: hidden;
-  font: 700 clamp(48px, 8.7vw, 140px) / 1.12 var(--font-display-stack);
-  letter-spacing: -0.045em;
-}
-
-.letter {
-  display: inline-block;
-}
-
-.word {
-  display: inline-block;
-  white-space: nowrap;
-}
-
 .bridge {
   display: block;
   margin: 26px 0;
@@ -298,11 +282,6 @@
 @media (max-width: 43.75rem) {
   .section {
     padding: 100px 24px 24px;
-  }
-
-  .reveal {
-    font-size: 10vw;
-    line-height: 1.2;
   }
 
   .eyebrow {

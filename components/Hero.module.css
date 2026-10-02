@@ -202,40 +202,163 @@
   animation: none;
 }
 
-/* --- Phrase et paragraphe ---------------------------------------------------- */
+/* --- Phrase et chapeau/paragraphe ---------------------------------------------- *
+   Grille à deux colonnes égales : le <h1> à gauche, le chapeau et le
+   paragraphe empilés dans `.copy` à droite — c'est ce qui donne aux deux
+   colonnes une hauteur proche (option retenue le 2026-10-02). */
 .intro {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: flex-start;
-  justify-content: space-between;
   gap: 64px;
   width: 100%;
 }
 
 .claim {
-  flex: 1 1 0;
-  min-width: 0;
   margin: 0;
-  font-size: 2.375rem;
+  /* Une seule règle fluide plutôt qu'un palier `--display-xs` : 24px vers
+     533px de large jusqu'à 38px vers 845px, bureau inchangé au-delà
+     (décision du 2026-10-02, remplace le 2,375rem fixe). */
+  font-size: clamp(1.5rem, 4.5vw, 2.375rem);
   font-weight: 600;
   letter-spacing: -1px;
-  line-height: 44px;
+  line-height: 1.16;
   color: var(--ink);
 }
 
+/* Mesure resserrée à 36rem : la grille peut leur laisser plus de place, le
+   chapeau et le paragraphe restent lisibles. */
+.copy {
+  display: grid;
+  row-gap: 20px;
+  max-width: 36rem;
+}
+
+.lead {
+  margin: 0;
+  /* Fluide aussi : 18px sur mobile, ~20px vers 1000px, 22px vers 1440px
+     (décision du 2026-10-02, remplace le 22/30 fixe et le palier 20/28). */
+  font-size: clamp(1.125rem, 0.9rem + 0.6vw, 1.375rem);
+  font-weight: 500;
+  line-height: 1.36;
+  color: var(--ink);
+  text-wrap: pretty;
+}
+
 .paragraph {
-  flex: 1 1 0;
-  min-width: 0;
   margin: 0;
   font-size: 1.0625rem;
   line-height: 27px;
   color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* --- Bas du hero : collaboration + indicateur, puis « À propos » ------------- *
+   Une rangée en grille : [vide | collaboration | indicateur], tout à droite
+   (décision du 2026-10-02, d'après le site d'Olha Lazarieva). */
+.outro {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: end;
+  column-gap: 48px;
+  width: 100%;
+}
+
+/* Le libellé en mono, l'adresse en grand dessous ; la flèche tourne de ↘ à →
+   au survol, et le filet sort par la droite pendant qu'un autre entre par la
+   gauche. */
+.collab {
+  grid-column: 2;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.collabLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font: 400 0.875rem / 1 var(--font-mono-stack);
+  text-transform: uppercase;
+}
+
+.collabArrow {
+  display: inline-block;
+  transform: rotate(90deg);
+  transition: transform 0.8s cubic-bezier(0.11, 0.82, 0.39, 0.92);
+}
+
+.collab:hover .collabArrow {
+  transform: rotate(45deg);
+}
+
+.collabEmail {
+  position: relative;
+  display: block;
+  padding-bottom: 5px;
+  font: 600 clamp(1.25rem, 2.1vw, 1.875rem) / 1 var(--font-sans-stack);
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.3s;
+}
+
+.collabEmail::before,
+.collabEmail::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: currentColor;
+  transition: transform 0.8s cubic-bezier(0.11, 0.82, 0.39, 0.92);
+}
+
+.collabEmail::before {
+  transform-origin: left;
+}
+
+.collabEmail::after {
+  transform: scaleX(0);
+  transform-origin: right;
+}
+
+.collab:hover .collabEmail {
+  color: var(--touch-hot);
+}
+
+.collab:hover .collabEmail::before {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition-duration: 0.3s;
+}
+
+.collab:hover .collabEmail::after {
+  transform: scaleX(1);
+  transform-origin: left;
+  transition-delay: 0.3s;
+}
+
+.collab:focus-visible,
+.aboutLine:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 6px;
+}
+
+/* Les lettres géantes viennent de `LetterLine` (même ligne que le titre
+   contact) ; le lien ne fait que les mettre en capitales. */
+.aboutLine {
+  width: 100%;
+  color: var(--ink);
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
 /* --- Indicateur de défilement ------------------------------------------------ *
-   Un lien, comme dans le dessin : SCROLL, un trait, un cercle qui descend d'un
+   Un lien, comme dans le dessin : SCROLL, un trait, un cercle. Le cercle suit
+   le défilement (`--progress`, posé par `HeroMotion`) et descend encore d'un
    cran au survol. */
 .scroll {
-  align-self: center;
+  grid-column: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -266,16 +389,28 @@
   border: 1px solid currentColor;
   border-radius: 50%;
   background: var(--paper);
-  transition: transform 0.45s;
+  /* `transform` suit le défilement, sans transition : le scrub doit coller à
+     la barre. Le survol passe par `translate`, qui s'ajoute au lieu d'écraser. */
+  transform: translateY(calc(var(--progress, 0) * 64px));
+  transition: translate 0.45s;
 }
 
 .scroll:hover .scrollTrack i {
-  transform: translateY(14px);
+  translate: 0 14px;
 }
 
 .scroll:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 6px;
+}
+
+/* Le <h1> passe déjà à 3-4 lignes avant 50rem (mesuré le 2026-10-02) : la
+   grille à deux colonnes empile plus tôt que le reste du hero, à 62,5rem. */
+@media (max-width: 62.5rem) {
+  .intro {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
 }
 
 @media (max-width: 50rem) {
@@ -309,14 +444,22 @@
     width: 216px;
   }
 
-  .intro {
-    flex-direction: column;
-    gap: 24px;
+  /* À côté de l'indicateur, l'adresse n'aurait que 229px à 390px de large
+     (mesuré : elle se cassait après le tiret). Elle prend donc toute la
+     largeur, l'indicateur passe dessous, à droite — l'ordre du DOM est gardé. */
+  .outro {
+    grid-template-columns: 1fr;
+    row-gap: 24px;
   }
 
-  .claim,
-  .paragraph {
-    width: 100%;
+  .collab {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .scroll {
+    grid-column: 1;
+    justify-self: end;
   }
 }
 
@@ -328,7 +471,11 @@
     animation: none;
   }
 
-  .scrollTrack i {
+  .scrollTrack i,
+  .collabArrow,
+  .collabEmail,
+  .collabEmail::before,
+  .collabEmail::after {
     transition: none;
   }
 }

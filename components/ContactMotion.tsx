@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { revealLettersOnScroll } from '@/lib/motion/reveal';
 
 /**
  * Le mouvement de la section contact (`contact.js` du prototype), sans rien
@@ -35,24 +36,8 @@ export function ContactMotion() {
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia();
     media.add('(prefers-reduced-motion: no-preference)', () => {
-      for (const line of section.querySelectorAll('[data-title-line]')) {
-        gsap.fromTo(
-          line.querySelectorAll('[data-letter]'),
-          { yPercent: -120 },
-          {
-            yPercent: 0,
-            duration: 1,
-            ease: 'power3.out',
-            stagger: { each: 0.05, from: 'center' },
-            scrollTrigger: {
-              trigger: line,
-              start: 'top 100%',
-              end: 'bottom 30%',
-              scrub: true,
-            },
-          },
-        );
-      }
+      for (const line of section.querySelectorAll('[data-title-line]'))
+        revealLettersOnScroll(line);
 
       if (form) {
         gsap.fromTo(

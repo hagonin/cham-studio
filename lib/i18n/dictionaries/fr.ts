@@ -74,9 +74,15 @@ export const fr = {
       contactLabel: 'Établir le contact',
       // La phrase du dessin : c'est le <h1> de la page, sur deux lignes.
       title: ['Une touche humaine,', 'de l’idée au produit.'],
-      intro:
-        'Chạm, c’est ma pratique, à la croisée de l’UX, du design et du développement fullstack. Des interfaces réfléchies. Des produits qui fonctionnent.',
+      // Le chapeau (gras, lecture d'abord) et le corps (le parcours) : deux
+      // paragraphes, pas un <strong> dans une seule phrase longue.
+      intro: {
+        lead: 'Chạm, c’est ma façon de faire le lien entre design et technologie pour donner vie à des produits numériques utiles, à partir d’une idée parfois encore très simple.',
+        body: 'J’accompagne le projet de bout en bout : cadrage de l’idée, conception de l’expérience et de l’interface, développement, finalisation et mise en ligne.',
+      },
       scrollLabel: 'Aller à la section 2 sur 5',
+      // Le libellé du lien `mailto:` du bas du hero, au-dessus de l'adresse.
+      collab: 'DISPONIBLE POUR COLLABORER',
     },
     touchPhilosophy: {
       // La scène tactile du dessin (copy-fr.md). Le numéro « 02 / 05 » encode la

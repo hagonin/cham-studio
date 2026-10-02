@@ -46,7 +46,16 @@ export default async function LocaleLayout({
   const dict = getDictionary(locale);
 
   return (
-    <html lang={locale satisfies Locale} className={fontVariables}>
+    <html
+      lang={locale satisfies Locale}
+      className={fontVariables}
+      // Le script `loader-gate` pose `data-intro="playing"` sur `<html>` AVANT
+      // l'hydratation (voir plus bas) : React compare alors un attribut que le
+      // HTML servi n'a jamais eu. Hors de ce cas précis, React se rattrape tout
+      // seul ; ici il ne le ferait pas et le signale fort — le même garde-fou
+      // que les scripts anti-flash de thème.
+      suppressHydrationWarning
+    >
       {/* `#top` : l'ancre du lien « haut de page » du pied de page, comme le <body id="top"> du dessin. */}
       <body id="top">
         {/* Doit décider AVANT la première peinture si le rideau se joue : en
