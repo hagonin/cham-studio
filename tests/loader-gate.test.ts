@@ -1,10 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import {
-  LOADER_SESSION_KEY,
-  loaderAlreadyShown,
-  loaderWillPlay,
-  markLoaderShown,
-} from '../lib/motion/loader-gate';
+import { loaderGateScript, loaderWillPlay } from '../lib/motion/loader-gate';
 
 /**
  * La porte du rideau d'ouverture : UN seul arbitre, lu par le rideau ET par la
@@ -12,45 +7,22 @@ import {
  * les deux lisaient des règles différentes, le hero attendrait un événement que
  * le rideau n'a jamais prévu d'émettre — et rien à l'écran ne le signalerait.
  *
- * Les tests tournent sous Node : `window` et `sessionStorage` sont simulés.
+ * Les tests tournent sous Node : `window` et `document` sont simulés.
  */
 function visit({
   reducedMotion = false,
   hash = '',
   scrollY = 0,
-  alreadyShown = false,
-  storageBlocked = false,
 }: {
   reducedMotion?: boolean;
   hash?: string;
   scrollY?: number;
-  alreadyShown?: boolean;
-  storageBlocked?: boolean;
 } = {}) {
-  const store = new Map<string, string>();
-  if (alreadyShown) store.set(LOADER_SESSION_KEY, '1');
   vi.stubGlobal('window', {
     location: { hash },
     scrollY,
     matchMedia: () => ({ matches: reducedMotion }),
   });
-  // `sessionStorage` lève une SecurityError en navigation privée stricte.
-  vi.stubGlobal(
-    'sessionStorage',
-    storageBlocked
-      ? {
-          getItem: () => {
-            throw new Error('SecurityError');
-          },
-          setItem: () => {
-            throw new Error('SecurityError');
-          },
-        }
-      : {
-          getItem: (key: string) => store.get(key) ?? null,
-          setItem: (key: string, value: string) => void store.set(key, value),
-        },
-  );
 }
 
 afterEach(() => vi.unstubAllGlobals());
@@ -83,31 +55,66 @@ describe('porte du rideau', () => {
     expect(loaderWillPlay()).toBe(true);
   });
 
-  it('ne se rejoue pas dans la même session', () => {
-    visit({ alreadyShown: true });
-    expect(loaderAlreadyShown()).toBe(true);
-    expect(loaderWillPlay()).toBe(false);
-  });
-
-  it('pose le drapeau de session une fois le rideau passé', () => {
-    visit();
-    expect(loaderWillPlay()).toBe(true);
-    markLoaderShown();
-    expect(loaderAlreadyShown()).toBe(true);
-    expect(loaderWillPlay()).toBe(false);
-  });
-
-  it('rejoue sans casser quand le stockage de session est bloqué', () => {
-    // Une lecture qui échoue redevient « pas encore vu » ; une écriture qui
-    // échoue est ignorée : on perd le « une fois par session », pas la page.
-    visit({ storageBlocked: true });
-    expect(loaderAlreadyShown()).toBe(false);
-    expect(loaderWillPlay()).toBe(true);
-    expect(() => markLoaderShown()).not.toThrow();
-  });
-
   it('ne joue jamais côté serveur', () => {
     vi.unstubAllGlobals();
     expect(loaderWillPlay()).toBe(false);
+  });
+});
+
+/**
+ * `loaderGateScript()` tourne hors bundle, avant l'hydratation : il répète les
+ * conditions de `loaderWillPlay()` plutôt que de l'appeler. Ce test rejoue le
+ * même script, dans un faux DOM, sur le même jeu de scénarios que ci-dessus, et
+ * compare les deux verdicts — c'est la garde contre une divergence silencieuse
+ * entre les deux copies de la porte.
+ */
+function playsAccordingToScript({
+  reducedMotion = false,
+  hash = '',
+  scrollY = 0,
+}: {
+  reducedMotion?: boolean;
+  hash?: string;
+  scrollY?: number;
+} = {}): boolean {
+  const documentElement = { dataset: {} as Record<string, string> };
+  const fakeWindow = {
+    location: { hash },
+    scrollY,
+    matchMedia: () => ({ matches: reducedMotion }),
+    document: { documentElement },
+  };
+  // Le script attend `matchMedia`, `location`, `scrollY` et `document` en
+  // portée globale, comme dans un vrai `<script>` inline.
+  const run = new Function(
+    'matchMedia',
+    'location',
+    'scrollY',
+    'document',
+    loaderGateScript(),
+  );
+  run(
+    fakeWindow.matchMedia,
+    fakeWindow.location,
+    fakeWindow.scrollY,
+    fakeWindow.document,
+  );
+  return documentElement.dataset.intro === 'playing';
+}
+
+describe('script inline de la porte', () => {
+  const scenarios = [
+    { name: 'première visite, en haut de page', input: {} },
+    { name: 'reduced-motion', input: { reducedMotion: true } },
+    { name: 'ancre dans l’URL', input: { hash: '#contact-title' } },
+    { name: 'page déjà défilée', input: { scrollY: 81 } },
+    { name: 'exactement 80px de défilement', input: { scrollY: 80 } },
+  ];
+
+  it.each(scenarios)('s’accorde avec loaderWillPlay() : $name', ({ input }) => {
+    visit(input);
+    const fromTs = loaderWillPlay();
+    const fromScript = playsAccordingToScript(input);
+    expect(fromScript).toBe(fromTs);
   });
 });

@@ -3,56 +3,43 @@
  * séquence du contact du hero (`HeroContact`), qui jouée plus tôt se déroulerait
  * tout entière derrière lui.
  *
- * Le drapeau de session est posé à la DISMISSION du rideau, jamais à son
- * montage : quelqu'un qui recharge pendant l'animation le revoit. Il est aussi
- * posé quand le rideau REFUSE de se jouer (reduced-motion, ancre dans l'URL,
- * page déjà défilée) : l'arrivée est faite, le rideau ne reviendra pas à la page
- * suivante de la même visite.
+ * Exactement le dessin (`intro-loader.js`) : le rideau rejoue à chaque
+ * chargement, sans mémoire de session.
  */
 import { prefersReducedMotion } from './prefs';
-
-export const LOADER_SESSION_KEY = 'cham-loader-shown';
 
 /** Émis sur `window` quand le loader libère le canvas. */
 export const LOADER_DONE_EVENT = 'cham:loader-done';
 
 /**
- * `sessionStorage` lève une `SecurityError` en navigation privée stricte ou
- * derrière certaines politiques d'iframe. Une lecture qui échoue redevient
- * « pas encore vu » (le rideau rejoue, sans casser la page) ; une écriture
- * qui échoue est ignorée (on perd juste le « une fois par session »).
- */
-export function loaderAlreadyShown(): boolean {
-  try {
-    return sessionStorage.getItem(LOADER_SESSION_KEY) !== null;
-  } catch {
-    return false;
-  }
-}
-
-export function markLoaderShown(): void {
-  try {
-    sessionStorage.setItem(LOADER_SESSION_KEY, '1');
-  } catch {
-    // Session non persistée : rien à faire de plus, voir la note ci-dessus.
-  }
-}
-
-/**
  * Le rideau va-t-il se jouer ? C'est la porte du dessin (`intro-loader.js`) :
  * pas sous reduced-motion, pas quand l'URL porte un ancre (arriver sur
  * `/#contact` ne doit pas imposer quatre secondes devant la section demandée),
- * pas quand la page est déjà défilée — plus le « une fois par session » du
- * dépôt.
+ * pas quand la page est déjà défilée.
  *
  * UN SEUL arbitre, lu par le rideau ET par ce qui l'attend (la séquence du
  * contact dans le hero) : deux copies de la règle divergeraient, et le hero
  * attendrait alors un événement que le rideau, lui, n'a jamais prévu d'émettre.
- * À lire AVANT que le rideau ne pose son drapeau.
  */
 export function loaderWillPlay(): boolean {
   if (typeof window === 'undefined') return false;
-  if (prefersReducedMotion() || window.location.hash || window.scrollY > 80)
-    return false;
-  return !loaderAlreadyShown();
+  return !prefersReducedMotion() && !window.location.hash && window.scrollY <= 80;
+}
+
+/**
+ * Le texte du script inline posé en tout premier dans `<body>` (voir
+ * `app/[locale]/layout.tsx`, via `next/script` en stratégie
+ * `beforeInteractive`) : lui seul décide, AVANT la première peinture, si le
+ * rideau va se jouer, en posant `html[data-intro="playing"]` — l'attribut du
+ * dessin. `Loader.tsx` ne refait jamais ce calcul : il se contente de lire cet
+ * attribut, sinon les deux pourraient répondre différemment selon l'instant où
+ * chacun tourne.
+ *
+ * Il tourne hors bundle (avant React, avant l'hydratation), donc il répète les
+ * mêmes trois conditions que `loaderWillPlay()` plutôt que de l'appeler.
+ * `tests/loader-gate.test.ts` vérifie que les deux s'accordent sur le même jeu
+ * de scénarios : c'est ce qui tient lieu de garde-fou contre la divergence.
+ */
+export function loaderGateScript(): string {
+  return `(function(){try{if(matchMedia('(prefers-reduced-motion: reduce)').matches)return}catch(e){}if(location.hash||scrollY>80)return;document.documentElement.dataset.intro='playing'})();`;
 }

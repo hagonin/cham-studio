@@ -8,13 +8,19 @@
 
    Écart : z-index 50 et non 120. La valeur n'a de sens que relativement aux
    autres couches de ce dépôt (la barre est à 45, le bouton « haut de page » à
-   40) : le rideau doit rester au-dessus de toutes. */
+   40) : le rideau doit rester au-dessus de toutes.
+
+   Caché par défaut : ce `<div>` est dans le HTML servi (pour ne jamais
+   apparaître APRÈS la première peinture), mais ne doit s'afficher que si le
+   script inline d'avant-peinture (`loaderGateScript()`) a posé
+   `html[data-intro="playing"]`. Sans JavaScript l'attribut n'arrive jamais : le
+   rideau reste cette règle, rien de plus. */
 .overlay {
   --reveal: 0px;
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 50;
-  display: grid;
   place-items: center;
   background: var(--paper);
   color: var(--ink);
@@ -30,6 +36,10 @@
     transparent var(--reveal),
     black calc(var(--reveal) + 1px)
   );
+}
+
+html[data-intro='playing'] .overlay {
+  display: grid;
 }
 
 .label,

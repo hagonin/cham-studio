@@ -1,11 +1,13 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import Script from 'next/script';
 import { locales, isLocale, type Locale } from '@/lib/i18n/config';
 import { getDictionary } from '@/lib/i18n/getDictionary';
 import { metadataFor } from '@/lib/i18n/metadata';
 import { fontVariables } from '@/lib/fonts';
 import { MotionProvider } from '@/components/MotionProvider';
 import { Loader } from '@/components/Loader';
+import { loaderGateScript } from '@/lib/motion/loader-gate';
 import { Clock } from '@/components/Clock';
 // Feuille de Lenis, livrée par le paquet. Sans elle, `html.lenis` n'a pas sa
 // règle `height: auto` et les gardes `data-lenis-prevent` sont inertes : le
@@ -47,6 +49,12 @@ export default async function LocaleLayout({
     <html lang={locale satisfies Locale} className={fontVariables}>
       {/* `#top` : l'ancre du lien « haut de page » du pied de page, comme le <body id="top"> du dessin. */}
       <body id="top">
+        {/* Doit décider AVANT la première peinture si le rideau se joue : en
+            `beforeInteractive`, Next.js l'injecte dans le HTML initial, avant
+            tout JS de page. Voir `loaderGateScript()`. */}
+        <Script id="loader-gate" strategy="beforeInteractive">
+          {loaderGateScript()}
+        </Script>
         <a className="skip-link contact-link" href="#content">
           {dict.nav.skipToContent}
         </a>

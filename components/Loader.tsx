@@ -1,12 +1,8 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import {
-  LOADER_DONE_EVENT,
-  loaderWillPlay,
-  markLoaderShown,
-} from '@/lib/motion/loader-gate';
+import { LOADER_DONE_EVENT } from '@/lib/motion/loader-gate';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import styles from './Loader.module.css';
 
@@ -17,15 +13,18 @@ import styles from './Loader.module.css';
  * point de contact sur la page. Environ 3,9 s.
  *
  * Jamais une porte. Le HTML du hero est déjà complet dans le DOM servi ; ce
- * composant n'ajoute qu'un rideau, monté côté client, qui se retire de lui-même.
- * Une minuterie de 6,5 s le retire même si la séquence est interrompue : « un
- * loader qui peut se bloquer est un site blanc ». Le rideau n'est pas dans le
- * HTML serveur, donc rien ne le met entre un lecteur sans JavaScript et la page.
+ * composant est toujours dans le HTML servi lui aussi (sinon il apparaîtrait
+ * après la première peinture, APRÈS le hero), mais cache l'overlay par défaut
+ * en CSS (`Loader.module.css`). Une minuterie de 6,5 s le retire même si la
+ * séquence est interrompue : « un loader qui peut se bloquer est un site blanc ».
  *
- * La porte est `loaderWillPlay()` (reduced-motion, ancre dans l'URL, page déjà
- * défilée, une fois par session). Quand elle refuse, le drapeau de session est
- * posé quand même : la galerie attend ce signal, et un rideau qui ne se monte
- * pas ne l'émettra jamais.
+ * La porte (reduced-motion, ancre dans l'URL, page déjà défilée) est déjà
+ * tranchée avant que ce composant ne s'hydrate, par le script inline de
+ * `app/[locale]/layout.tsx` (`loaderGateScript()`), qui pose
+ * `html[data-intro="playing"]` avant la première peinture. Ce composant ne
+ * fait QUE lire cet attribut, jamais `loaderWillPlay()` lui-même : les deux
+ * pourraient sinon répondre différemment selon l'instant où chacun tourne.
+ * Sans JavaScript, l'attribut n'apparaît jamais, donc l'overlay reste caché.
  *
  * `immediateRender: false` sur les ondes est PORTEUR : GSAP applique l'état de
  * départ d'un `fromTo` à la construction de la ligne de temps, pas au décalage
@@ -33,27 +32,25 @@ import styles from './Loader.module.css';
  * première image, bien avant le contact.
  */
 export function Loader({ dict }: { dict: Dictionary }) {
-  const [active, setActive] = useState(false);
   const overlay = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!loaderWillPlay()) {
-      // Posé MÊME en refusant : la visite a commencé, le rideau ne doit pas
-      // revenir à la page suivante.
-      markLoaderShown();
-      return;
-    }
-    setActive(true);
-  }, []);
-
-  useEffect(() => {
     const root = overlay.current;
-    if (!active || !root) return;
+    if (!root || document.documentElement.dataset.intro !== 'playing') return;
 
-    const one = (name: string) => root.querySelector<HTMLElement>(`.${styles[name]}`)!;
+    // Échoue fort plutôt que de renvoyer un `undefined` silencieux : un nom
+    // sans classe correspondante dans `Loader.module.css` est un bug de ce
+    // composant, pas un cas à tolérer (voir `tests/css-modules.test.ts`).
+    const one = (name: string) => {
+      const el = root.querySelector<HTMLElement>(`.${styles[name]}`);
+      if (!el) throw new Error(`Loader: aucun élément pour "${name}"`);
+      return el;
+    };
     const parallax = one('parallax');
-    const left = one('left');
-    const right = one('right');
+    // Par ORDRE plutôt que par des noms « left » / « right », absents du CSS
+    // module : les deux formes recevaient la même classe `undefined`, et
+    // `one()` ne renvoyait que la première pour les deux noms.
+    const [left, right] = root.querySelectorAll<HTMLElement>(`.${styles.form}`);
     const dot = one('dot');
     const ripples = [...root.querySelectorAll<HTMLElement>(`.${styles.ripple}`)];
     const word = one('word');
@@ -64,8 +61,8 @@ export function Loader({ dict }: { dict: Dictionary }) {
       finished = true;
       clearTimeout(safety);
       removeEventListener('pointermove', onPointer);
-      markLoaderShown();
-      setActive(false);
+      // Repose la page sur la porte d'avant-peinture pour la visite suivante.
+      delete document.documentElement.dataset.intro;
       window.dispatchEvent(new CustomEvent(LOADER_DONE_EVENT));
     };
 
@@ -135,9 +132,7 @@ export function Loader({ dict }: { dict: Dictionary }) {
       removeEventListener('pointermove', onPointer);
       timeline.kill();
     };
-  }, [active]);
-
-  if (!active) return null;
+  }, []);
 
   return (
     <div ref={overlay} className={styles.overlay} aria-hidden="true">
@@ -145,8 +140,8 @@ export function Loader({ dict }: { dict: Dictionary }) {
       <p className={styles.note}>{dict.loader.note}</p>
       <div className={styles.parallax}>
         <div className={styles.stage}>
-          <i className={`${styles.form} ${styles.left}`} />
-          <i className={`${styles.form} ${styles.right}`} />
+          <i className={styles.form} />
+          <i className={styles.form} />
           <span className={styles.dot} />
           <span className={styles.ripple} />
           <span className={styles.ripple} />
