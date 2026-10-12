@@ -164,6 +164,7 @@ export const en = {
           body: 'Motion, accessibility, and the small responses that make an interface feel considered.',
         },
       ],
+      tools: { title: 'Tools' },
     },
     contact: {
       eyebrow: 'LET’S START THE CONVERSATION',

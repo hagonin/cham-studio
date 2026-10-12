@@ -81,7 +81,7 @@ export default async function ServicesPage({
             données (`content/services.ts`) et leurs tests restent au dépôt — du
             travail testé qui vaut comme preuve de métier, pas comme section de
             page. Les monter à côté de `Process` dupliquerait `services-title`. */}
-        <Process dict={dict} />
+        <Process locale={locale} dict={dict} />
         <ContactBlock dict={dict} />
       </main>
     </>

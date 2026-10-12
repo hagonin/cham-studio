@@ -10,6 +10,7 @@ import {
   MIN_PROJECTS_TO_PUBLISH,
 } from '../content/projects';
 import { site, legalIdentityIsComplete } from '../content/site';
+import { toolGroups } from '../content/tools';
 
 /** Une chaîne vide passe le typage mais pas la relecture : on vérifie les deux. */
 function everyLocaleFilled(value: L10n): boolean {
@@ -113,6 +114,18 @@ describe('projects', () => {
       if (!caseStudy) continue;
       for (const prose of [caseStudy.problem, caseStudy.approach, caseStudy.result]) {
         expect(prose.fr, slug).not.toMatch(/[^\s  ][?!:;]| [?!:;]/);
+      }
+    }
+  });
+});
+
+describe('outils', () => {
+  it('remplit le nom de chaque groupe et de chaque pratique dans les deux locales', () => {
+    for (const group of toolGroups) {
+      expect(everyLocaleFilled(group.label)).toBe(true);
+      expect(group.tools.length).toBeGreaterThan(0);
+      for (const { name } of group.tools) {
+        if (typeof name !== 'string') expect(everyLocaleFilled(name)).toBe(true);
       }
     }
   });

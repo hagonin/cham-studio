@@ -203,6 +203,9 @@ export const fr = {
           body: 'Le mouvement, l’accessibilité et les petites réactions qui rendent une interface attentive.',
         },
       ],
+      // Le bloc d'outils sous les disciplines. Les groupes et les outils sont
+      // des données (`content/tools.ts`) : les marques ne se traduisent pas.
+      tools: { title: 'Outils' },
     },
     contact: {
       // La section contact et son pied de page, tels que le dessin les écrit

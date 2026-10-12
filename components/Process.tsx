@@ -1,4 +1,6 @@
 import type { Dictionary } from '@/lib/i18n/getDictionary';
+import type { Locale } from '@/lib/i18n/config';
+import { toolGroups } from '@/content/tools';
 import { MaskedLines } from './MaskedLines';
 import { ServicesMotion } from './ServicesMotion';
 import styles from './Process.module.css';
@@ -17,8 +19,13 @@ import styles from './Process.module.css';
  *
  * Les index sont des `<span>` et les titres des `<h3>` : le `<h2>` de la section
  * les précède, aucun niveau n'est sauté (`check:html`).
+ *
+ * Sous la liste, les outils (`content/tools.ts`) : un `<h3>` au niveau des
+ * disciplines, un `<h4>` par groupe. Le logo est décoratif (`aria-hidden`) ; le
+ * nom visible est le nom accessible. Pas de `data-quiet` ici : le bloc ne fait
+ * pas partie de la liste que `revealQuiet` anime, il reste tel que livré.
  */
-export function Process({ dict }: { dict: Dictionary }) {
+export function Process({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const { process } = dict.home;
 
   return (
@@ -41,6 +48,30 @@ export function Process({ dict }: { dict: Dictionary }) {
           </li>
         ))}
       </ol>
+
+      <div className={styles.tools}>
+        <h3 className={styles.toolsTitle}>{process.tools.title}</h3>
+        {toolGroups.map((group) => (
+          <div key={group.label.en} className={styles.toolGroup}>
+            <h4 className={styles.toolGroupLabel}>{group.label[locale]}</h4>
+            <ul className={styles.toolList}>
+              {group.tools.map(({ name, icon }) => {
+                const label = typeof name === 'string' ? name : name[locale];
+                return (
+                  <li key={label} className={styles.tool}>
+                    {icon ? (
+                      <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24">
+                        <path d={icon.path} />
+                      </svg>
+                    ) : null}
+                    {label}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ))}
+      </div>
 
       <ServicesMotion />
     </section>
