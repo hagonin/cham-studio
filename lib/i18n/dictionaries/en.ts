@@ -128,6 +128,16 @@ export const en = {
       lightbox: 'Project preview',
       close: 'CLOSE ×',
       closeLabel: 'Close preview',
+      caseStudy: {
+        open: 'Read the case study',
+        closeLabel: 'Close the case study',
+        problem: 'The problem',
+        approach: 'The design × code approach',
+        stack: 'Tech & design stack',
+        design: 'Design',
+        code: 'Code',
+        result: 'Result',
+      },
     },
     services: {
       title: 'Services',

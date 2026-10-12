@@ -60,7 +60,24 @@ export type Project = {
   title: L10n;
   role: L10n;
   summary: L10n;
-  /** Non traduit — React reste React. */
+  /** Non traduit — React reste React. Rendu dans l'étude de cas, liste « Code ». */
   stack: string[];
   url?: string;
+  /** Optionnel : sans lui, la fiche n'a pas de bouton « étude de cas ». */
+  caseStudy?: CaseStudy;
+};
+
+/**
+ * L'étude de cas d'un projet, ouverte en modale depuis sa fiche. Trois
+ * rubriques de prose, puis la rubrique « Stack tech & design » en deux LISTES :
+ * `designTools` ici, `stack` sur le projet. Les réponses de l'owner sont des
+ * listes, pas des phrases — aucune prose à inventer pour les relier.
+ * `tests/content.test.ts` échoue sur une rubrique vide dans une locale.
+ */
+export type CaseStudy = {
+  problem: L10n;
+  approach: L10n;
+  result: L10n;
+  /** Non traduit, comme `stack`. */
+  designTools: string[];
 };

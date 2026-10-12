@@ -162,6 +162,19 @@ export const fr = {
       lightbox: 'Aperçu du projet',
       close: 'FERMER ×',
       closeLabel: 'Fermer l’aperçu',
+      // L'étude de cas en modale. La dialog est nommée par son `<h3>` (le titre
+      // du projet), pas par un libellé : aucun `dialogLabel` ici. « FERMER × »
+      // visible est celui de la visionneuse, `close` ci-dessus.
+      caseStudy: {
+        open: 'Lire l’étude de cas',
+        closeLabel: 'Fermer l’étude de cas',
+        problem: 'Le problème',
+        approach: 'L’approche design × code',
+        stack: 'Stack tech & design',
+        design: 'Design',
+        code: 'Code',
+        result: 'Résultat',
+      },
     },
     services: {
       title: 'Prestations',

@@ -91,6 +91,31 @@ describe('projects', () => {
     const slugs = projects.map((project) => project.slug);
     expect(new Set(slugs).size).toBe(slugs.length);
   });
+
+  // L'étude de cas est optionnelle, mais une étude présente est complète : une
+  // rubrique vide dans une locale s'afficherait comme un titre sans texte.
+  it('remplit chaque rubrique d’une étude de cas dans les deux locales', () => {
+    for (const { slug, stack, caseStudy } of projects) {
+      if (!caseStudy) continue;
+      expect(everyLocaleFilled(caseStudy.problem), slug).toBe(true);
+      expect(everyLocaleFilled(caseStudy.approach), slug).toBe(true);
+      expect(everyLocaleFilled(caseStudy.result), slug).toBe(true);
+      expect(caseStudy.designTools.length, slug).toBeGreaterThan(0);
+      expect(stack.length, slug).toBeGreaterThan(0);
+    }
+  });
+
+  // Même règle que la copie des dictionnaires (`tests/i18n.test.ts`) : en
+  // français, « ? ! : ; » prennent une espace fine insécable, jamais une espace
+  // simple qui laisserait le signe seul en début de ligne.
+  it('met une espace insécable avant ? ! : ; dans les études françaises', () => {
+    for (const { slug, caseStudy } of projects) {
+      if (!caseStudy) continue;
+      for (const prose of [caseStudy.problem, caseStudy.approach, caseStudy.result]) {
+        expect(prose.fr, slug).not.toMatch(/[^\s  ][?!:;]| [?!:;]/);
+      }
+    }
+  });
 });
 
 /**

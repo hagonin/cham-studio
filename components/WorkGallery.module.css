@@ -361,6 +361,121 @@
   cursor: pointer;
 }
 
+/* --- Étude de cas ------------------------------------------------------------------ */
+.caseOpen {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+  font: var(--label-s) / 1.5 var(--font-mono-stack);
+  letter-spacing: 0.08em;
+}
+
+.caseOpen:hover {
+  color: var(--touch);
+}
+
+/* Le repli sans JavaScript : l'étude se lit dans la fiche, sous la description. */
+.caseInline {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line-3);
+}
+
+/* La dialog reprend la visionneuse. C'est le bloc intérieur qui défile : le
+   bouton « fermer », en absolu sur la dialog, reste ainsi en place. */
+.caseStudy {
+  padding: 0;
+  width: min(1040px, 94vw);
+  max-height: 92dvh;
+  overflow: hidden;
+  border: 1px solid var(--line-5);
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.caseStudy::backdrop {
+  background: color-mix(in srgb, var(--ink) 80%, transparent);
+}
+
+.caseInner {
+  max-height: 92dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 56px clamp(24px, 5vw, 64px) 48px;
+}
+
+.caseInner h3 {
+  margin: 0 0 18px;
+  font-size: clamp(28px, 3.4vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  font-weight: 600;
+}
+
+.caseBody {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 36px clamp(32px, 5vw, 64px);
+  margin-top: 36px;
+}
+
+.caseInline .caseBody {
+  grid-template-columns: minmax(0, 68ch);
+  margin-top: 0;
+}
+
+.caseBody section {
+  padding-top: 18px;
+  border-top: 1px solid var(--line-3);
+}
+
+.caseBody h4 {
+  margin: 0 0 14px;
+  color: var(--grey-5);
+  font: 400 var(--label-s) / 1.6 var(--font-mono-stack);
+  letter-spacing: 0.08em;
+}
+
+.caseBody h5 {
+  margin: 14px 0 8px;
+  color: var(--grey-5);
+  font: 400 var(--label-xs) / 1.6 var(--font-mono-stack);
+  letter-spacing: 0.08em;
+}
+
+.caseBody h4 + h5 {
+  margin-top: 0;
+}
+
+.caseBody p {
+  max-width: 68ch;
+  margin: 0;
+  color: var(--grey-1);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.caseList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.caseList li {
+  padding: 4px 10px;
+  border: 1px solid var(--line-3);
+  color: var(--ink);
+  font: var(--label-l) / 1.5 var(--font-mono-stack);
+}
+
 @media (max-width: 47.5rem) {
   .stage {
     padding: 28px 0 20px;
@@ -449,6 +564,15 @@
   }
 
   .description {
+    font-size: 14px;
+  }
+
+  .caseBody {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .caseBody p {
     font-size: 14px;
   }
 }

@@ -166,6 +166,8 @@ describe('copie française', () => {
     'home.about.now.chips[2]',
     'home.work.meta[0]',
     'home.work.meta[2]',
+    'home.work.caseStudy.design',
+    'home.work.caseStudy.code',
     'home.contact.footer.spread[0]',
     'home.contact.footer.spread[1]',
     'home.contact.footer.meta[0]',

@@ -24,6 +24,15 @@ export type WorkProject = {
   role: string;
   description: string;
   cover: WorkCover;
+  caseStudy?: WorkCaseStudy;
+};
+
+export type WorkCaseStudy = {
+  problem: string;
+  approach: string;
+  result: string;
+  designTools: string[];
+  stack: string[];
 };
 
 /** Les libellés de la section. Ceux qui portent `{title}`, `{n}` ou `{total}` sont
@@ -48,9 +57,61 @@ export type WorkCopy = {
   lightbox: string;
   close: string;
   closeLabel: string;
+  caseStudy: {
+    open: string;
+    closeLabel: string;
+    problem: string;
+    approach: string;
+    stack: string;
+    design: string;
+    code: string;
+    result: string;
+  };
 };
 
 const pad = (value: number) => String(value).padStart(2, '0');
+
+/** Les quatre rubriques, en `<h4>` sous le `<h3>` du projet : la même copie sert
+ *  au repli en ligne (sans JavaScript) et à la modale. */
+function CaseStudyBody({
+  study,
+  copy,
+}: {
+  study: WorkCaseStudy;
+  copy: WorkCopy['caseStudy'];
+}) {
+  return (
+    <div className={styles.caseBody}>
+      <section>
+        <h4>{copy.problem}</h4>
+        <p>{study.problem}</p>
+      </section>
+      <section>
+        <h4>{copy.approach}</h4>
+        <p>{study.approach}</p>
+      </section>
+      <section>
+        <h4>{copy.stack}</h4>
+        <h5>{copy.design}</h5>
+        <ul className={styles.caseList}>
+          {study.designTools.map((tool) => (
+            <li key={tool}>{tool}</li>
+          ))}
+        </ul>
+        <h5>{copy.code}</h5>
+        <ul className={styles.caseList}>
+          {study.stack.map((tool) => (
+            <li key={tool}>{tool}</li>
+          ))}
+        </ul>
+      </section>
+      <section>
+        <h4>{copy.result}</h4>
+        <p>{study.result}</p>
+      </section>
+    </div>
+  );
+}
 
 /**
  * La section « travaux » du dessin (`index.html`, `selected-work.css`,
@@ -72,6 +133,12 @@ const pad = (value: number) => String(value).padStart(2, '0');
  * `aria-current` ; une région `status` annonce chaque changement UNE fois ; les
  * détails repliés sont `inert` et `aria-hidden`. `aria-expanded` va avec
  * `aria-controls` (`check-html.mjs` l'exige).
+ *
+ * L'étude de cas d'un projet suit la même règle que les fiches : sans
+ * JavaScript, elle est en ligne dans la fiche ; une fois amélioré, un bouton
+ * l'ouvre dans une `<dialog>` partagée — une seule copie à la fois. Le bouton
+ * porte `aria-haspopup="dialog"` et PAS `aria-expanded` : une modale n'est pas
+ * un dépliant, et `check:html` exigerait un `aria-controls`.
  */
 export function WorkGallery({
   projects,
@@ -87,10 +154,12 @@ export function WorkGallery({
   const [dragging, setDragging] = useState(false);
   const [announcement, setAnnouncement] = useState('');
   const [lightbox, setLightbox] = useState<WorkCover | null>(null);
+  const [caseIndex, setCaseIndex] = useState<number | null>(null);
 
   const viewport = useRef<HTMLDivElement>(null);
   const scene = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
+  const caseDialog = useRef<HTMLDialogElement>(null);
   const gesture = useRef<{
     id: number;
     x: number;
@@ -210,7 +279,15 @@ export function WorkGallery({
     dialog.current?.showModal();
   };
 
+  // `showModal()` rend le focus au bouton à la fermeture, nativement : rien à
+  // reprendre à la main.
+  const openCaseStudy = (index: number) => {
+    setCaseIndex(index);
+    caseDialog.current?.showModal();
+  };
+
   const active = projects[current];
+  const caseProject = caseIndex === null ? null : projects[caseIndex];
 
   return (
     <section
@@ -336,6 +413,21 @@ export function WorkGallery({
                   <h3 id={`project-title-${index}`}>{project.title}</h3>
                   <p className={styles.role}>{project.role}</p>
                   <p className={styles.description}>{project.description}</p>
+                  {project.caseStudy && enhanced ? (
+                    <button
+                      className={styles.caseOpen}
+                      type="button"
+                      aria-haspopup="dialog"
+                      onClick={() => openCaseStudy(index)}
+                    >
+                      {copy.caseStudy.open}
+                    </button>
+                  ) : null}
+                  {project.caseStudy && !enhanced ? (
+                    <div className={styles.caseInline}>
+                      <CaseStudyBody study={project.caseStudy} copy={copy.caseStudy} />
+                    </div>
+                  ) : null}
                 </div>
                 <button
                   className={styles.enlarge}
@@ -384,6 +476,39 @@ export function WorkGallery({
             sizes="(max-width: 1280px) 94vw, 1200px"
           />
         ) : null}
+      </dialog>
+
+      {/* `data-lenis-prevent` : sans lui, Lenis prend la molette et la modale
+          ne défile plus. */}
+      <dialog
+        ref={caseDialog}
+        className={styles.caseStudy}
+        aria-labelledby="case-study-title"
+        data-lenis-prevent
+        onClick={(event) => {
+          if (event.target === caseDialog.current) caseDialog.current?.close();
+        }}
+        onClose={() => setCaseIndex(null)}
+      >
+        <button
+          className={styles.lightboxClose}
+          type="button"
+          aria-label={copy.caseStudy.closeLabel}
+          onClick={() => caseDialog.current?.close()}
+        >
+          {copy.close}
+        </button>
+        {/* Le rembourrage vit sur ce bloc, pas sur la dialog : un clic dans la
+            marge intérieure ne doit pas compter comme un clic sur le fond. */}
+        <div className={styles.caseInner}>
+          {caseProject?.caseStudy ? (
+            <>
+              <h3 id="case-study-title">{caseProject.title}</h3>
+              <p className={styles.role}>{caseProject.role}</p>
+              <CaseStudyBody study={caseProject.caseStudy} copy={copy.caseStudy} />
+            </>
+          ) : null}
+        </div>
       </dialog>
     </section>
   );

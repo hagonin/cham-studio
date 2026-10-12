@@ -24,6 +24,13 @@ export function WorkSection({ locale, dict }: { locale: Locale; dict: Dictionary
       height: project.cover.height,
       alt: project.cover.alt[locale],
     },
+    caseStudy: project.caseStudy && {
+      problem: project.caseStudy.problem[locale],
+      approach: project.caseStudy.approach[locale],
+      result: project.caseStudy.result[locale],
+      designTools: project.caseStudy.designTools,
+      stack: project.stack,
+    },
   }));
 
   return <WorkGallery projects={projects} copy={dict.home.work} />;
