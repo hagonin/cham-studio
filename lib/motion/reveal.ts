@@ -79,6 +79,31 @@ export function revealQuiet(block: Element, start = 'top 82%'): void {
 }
 
 /**
+ * Les rangées d'une liste se tracent en SUIVANT le défilement (le bloc de
+ * prestations, décision du 2026-10-15) : le filet de chaque `[data-row]` court
+ * de gauche à droite et son texte monte avec lui. `scrub` lie le geste à la
+ * barre de défilement, donc remonter la page le rembobine. Chaque rangée a son
+ * déclencheur : elle est entière quand son haut passe aux 62 % de l'écran.
+ *
+ * Le filet est un pseudo-élément dont la largeur suit `--draw` (voir
+ * `Process.module.css`). Sans ce script, `--draw` n'est jamais posé et le filet
+ * reste entier : l'état au repos est l'état final.
+ *
+ * Même règle que les autres : à n'appeler que sous
+ * `prefers-reduced-motion: no-preference`.
+ */
+export function drawRowsOnScroll(list: Element): void {
+  for (const row of list.querySelectorAll('[data-row]')) {
+    gsap
+      .timeline({
+        scrollTrigger: { trigger: row, start: 'top 92%', end: 'top 62%', scrub: true },
+      })
+      .fromTo(row, { '--draw': 0 }, { '--draw': 1, ease: 'none' })
+      .from(row.children, { y: 24, opacity: 0, ease: 'power2.out', stagger: 0.08 }, 0);
+  }
+}
+
+/**
  * Les lettres d'une `LetterLine` descendent de leur masque en SUIVANT le
  * défilement (`contact.js` du prototype, `animation-title` du site d'Olha
  * Lazarieva) : `scrub` lie le tween à la barre de défilement, donc remonter la

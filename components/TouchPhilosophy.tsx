@@ -6,6 +6,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Matter from 'matter-js';
 import { prefersReducedMotion } from '@/lib/motion/prefs';
 import { colors } from '@/lib/tokens';
+import { fitLines } from '@/lib/touch/fit';
 import styles from './TouchPhilosophy.module.css';
 
 type Glyph = {
@@ -29,6 +30,16 @@ const LINE_COLORS = [
   colors['paper-warm'],
   colors['touch-hot'],
 ];
+
+// L'interligne (décision du 2026-10-15 : plus d'air). Mesuré sur Archivo Narrow
+// 700, depuis le milieu de la ligne : la cédille de « Ç » et le point de « Ạ »
+// descendent à 0,45 de la taille, l'accent de « É » monte à 0,58. À 1,15 il
+// reste 0,12 entre eux ; à 0,95, l'ancienne valeur, ils se chevauchaient.
+const LEADING = 1.15;
+// L'interlettrage du dessin, en part de la taille.
+const TRACKING = -0.05;
+// L'air entre la phrase et les lignes de méta, en px.
+const GAP = 32;
 
 /**
  * La scène tactile du dessin (`whole-page.js` du prototype), constante pour
@@ -58,15 +69,28 @@ export function TouchPhilosophy({
 }) {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const metaRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const curtainRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const stage = stageRef.current;
+    const meta = metaRef.current;
+    const hint = hintRef.current;
     const canvas = canvasRef.current;
     const curtain = curtainRef.current;
-    if (!section || !stage || !canvas || !curtain || prefersReducedMotion()) return;
+    if (
+      !section ||
+      !stage ||
+      !meta ||
+      !hint ||
+      !canvas ||
+      !curtain ||
+      prefersReducedMotion()
+    )
+      return;
     const context = canvas.getContext('2d');
     if (!context) return;
 
@@ -145,33 +169,51 @@ export function TouchPhilosophy({
       canvas.height = Math.round(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
 
-      const padding = width < 700 ? 24 : Math.max(48, width * 0.06);
-      // Alignée à gauche avec un retrait, comme le site d'Olha Lazarieva
-      // (décision du 2026-10-02) : au-delà de 1100px le texte part à 580/1920
-      // de la largeur (~30 %) ; en dessous, au bord du rembourrage.
-      const left = width > 1100 ? width * (580 / 1920) : padding;
-      const available = width - left - padding;
+      // La phrase couvre la scène (décision du 2026-10-15, qui remplace le retrait
+      // de ~30 % du 2026-10-02) : sa boîte va d'un bord à l'autre au retrait de
+      // la méta, et de la méta à l'indice. Les deux sont lus sur le DOM, pour que
+      // la boîte suive leur CSS sans en recopier les valeurs.
+      const left = meta.offsetLeft;
+      const top = meta.offsetTop + meta.offsetHeight + GAP;
+      const box = { width: width - left * 2, height: hint.offsetTop - GAP - top };
+
+      // Une largeur par caractère, mesurée une fois à 100px : la mise en page
+      // comme le calcul de la taille en dérivent, donc ils ne divergent pas.
       context.font = `700 100px ${family}`;
-      const longest = Math.max(...lines.map((line) => context.measureText(line).width));
-      fontSize = Math.min(width < 700 ? 68 : 118, (available / longest) * 100);
+      const advances = new Map<string, number>();
+      const advanceAt100 = (char: string) => {
+        let advance = advances.get(char);
+        if (advance === undefined) {
+          advance = context.measureText(char).width;
+          advances.set(char, advance);
+        }
+        return advance;
+      };
+      const widthAt100 = (text: string) =>
+        [...text].reduce(
+          (sum, char) => sum + advanceAt100(char) + TRACKING * 100,
+          -TRACKING * 100,
+        );
+      const { size, rows } = fitLines(lines, widthAt100, box, LEADING);
+
+      fontSize = size;
       context.font = `700 ${fontSize}px ${family}`;
       context.textBaseline = 'middle';
       context.textAlign = 'center';
 
-      const lineHeight = fontSize * 0.95;
-      const blockHeight = lineHeight * lines.length;
-      const top = Math.max(145, height * 0.49 - blockHeight / 2);
+      const lineHeight = fontSize * LEADING;
+      const tracking = fontSize * TRACKING;
+      // Le bloc est centré dans sa boîte ; `middle` pose chaque rangée par son milieu.
+      const firstY = top + (box.height - rows.length * lineHeight) / 2 + lineHeight / 2;
 
-      lines.forEach((line, lineIndex) => {
-        const widths = [...line].map((char) => context.measureText(char).width);
-        const tracking = -fontSize * 0.05;
+      rows.forEach((row, rowIndex) => {
         let cursor = left;
 
-        [...line].forEach((char, charIndex) => {
-          const charWidth = widths[charIndex];
+        for (const char of row.text) {
+          const charWidth = (advanceAt100(char) * fontSize) / 100;
           if (char !== ' ') {
             const x = cursor + charWidth / 2;
-            const y = top + lineIndex * lineHeight;
+            const y = firstY + rowIndex * lineHeight;
             const body = Bodies.rectangle(
               x,
               y,
@@ -191,12 +233,13 @@ export function TouchPhilosophy({
               char,
               homeX: x,
               homeY: y,
-              color: LINE_COLORS[lineIndex] ?? colors['paper-warm'],
+              // La couleur suit la ligne source, même quand elle est coupée.
+              color: LINE_COLORS[row.line] ?? colors['paper-warm'],
             });
             Composite.add(engine.world, body);
           }
           cursor += charWidth + tracking;
-        });
+        }
       });
 
       const wall = 50;
@@ -361,7 +404,7 @@ export function TouchPhilosophy({
       aria-labelledby="touch-philosophy-title"
     >
       <div ref={stageRef} className={styles.stage}>
-        <div className={styles.meta} aria-hidden="true">
+        <div ref={metaRef} className={styles.meta} aria-hidden="true">
           <span>{number}</span>
           <span>{label}</span>
           <span>{cue}</span>
@@ -376,7 +419,7 @@ export function TouchPhilosophy({
           ))}
         </h2>
         <canvas ref={canvasRef} className={styles.canvas} aria-hidden="true" />
-        <div className={styles.hint} aria-hidden="true">
+        <div ref={hintRef} className={styles.hint} aria-hidden="true">
           {hint}
         </div>
         <div ref={curtainRef} className={styles.curtain} aria-hidden="true" />

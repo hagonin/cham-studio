@@ -13,7 +13,6 @@ export const colors = {
   'paper-2': '#f6f4ef',
   ink: '#11110f',
   'ink-gallery': '#111110',
-  'ink-deep': '#0d0d0c',
   // Texte sur papier, du plus sombre au plus clair
   'ink-2': '#292925',
   'grey-1': '#4e4b45',
@@ -238,14 +237,19 @@ export const contrastPairs: ContrastPair[] = [
     role: 'ui',
     note: 'anneau de focus des panneaux',
   },
-  { fg: 'paper', bg: 'ink-deep', role: 'text', note: 'titre et liens de l’invitation' },
+  {
+    fg: 'paper',
+    bg: 'ink-gallery',
+    role: 'text',
+    note: 'titre et liens de l’invitation',
+  },
   {
     fg: 'paper-80',
-    bg: 'ink-deep',
+    bg: 'ink-gallery',
     role: 'text',
     note: 'paragraphe de l’invitation (translucide)',
   },
-  { fg: 'blush', bg: 'ink-deep', role: 'text', note: 'sur-titre de l’invitation' },
+  { fg: 'blush', bg: 'ink-gallery', role: 'text', note: 'sur-titre de l’invitation' },
 ];
 
 /** `#rrggbbaa` composé sur `bg` ; un `#rrggbb` opaque passe tel quel. */

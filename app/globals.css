@@ -18,13 +18,14 @@
   color-scheme: light;
 
   /* Fonds. --ink sert à la fois d'encre sur papier et de fond sombre : c'est la
-     même valeur, donc un seul jeton. Les autres fonds sombres du dessin sont à
-     une ou deux unités de --ink et gardent pourtant leur valeur exacte. */
+     même valeur, donc un seul jeton. L'autre fond sombre du dessin est à une
+     unité de --ink et garde pourtant sa valeur exacte. L'invitation avait le
+     sien (#0d0d0c) ; bord à bord avec la galerie (décision du 2026-10-15), leurs
+     4 unités d'écart se lisaient comme une couture, elle a donc pris celui-ci. */
   --paper: #f0eee8;
   --paper-2: #f6f4ef; /* boîte de visualisation agrandie */
   --ink: #11110f;
-  --ink-gallery: #111110; /* scène de la galerie */
-  --ink-deep: #0d0d0c; /* bloc d'invitation */
+  --ink-gallery: #111110; /* scène de la galerie, et l'invitation qui s'y prolonge */
 
   /* Texte sur papier, du plus sombre au plus clair (ratios sur --paper).
      --ink (16.29:1) est le texte courant ; --ink-2 (12.59:1) le SECONDAIRE

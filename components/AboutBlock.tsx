@@ -109,14 +109,12 @@ export function AboutBlock({ dict, locale }: { dict: Dictionary; locale: Locale 
           <p className={styles.nowParagraph} data-quiet>
             {about.now.paragraph}
           </p>
-          <p className={styles.nowTooling} data-quiet>
+          <p className={styles.nowDetail} data-quiet>
+            {about.now.design}
+          </p>
+          <p className={styles.nowDetail} data-quiet>
             {about.now.tooling}
           </p>
-          <ul className={styles.chips} data-quiet>
-            {about.now.chips.map((chip) => (
-              <li key={chip}>{chip}</li>
-            ))}
-          </ul>
         </div>
       </div>
 

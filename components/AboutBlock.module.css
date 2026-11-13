@@ -3,11 +3,12 @@
    que là où ils portent la même valeur.
 
    `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`)
-   et porte son propre rembourrage, comme le dessin. */
+   et porte son propre rembourrage, comme le dessin. Rien en bas : l'invitation
+   ferme la section, bord à bord. */
 .section {
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  padding: 96px 4.45vw;
+  padding: 96px 4.45vw 0;
   color: var(--ink);
   background: var(--paper);
 }
@@ -208,41 +209,28 @@
   color: var(--grey-4);
 }
 
-.nowTooling {
+.nowDetail {
   margin: 0;
   font-size: clamp(15px, 1.18vw, 17px);
   line-height: 1.6;
   color: var(--muted);
 }
 
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.chips li {
-  padding: 11px 16px;
-  outline: 1px solid var(--line-2);
-  outline-offset: -0.5px;
-  font-size: var(--label-s);
-  line-height: normal;
-  letter-spacing: 1px;
-  color: var(--muted);
-}
-
-/* --- L'invitation, sur fond sombre ------------------------------------------ */
+/* --- L'invitation, sur fond sombre ------------------------------------------ *
+   Bord à bord et collée à la galerie (décision du 2026-10-15) : la carte en
+   retrait du dessin, puis 96px de papier, puis la galerie sombre faisaient trois
+   bandes là où l'œil en attend deux. Son sombre se poursuit dans celui des
+   travaux — le même jeton, sans couture (voir `globals.css`) ; son rembourrage
+   est celui de la section, donc ses colonnes tombent sous celles du présent. */
 .invite {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 64px;
   align-items: start;
-  margin-top: 96px;
-  padding: 72px clamp(28px, 4.45vw, 64px);
-  background: var(--ink-deep);
+  width: 100vw;
+  margin: 96px 0 0 calc(50% - 50vw);
+  padding: 72px 4.45vw;
+  background: var(--ink-gallery);
 }
 
 .inviteEyebrow {
@@ -319,7 +307,7 @@
 
 @media (max-width: 56.25rem) {
   .section {
-    padding: 72px 24px;
+    padding: 72px 24px 0;
   }
 
   .heading {

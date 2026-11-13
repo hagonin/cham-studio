@@ -85,7 +85,7 @@ export const en = {
     about: {
       eyebrow: ['03 · ABOUT ME', 'DESIGN × CODE'],
       title: ['I build where visual craft', 'meets what’s under the hood.'],
-      lede: 'I build web interfaces and applications where the visual craft matters as much as what happens under the hood. The detail that makes a page pleasant to use interests me as much as the code that runs it.',
+      lede: 'I design interfaces and I build them myself. For you, that means one person to talk to, and nothing lost between the mockup and the shipped product: what you approve on screen is what your users get.',
       photoLead: {
         tag: 'PHOTO 01 · IN THE MAKING',
         caption: 'A moment from the process — sketching, prototyping, or building.',
@@ -95,10 +95,11 @@ export const en = {
         eyebrow: 'NOW · ONGOING',
         line: ['Learning is part', 'of the practice.'],
         paragraph:
-          'Since then I keep learning, on both the dev and design sides, because the field moves fast — and that’s part of the fun. What drives me is building solutions that genuinely serve the people using them, with clean code and a polished interface.',
+          'What drives me hasn’t changed: building something genuinely useful for the people who use it, with clean code and a polished interface. The web moves fast, so I keep learning on both sides, and your product rests on current practice.',
+        design:
+          'Before writing any code, I start from your users: what they’re looking for, where they get stuck. I map the journey, prototype it in Figma and build it into a design system, so every screen stays consistent. Dense information becomes readable, and a raw interface becomes pleasant to use.',
         tooling:
-          'Day to day, I work with agentic AI tools to move faster, from prototype to refactoring, without ever losing control of code quality and architecture.',
-        chips: ['CLAUDE CODE', 'CODEX', 'ANTIGRAVITY'],
+          'I use agentic AI tools every day. They save me time, from prototype to refactoring, and that time goes where you’ll see it: your users’ journey, the architecture, the finishing touches. I review every line, and I stand behind it.',
       },
       invite: {
         eyebrow: ['THE NEXT CHAPTER', 'COULD BE OURS.'],
@@ -179,11 +180,11 @@ export const en = {
         optional: '(OPTIONAL)',
         email: 'YOUR EMAIL*',
         message: 'HOW CAN I HELP YOU?*',
-        budgetLegend: 'PROJECT BUDGET (EUR)',
+        budgetLegend: 'PROJECT BUDGET (USD)',
         budget: [
-          { label: 'UNDER 5K', value: 'Under €5k' },
-          { label: '5K–10K', value: '€5–10k' },
-          { label: '10K+', value: '€10k+' },
+          { label: 'UNDER 5K', value: 'Under $5k' },
+          { label: '5K–10K', value: '$5–10k' },
+          { label: '10K+', value: '$10k+' },
           { label: 'TO DISCUSS', value: 'To discuss' },
         ],
         submit: 'DISCUSS THE PROJECT',

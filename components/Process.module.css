@@ -31,18 +31,45 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid transparent;
 }
 
 /* La colonne du milieu est `minmax(0, 400px)` et non 400px fixes : une piste
    fixe déborde dès que le titre est long, ce que les titres français sont. */
 .row {
+  position: relative;
   display: grid;
   grid-template-columns: 48px minmax(0, 400px) minmax(0, 1fr);
   gap: 48px;
   align-items: start;
   padding: 34px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid transparent;
+}
+
+/* Les filets se tracent au défilement (décision du 2026-10-15) : des
+   pseudo-éléments dont la largeur suit `--draw`, que `drawRowsOnScroll` fait
+   passer de 0 à 1. Ils se peignent dans la place des bordures, restées
+   transparentes, donc la mise en page ne bouge pas d'un pixel. Sans script, ou
+   sous reduced-motion, `--draw` n'est jamais posé : le filet est entier. Le
+   filet de clôture de la liste est celui de la dernière rangée. */
+.row::before,
+.row:last-child::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--line);
+  transform: scaleX(var(--draw, 1));
+  transform-origin: left;
+}
+
+.row::before {
+  top: -1px;
+}
+
+.row:last-child::after {
+  bottom: -1px;
 }
 
 .index {

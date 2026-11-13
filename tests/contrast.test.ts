@@ -87,8 +87,8 @@ describe('contraste des jetons (WCAG AA, papier et fonds encre)', () => {
       contrastRatio('#808080', '#000000'),
       5,
     );
-    expect(contrastRatio(colors['paper-80'], colors['ink-deep'])).toBeLessThan(
-      contrastRatio(colors.paper, colors['ink-deep']),
+    expect(contrastRatio(colors['paper-80'], colors['ink-gallery'])).toBeLessThan(
+      contrastRatio(colors.paper, colors['ink-gallery']),
     );
   });
 });

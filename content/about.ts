@@ -17,16 +17,16 @@ export const timeline: readonly TimelineEntry[] = [
     year: '2017',
     label: { fr: 'LES PREMIÈRES PAGES', en: 'THE FIRST PAGES' },
     body: {
-      fr: 'J’ai découvert le développement web à 17 ans, en bricolant mes premières pages. La curiosité d’abord : changer une ligne, rafraîchir, et voir une idée devenir quelque chose d’utilisable.',
-      en: 'I first touched web development at 17, tinkering with my early pages. Curiosity came first: change a line, refresh, and watch an idea become something you could use.',
+      fr: 'J’ai commencé à coder à 17 ans, en bricolant mes premières pages. Aujourd’hui, quand je dessine un écran, je sais déjà comment il sera construit. Vous ne recevez pas une belle maquette impossible à livrer.',
+      en: 'I started coding at 17, tinkering with my first pages. Today, when I design a screen, I already know how it will be built. You won’t get a beautiful mockup that can’t ship.',
     },
   },
   {
     year: '2021',
     label: { fr: 'UN MÉTIER PREND FORME', en: 'A CAREER TAKES SHAPE' },
     body: {
-      fr: 'Une formation intensive et des projets menés jusqu’au bout ont fait de cette curiosité un vrai choix de carrière. C’est là qu’une passion est devenue une pratique.',
-      en: 'Intensive training and projects carried all the way through turned that curiosity into a real career choice. This was the point where a passion became a practice.',
+      fr: 'Une formation intensive, puis des projets menés jusqu’au bout, seule ou à la tête d’une équipe. J’y ai appris ce qui compte le plus pour un client\u202f: finir, c’est-à-dire tester, corriger et livrer, pas seulement prototyper.',
+      en: 'Intensive training, then projects carried all the way through, on my own or leading a team. That’s where I learned what matters most to a client: finishing. Testing, fixing and shipping, not just prototyping.',
     },
   },
 ];

@@ -186,13 +186,31 @@
   gap: 22px;
   width: 100%;
   margin-top: -104px;
+  /* Défini ici, pas sur le cadre : l'aplat (`::before`) le lit aussi. */
+  --frame-w: 262px;
+}
+
+/* Un aplat plus large que le portrait, calé à gauche de lui : il déborde de
+   ~0,63 × la largeur du cadre à gauche, de 44px sous le haut du portrait (qui
+   dépasse donc au-dessus) et de 17px sous son bas. Tout part de `--frame-w`,
+   l'aplat suit donc le portrait à toutes les largeurs. Il vit sur `.portrait`
+   et non sur le cadre, dont `overflow: hidden` le rognerait ; il reste sous le
+   cadre (qui le suit dans le DOM) et à moins de 44px sous lui, hors du texte. */
+.portrait::before {
+  content: '';
+  position: absolute;
+  top: 44px;
+  bottom: -17px;
+  left: calc(50% - var(--frame-w) * 1.13);
+  width: calc(var(--frame-w) * 1.7);
+  background: var(--line-4);
 }
 
 .portraitFrame {
   --frame-ratio: 262 / 340;
   display: block;
   flex-shrink: 0;
-  width: 262px;
+  width: var(--frame-w);
 }
 
 /* Le dessin cadre l'image au centre, sans mouvement : on neutralise le
@@ -441,8 +459,14 @@
     white-space: normal;
   }
 
-  .portraitFrame {
-    width: 216px;
+  .portrait {
+    --frame-w: 216px;
+  }
+
+  /* Sur téléphone l'aplat déborde moins à gauche, pour rester dans la fenêtre. */
+  .portrait::before {
+    left: calc(50% - var(--frame-w) * 0.9);
+    width: calc(var(--frame-w) * 1.45);
   }
 
   /* À côté de l'indicateur, l'adresse n'aurait que 229px à 390px de large

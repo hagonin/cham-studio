@@ -106,7 +106,7 @@ export const fr = {
       // dans `content/about.ts` : ce sont des enregistrements, pas de la prose.
       eyebrow: ['03 · À PROPOS', 'DESIGN × CODE'],
       title: ['Je construis là où le visuel', 'rencontre ce qui tourne sous le capot.'],
-      lede: 'Je conçois des interfaces et des applications web où le soin visuel compte autant que ce qui se passe sous le capot. Le détail qui rend une page agréable à utiliser m’intéresse autant que le code qui la fait tourner.',
+      lede: 'Je dessine des interfaces et je les code moi-même. Pour vous, ça veut dire un seul interlocuteur, et rien qui se perd entre la maquette et le produit livré\u202f: ce que vous validez à l’écran, c’est ce que vos utilisateurs auront entre les mains.',
       photoLead: {
         tag: 'PHOTO 01 · EN FABRICATION',
         caption: 'Un moment du processus — esquisser, prototyper ou construire.',
@@ -116,10 +116,13 @@ export const fr = {
         eyebrow: 'MAINTENANT · EN COURS',
         line: ['Apprendre fait partie', 'de la pratique.'],
         paragraph:
-          'Depuis, je continue d’apprendre, côté dev comme côté design, parce que le domaine bouge vite — et ça fait partie du plaisir. Ce qui me motive, c’est de construire des solutions vraiment utiles aux personnes qui s’en servent, avec un code propre et une interface soignée.',
+          'Ce qui me motive n’a pas changé\u202f: construire quelque chose de vraiment utile aux personnes qui s’en servent, avec un code propre et une interface soignée. Le web bouge vite, alors je continue d’apprendre des deux côtés, pour que votre produit repose sur des pratiques actuelles.',
+        // La place des anciennes pastilles d'outils (owner, 2026-10-12) : un
+        // client n'a pas besoin des noms de marque, il a besoin de la méthode UX.
+        design:
+          'Avant d’écrire une ligne de code, je pars de vos utilisateurs\u202f: ce qu’ils cherchent, là où ils bloquent. Je pose le parcours, je le prototype dans Figma et je le structure en design system, pour que chaque écran reste cohérent. Une information dense devient lisible, une interface brute devient agréable à utiliser.',
         tooling:
-          'Au quotidien, je travaille avec des outils d’IA agentique pour aller plus vite, du prototype au refactoring, sans jamais perdre la main sur la qualité du code et l’architecture.',
-        chips: ['CLAUDE CODE', 'CODEX', 'ANTIGRAVITY'],
+          'J’utilise des outils d’IA agentique au quotidien. Ils me font gagner du temps, du prototype au refactoring, et ce temps va là où vous le verrez\u202f: le parcours de vos utilisateurs, l’architecture, les finitions. Je relis chaque ligne, et j’en réponds.',
       },
       invite: {
         eyebrow: ['LE PROCHAIN CHAPITRE', 'POURRAIT ÊTRE LE NÔTRE.'],

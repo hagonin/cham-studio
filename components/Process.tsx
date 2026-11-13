@@ -14,16 +14,16 @@ import styles from './Process.module.css';
  *
  * Composant SERVEUR : toute la copie est dans le HTML servi, le titre déjà
  * découpé en mots (`MaskedLines`). `ServicesMotion` ne rend rien et n'ajoute que
- * le mouvement. Les rangées portent `data-quiet` : c'est ce que `revealQuiet`
- * fait entrer, l'une après l'autre, quand la liste arrive.
+ * le mouvement. Les rangées portent `data-row` : c'est ce que `drawRowsOnScroll`
+ * trace, filet et texte, en suivant le défilement.
  *
  * Les index sont des `<span>` et les titres des `<h3>` : le `<h2>` de la section
  * les précède, aucun niveau n'est sauté (`check:html`).
  *
  * Sous la liste, les outils (`content/tools.ts`) : un `<h3>` au niveau des
  * disciplines, un `<h4>` par groupe. Le logo est décoratif (`aria-hidden`) ; le
- * nom visible est le nom accessible. Pas de `data-quiet` ici : le bloc ne fait
- * pas partie de la liste que `revealQuiet` anime, il reste tel que livré.
+ * nom visible est le nom accessible. Pas de `data-row` ici : le bloc ne fait
+ * pas partie de la liste qui se trace, il reste tel que livré.
  */
 export function Process({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const { process } = dict.home;
@@ -41,7 +41,7 @@ export function Process({ locale, dict }: { locale: Locale; dict: Dictionary }) 
 
       <ol className={styles.list} data-list>
         {process.steps.map((step, index) => (
-          <li key={step.title} className={styles.row} data-quiet>
+          <li key={step.title} className={styles.row} data-row>
             <span className={styles.index}>{String(index + 1).padStart(2, '0')}</span>
             <h3 className={styles.title}>{step.title}</h3>
             <p className={styles.description}>{step.body}</p>
