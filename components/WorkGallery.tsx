@@ -291,8 +291,10 @@ export function WorkGallery({
 
   return (
     <section
+      id="work"
       className={`${styles.section} ${enhanced ? styles.enhanced : ''}`}
       aria-labelledby="work-title"
+      tabIndex={-1}
     >
       <div className={styles.stage}>
         <div className={styles.meta}>

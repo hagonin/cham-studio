@@ -293,7 +293,7 @@
   }
 
   .bridge {
-    font-size: var(--label-xs);
+    font-size: var(--label);
     letter-spacing: 0.65em;
     margin: 20px 0;
   }
@@ -307,7 +307,19 @@
   }
 
   .budget label {
-    font-size: var(--label-xs);
+    font-size: var(--label);
+  }
+
+  .budget span {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  .optional,
+  .note,
+  .status {
+    font-size: var(--label);
   }
 
   .submit {
@@ -328,17 +340,30 @@
   }
 
   .middle p {
-    font-size: var(--label-xs);
+    font-size: var(--label-s);
     max-width: 150px;
   }
 
+  .pages {
+    gap: 0;
+  }
+
   .pages a {
-    font-size: 12px;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: var(--text-s);
   }
 
   .spread {
-    font-size: var(--label-2xs);
+    font-size: var(--label);
     gap: 8px;
+  }
+
+  .spread a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
   }
 
   .signature {
@@ -348,8 +373,14 @@
 
   .bottom {
     flex-wrap: wrap;
-    font-size: var(--label-2xs);
+    font-size: var(--label-s);
     gap: 14px;
+  }
+
+  /* Le copyright descend sur sa propre ligne et se centre. */
+  .bottom span:last-child {
+    width: 100%;
+    text-align: center;
   }
 }
 

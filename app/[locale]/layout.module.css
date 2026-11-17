@@ -1,7 +1,7 @@
 /* Le pied de la mise en page : le lieu et l'heure locale. Le dessin n'en a pas ;
    il est posé dans le registre du pied de page du dessin (`contact.css`) pour
    lui faire suite sans rupture : même gouttière que la section qui le précède
-   (4.45vw, 24px sous 700px), mono de 10px (9px sous 700px), deux libellés courts
+   (4.45vw, 24px sous 700px), mono de 10px (11px sous 700px), deux libellés courts
    répartis sur la largeur comme la dernière rangée du dessin.
 
    Les capitales sont posées sur un `<div>`, pas sur un `<p>` : `check:html`
@@ -27,6 +27,6 @@
   }
 
   .row {
-    font-size: var(--label-2xs);
+    font-size: var(--label-s);
   }
 }

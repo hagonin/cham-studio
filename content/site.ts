@@ -21,8 +21,8 @@ export const site = {
    *  EXIF (GPS) à retirer AVANT le commit : après, l'historique le garde. */
   portrait: {
     src: '/portrait.jpg',
-    width: 960,
-    height: 1200,
+    width: 1048,
+    height: 1360,
     alt: {
       fr: 'Portrait de la fondatrice de Chạm Studio',
       en: 'Portrait of Chạm Studio’s founder',

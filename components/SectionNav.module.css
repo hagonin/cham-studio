@@ -230,7 +230,7 @@
    derrière le bouton MENU, et le bouton de contact reste visible à côté. */
 @media (max-width: 50rem) {
   .header {
-    padding: 22px 24px;
+    padding: 18px 24px;
   }
 
   .logo {
@@ -239,12 +239,21 @@
 
   .navContact {
     margin-left: auto;
-    font-size: var(--label-xs);
+    min-height: 44px;
+    font-size: var(--text-s);
     gap: 8px;
   }
 
   .menu {
     display: block;
+  }
+
+  .menuToggle {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding-block: 0;
+    font-size: var(--text-s);
   }
 
   .locales {
@@ -287,7 +296,15 @@
   .localesMenu {
     display: block;
     padding-inline: 30px;
-    font-size: var(--label);
+    font-size: var(--text-s);
+  }
+
+  .localesMenu a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 

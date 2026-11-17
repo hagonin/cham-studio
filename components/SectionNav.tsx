@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import { PUBLISHED, locales, localeHref, type Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
-import { SECTION_KEYS, type SectionKey } from '@/lib/sections';
+import { SECTION_KEYS, sectionHref, type SectionKey } from '@/lib/sections';
 import { NavMotion } from './NavMotion';
 import styles from './SectionNav.module.css';
 
@@ -26,9 +26,9 @@ import styles from './SectionNav.module.css';
  * le menu sous 800px, faute de place). Et la barre passe SOUS le loader, dont
  * l'empilement est plus bas que les 100 du dessin.
  *
- * Les ancres pointent sur les `<h2 id="*-title">` DÉJÀ en place, pas sur des
- * `id` posés sur les `<section>` : `scrollToAnchor` déplace alors le focus sur
- * un vrai titre, ce qu'un conteneur ne permet pas. L'interception du clic
+ * Les ancres pointent sur les titres, sauf « Projets » : son titre éditorial
+ * suit la galerie, donc le lien vise le début de la section et ses images.
+ * L'interception du clic
  * appartient à `MotionProvider` (`lib/motion/lenis.ts`), qui écoute déjà
  * `a[href^="#"]` : un second chemin de défilement serait un second endroit où
  * le focus peut se perdre.
@@ -119,7 +119,7 @@ export function SectionNav({
 }) {
   const { nav } = dict;
   const items = SECTION_KEYS.filter((key) => sections.includes(key)).map((key) => ({
-    href: `#${key}-title`,
+    href: sectionHref(key),
     label: nav[key],
   }));
 

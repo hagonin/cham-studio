@@ -8,6 +8,7 @@
   width: 100vw;
   margin-left: calc(50% - 50vw);
   color: var(--ink);
+  scroll-margin-top: var(--nav-h);
 }
 
 .stage {
@@ -486,7 +487,7 @@
     width: auto;
     margin-inline: 24px;
     gap: 12px;
-    font-size: var(--label-2xs);
+    font-size: var(--label);
   }
 
   .meta span:last-child {
@@ -524,7 +525,7 @@
     justify-content: start;
     gap: 8px 10px;
     text-align: left;
-    font-size: var(--label-2xs);
+    font-size: var(--text-s);
     letter-spacing: 0.09em;
   }
 
@@ -538,7 +539,11 @@
   }
 
   .arrows button {
-    width: 34px;
+    width: 44px;
+  }
+
+  .enlarge span {
+    font-size: var(--label);
   }
 
   .editorial {

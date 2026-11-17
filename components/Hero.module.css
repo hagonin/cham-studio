@@ -188,22 +188,20 @@
   margin-top: -104px;
   /* Défini ici, pas sur le cadre : l'aplat (`::before`) le lit aussi. */
   --frame-w: 262px;
+  --bg-pad: 24px;
 }
 
-/* Un aplat plus large que le portrait, calé à gauche de lui : il déborde de
-   ~0,63 × la largeur du cadre à gauche, de 44px sous le haut du portrait (qui
-   dépasse donc au-dessus) et de 17px sous son bas. Tout part de `--frame-w`,
-   l'aplat suit donc le portrait à toutes les largeurs. Il vit sur `.portrait`
-   et non sur le cadre, dont `overflow: hidden` le rognerait ; il reste sous le
-   cadre (qui le suit dans le DOM) et à moins de 44px sous lui, hors du texte. */
+/* Un aplat centré derrière le portrait, légèrement plus grand que lui et
+   calé sous le texte DESIGN × CODE. */
 .portrait::before {
   content: '';
   position: absolute;
-  top: 44px;
-  bottom: -17px;
-  left: calc(50% - var(--frame-w) * 1.13);
-  width: calc(var(--frame-w) * 1.7);
-  background: var(--line-4);
+  z-index: -1;
+  top: calc(-1 * var(--bg-pad));
+  bottom: calc(-1 * var(--bg-pad));
+  left: calc(50% - var(--frame-w) / 2 - var(--bg-pad));
+  width: calc(var(--frame-w) + 2 * var(--bg-pad));
+  background: #E3DED2;
 }
 
 .portraitFrame {
@@ -362,6 +360,10 @@
   outline-offset: 6px;
 }
 
+.workShortcut {
+  display: none;
+}
+
 /* Les lettres géantes viennent de `LetterLine` (même ligne que le titre
    contact) ; le lien les met en capitales et les centre. */
 .aboutLine {
@@ -437,6 +439,28 @@
     padding-top: 112px;
   }
 
+  .workShortcut {
+    display: block;
+    grid-column: 2;
+    align-self: end;
+    width: fit-content;
+    padding: 8px 0;
+    border-bottom: 1px solid currentColor;
+    color: var(--ink);
+    font: 400 0.875rem / 1.2 var(--font-mono-stack);
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .workShortcut:hover {
+    color: var(--touch-hot);
+  }
+
+  .workShortcut:focus-visible {
+    outline: 2px solid var(--touch-hot);
+    outline-offset: 4px;
+  }
+
   .portrait {
     margin-top: -68px;
   }
@@ -459,32 +483,37 @@
     white-space: normal;
   }
 
-  .portrait {
-    --frame-w: 216px;
+  .wordmark {
+    gap: clamp(8px, 2.5vw, 16px);
   }
 
-  /* Sur téléphone l'aplat déborde moins à gauche, pour rester dans la fenêtre. */
-  .portrait::before {
-    left: calc(50% - var(--frame-w) * 0.9);
-    width: calc(var(--frame-w) * 1.45);
+  .portrait {
+    --frame-w: 216px;
+    --bg-pad: 18px;
   }
 
   /* À côté de l'indicateur, l'adresse n'aurait que 229px à 390px de large
      (mesuré : elle se cassait après le tiret). Elle prend donc toute la
      largeur, l'indicateur passe dessous, à droite — l'ordre du DOM est gardé. */
   .outro {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr auto;
     row-gap: 24px;
   }
 
   .collab {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .workShortcut {
     grid-column: 1;
     justify-self: start;
   }
 
   .scroll {
-    grid-column: 1;
+    grid-column: 2;
     justify-self: end;
+    font-size: var(--label);
   }
 }
 

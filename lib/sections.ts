@@ -9,14 +9,14 @@ import { workSectionIsReady } from '@/content/projects';
  * Même raison que `lib/gallery/carousel.ts` — la logique qui doit se vérifier vit
  * à part du rendu.
  *
- * L'écart entre les deux listes est le sujet : une ancre vers un titre absent
+ * L'écart entre les deux listes est le sujet : une ancre vers une cible absente
  * défile vers rien, et la page répond quand même 200, donc aucun test de route
  * ne l'attrape. `work` n'entre dans `MOUNTED` que quand `workSectionIsReady()`
- * dit oui, exactement la condition qui monte le `<h2 id="work-title">` dans
+ * dit oui, exactement la condition qui monte la section `id="work"` dans
  * `app/[locale]/page.tsx`. Deux listes dérivées de la même source ne peuvent
  * pas diverger — une constante écrite à la main, elle, se serait désynchronisée
  * au premier vrai projet. `scripts/check-html.mjs` vérifie le résultat sur le
- * HTML construit : chaque ancre de la nav a son titre.
+ * HTML construit : chaque ancre de la nav a sa cible.
  *
  * Aucune section n'est montée « en attente » avec un titre vide : un titre sans
  * contenu occupe la place de ce qui manque, exactement ce que
@@ -37,6 +37,12 @@ import { workSectionIsReady } from '@/content/projects';
  */
 export const SECTION_KEYS = ['about', 'work', 'services', 'contact'] as const;
 export type SectionKey = (typeof SECTION_KEYS)[number];
+
+export function sectionHref(key: SectionKey): string {
+  // Le titre éditorial des projets suit la galerie : l'ancre doit montrer les
+  // images avant le titre, contrairement aux autres sections.
+  return key === 'work' ? '#work' : `#${key}-title`;
+}
 
 export const MOUNTED_SECTIONS: readonly SectionKey[] = SECTION_KEYS.filter(
   (key) => key !== 'work' || workSectionIsReady(),

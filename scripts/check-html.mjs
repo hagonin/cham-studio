@@ -81,11 +81,11 @@ for (const page of pages.filter((path) => /\/(fr|en)\.html$/.test(path))) {
   // le DOM servi : aucune animation ne révèle de contenu, et les robots ne
   // défilent pas.
   if (!/id="about-title"/.test(html)) fail(`${page} : bloc à propos absent du DOM`);
-  // Une ancre vers un titre absent défile vers rien et la page répond quand même
-  // 200 : chaque `href="#x-title"` de la nav doit avoir son `id="x-title"`.
-  for (const [, anchor] of html.matchAll(/href="#([a-z]+-title)"/g)) {
+  // Les ancres de section doivent viser un élément présent. « Projets » vise
+  // le début de la galerie, avant son titre éditorial.
+  for (const [, anchor] of html.matchAll(/href="#([a-z]+-title|work)"/g)) {
     if (!html.includes(`id="${anchor}"`))
-      fail(`${page} : l'ancre #${anchor} n'a pas de titre`);
+      fail(`${page} : l'ancre #${anchor} n'a pas de cible`);
   }
   // Le menu sous 800px est un <details> : il s'ouvre sans JavaScript. Chaque lien
   // de section de la barre, et la bascule de langue, doivent donc se trouver
@@ -96,7 +96,7 @@ for (const page of pages.filter((path) => /\/(fr|en)\.html$/.test(path))) {
   if (!menu || !/<summary\b/.test(menu)) {
     fail(`${page} : le menu de la barre n'est pas un <details> avec un <summary>`);
   } else {
-    for (const [, anchor] of header.matchAll(/href="(#[a-z]+-title)"/g)) {
+    for (const [, anchor] of header.matchAll(/href="(#[a-z]+-title|#work)"/g)) {
       if (!menu.includes(`href="${anchor}"`))
         fail(`${page} : le lien ${anchor} manque dans le panneau du menu`);
     }

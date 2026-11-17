@@ -70,7 +70,7 @@ export const fr = {
       // DESIGN × CODE avec son bouton de contact, le portrait, la phrase et son
       // paragraphe, l'indicateur de défilement. Les libellés en capitales sont
       // LITTÉRAUX (copy-fr.md), pour que « Chạm » y garde son « Ạ ».
-      eyebrow: ['CHẠM / VERBE / TOUCHER', 'UNE IDÉE DEVIENT UN PRODUIT AU CONTACT.'],
+      eyebrow: ['CHẠM / VERBE / TOUCHER', 'UNE IDÉE DEVIENT UN PRODUIT AU CONTACT'],
       contactLabel: 'Établir le contact',
       // La phrase du dessin : c'est le <h1> de la page, sur deux lignes.
       title: ['Une touche humaine,', 'de l’idée au produit.'],
@@ -105,11 +105,11 @@ export const fr = {
       // dérivé. Les libellés en capitales sont LITTÉRAUX. La chronologie vit
       // dans `content/about.ts` : ce sont des enregistrements, pas de la prose.
       eyebrow: ['03 · À PROPOS', 'DESIGN × CODE'],
-      title: ['Je construis là où le visuel', 'rencontre ce qui tourne sous le capot.'],
+      title: ['Je construis là où le visuel', 'rencontre ce qui tourne sous le capot'],
       lede: 'Je dessine des interfaces et je les code moi-même. Pour vous, ça veut dire un seul interlocuteur, et rien qui se perd entre la maquette et le produit livré\u202f: ce que vous validez à l’écran, c’est ce que vos utilisateurs auront entre les mains.',
       photoLead: {
         tag: 'PHOTO 01 · EN FABRICATION',
-        caption: 'Un moment du processus — esquisser, prototyper ou construire.',
+        caption: 'Un moment du processus\u202f: esquisser, prototyper ou construire.',
       },
       photoPair: ['PHOTO 02 · COLLABORATION', 'PHOTO 03 · EN SITUATION'],
       now: {
@@ -127,9 +127,9 @@ export const fr = {
       invite: {
         eyebrow: ['LE PROCHAIN CHAPITRE', 'POURRAIT ÊTRE LE NÔTRE.'],
         headline: [
-          'Un travail qui a du sens.',
-          'Des idées ambitieuses.',
-          'Une communication claire.',
+          'Un travail qui a du sens',
+          'Des idées ambitieuses',
+          'Une communication claire',
         ],
         paragraph:
           'J’ai envie de collaborer sur des projets qui ont du sens et de l’ambition, avec une communication claire à chaque étape. Si c’est le vôtre,',
@@ -191,7 +191,7 @@ export const fr = {
       // `content/services.ts`, qui n'ont plus de place sur la page. Le composant
       // s'appelle encore `Process`. Le titre tient sur deux lignes, comme
       // « Derrière / Chạm » — deux éléments distincts, pas une phrase coupée.
-      title: ['De la première idée', 'au dernier détail.'],
+      title: ['De la première idée', 'au dernier détail'],
       steps: [
         {
           title: 'Design produit et UX',
@@ -261,7 +261,7 @@ export const fr = {
         backToTop: '[ HAUT DE PAGE ↑ ]',
         meta: ['DESIGN × CODE', 'CONÇU ET DÉVELOPPÉ PAR CHẠM'],
         rights: 'CHẠM. TOUS DROITS RÉSERVÉS.',
-        signature: 'CHẠM.',
+        signature: 'CHẠM',
       },
     },
   },

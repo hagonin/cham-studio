@@ -2,6 +2,7 @@ import Image from 'next/image';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import type { Locale } from '@/lib/i18n/config';
 import { site } from '@/content/site';
+import { sectionHref } from '@/lib/sections';
 import { HeroContact } from './HeroContact';
 import { HeroMotion } from './HeroMotion';
 import { LetterLine } from './LetterLine';
@@ -29,7 +30,15 @@ import styles from './Hero.module.css';
  * utilise un fond CSS. Le recadrage animé de `.frame` est neutralisé ici : le
  * dessin cadre l'image au centre, et l'image ne bouge pas.
  */
-export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
+export function Hero({
+  dict,
+  locale,
+  showWork,
+}: {
+  dict: Dictionary;
+  locale: Locale;
+  showWork: boolean;
+}) {
   const { hero } = dict.home;
   const { portrait } = site;
   const [before, after] = dict.brand.positioning.split('×');
@@ -97,6 +106,11 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           </span>
           <span className={styles.collabEmail}>{site.email}</span>
         </a>
+        {showWork && (
+          <a className={styles.workShortcut} href={sectionHref('work')}>
+            {dict.nav.work}
+          </a>
+        )}
         <a
           className={styles.scroll}
           href="#touch"

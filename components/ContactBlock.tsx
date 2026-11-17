@@ -1,5 +1,5 @@
 import { site } from '@/content/site';
-import { MOUNTED_SECTIONS } from '@/lib/sections';
+import { MOUNTED_SECTIONS, sectionHref } from '@/lib/sections';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import { ContactForm } from './ContactForm';
 import { ContactMotion } from './ContactMotion';
@@ -56,7 +56,7 @@ export function ContactBlock({ dict }: { dict: Dictionary }) {
         <div className={styles.middle}>
           <nav className={styles.pages} aria-label={footer.navLabel}>
             {pages.map((key) => (
-              <a key={key} href={`#${key}-title`}>
+              <a key={key} href={sectionHref(key)}>
                 {dict.nav[key]}
               </a>
             ))}

@@ -70,7 +70,7 @@ export default async function ServicesPage({
           cas de la phase 05 partageront ce layout et n'ont pas la même nav. */}
       <SectionNav locale={locale} dict={dict} sections={MOUNTED_SECTIONS} />
       <main className={styles.page}>
-        <Hero dict={dict} locale={locale} />
+        <Hero dict={dict} locale={locale} showWork={workSectionIsReady()} />
         <TouchPhilosophy {...dict.home.touchPhilosophy} />
         <AboutBlock dict={dict} locale={locale} />
         {workSectionIsReady() && <WorkSection locale={locale} dict={dict} />}

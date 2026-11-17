@@ -35,3 +35,8 @@ plans/
 graphify-out/
 /.design
 /docs
+/.agents
+/.codex
+/.impeccable
+DESIGN.md
+PRODUCT.md
