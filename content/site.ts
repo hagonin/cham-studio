@@ -20,9 +20,9 @@ export const site = {
    *  le <h1> texte reste le LCP, la photo ne le concurrence pas.
    *  EXIF (GPS) à retirer AVANT le commit : après, l'historique le garde. */
   portrait: {
-    src: '/portrait.jpg',
-    width: 1048,
-    height: 1360,
+    src: '/portrait.webp',
+    width: 768,
+    height: 997,
     alt: {
       fr: 'Portrait de la fondatrice de Chạm Studio',
       en: 'Portrait of Chạm Studio’s founder',

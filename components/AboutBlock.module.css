@@ -13,12 +13,6 @@
   background: var(--paper);
 }
 
-.iconDefs {
-  position: absolute;
-  width: 0;
-  height: 0;
-}
-
 .eyebrow {
   margin: 0;
   font-size: var(--label-s);
@@ -92,34 +86,19 @@
 }
 
 .photoFrame {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+  position: relative;
   height: clamp(150px, 14vw, 200px);
   background: var(--photo);
   outline: 1px solid var(--line-2);
   outline-offset: -0.5px;
 }
 
+.photoImage {
+  object-fit: cover;
+}
+
 .photoFrame[data-size='lead'] {
   height: clamp(280px, 30.5vw, 440px);
-}
-
-.photoIcon {
-  width: 14px;
-  height: 14px;
-  color: var(--grey-6);
-}
-
-/* `line-height: normal` : le dessin ne fixe aucune hauteur de ligne à ces petits
-   libellés, alors que le corps de ce dépôt est à 1,55. */
-.photoTag {
-  font-size: var(--label-xs);
-  line-height: normal;
-  letter-spacing: 1px;
-  color: var(--grey-4);
 }
 
 .photo figcaption {

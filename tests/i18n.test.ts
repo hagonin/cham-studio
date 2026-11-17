@@ -160,7 +160,6 @@ describe('copie française', () => {
     'home.touchPhilosophy.meta[0]',
     'home.touchPhilosophy.meta[1]',
     'home.about.eyebrow[1]',
-    'home.about.photoPair[0]',
     'home.work.meta[0]',
     'home.work.meta[2]',
     'home.work.caseStudy.design',

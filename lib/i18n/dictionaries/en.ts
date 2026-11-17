@@ -87,10 +87,8 @@ export const en = {
       title: ['I build where visual craft', 'meets what’s under the hood.'],
       lede: 'I design interfaces and I build them myself. For you, that means one person to talk to, and nothing lost between the mockup and the shipped product: what you approve on screen is what your users get.',
       photoLead: {
-        tag: 'PHOTO 01 · IN THE MAKING',
         caption: 'A moment from the process — sketching, prototyping, or building.',
       },
-      photoPair: ['PHOTO 02 · COLLABORATION', 'PHOTO 03 · IN CONTEXT'],
       now: {
         eyebrow: 'NOW · ONGOING',
         line: ['Learning is part', 'of the practice.'],

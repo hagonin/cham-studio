@@ -108,10 +108,8 @@ export const fr = {
       title: ['Je construis là où le visuel', 'rencontre ce qui tourne sous le capot'],
       lede: 'Je dessine des interfaces et je les code moi-même. Pour vous, ça veut dire un seul interlocuteur, et rien qui se perd entre la maquette et le produit livré\u202f: ce que vous validez à l’écran, c’est ce que vos utilisateurs auront entre les mains.',
       photoLead: {
-        tag: 'PHOTO 01 · EN FABRICATION',
         caption: 'Un moment du processus\u202f: esquisser, prototyper ou construire.',
       },
-      photoPair: ['PHOTO 02 · COLLABORATION', 'PHOTO 03 · EN SITUATION'],
       now: {
         eyebrow: 'MAINTENANT · EN COURS',
         line: ['Apprendre fait partie', 'de la pratique.'],
