@@ -38,6 +38,7 @@ export const colors = {
   'line-dark': '#383832',
   track: '#343430',
   photo: '#dcd9d0',
+  'portrait-ground': '#e3ded2',
   // Accents
   touch: '#e55235',
   'touch-hot': '#ef4b2f',

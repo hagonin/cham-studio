@@ -69,6 +69,7 @@
   --line-dark: #383832; /* filet du menu mobile, sur encre */
   --track: #343430; /* rail de progression de la scène tactile */
   --photo: #dcd9d0; /* aplat des emplacements photo */
+  --portrait-ground: #e3ded2; /* aplat derrière le portrait du hero */
 
   /* 90 % de la page est papier / encre / gris. L'accent est le seul écart, et
      son nom dit son emploi : le TOUCHER. Deux usages : l'interaction (survol,

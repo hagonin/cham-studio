@@ -198,7 +198,7 @@
   bottom: calc(-1 * var(--bg-pad));
   left: calc(50% - var(--frame-w) / 2 - var(--bg-pad));
   width: calc(var(--frame-w) + 2 * var(--bg-pad));
-  background: #e3ded2;
+  background: var(--portrait-ground);
 }
 
 .portraitFrame {

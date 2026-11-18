@@ -207,7 +207,7 @@ export const en = {
         backToTop: '[ BACK TO TOP ↑ ]',
         meta: ['DESIGN × CODE', 'DESIGNED & BUILT BY CHẠM'],
         rights: 'CHẠM. ALL RIGHTS RESERVED.',
-        signature: 'CHẠM.',
+        signature: 'CHẠM',
       },
     },
   },

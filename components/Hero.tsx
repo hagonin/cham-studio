@@ -75,7 +75,7 @@ export function Hero({
               width={portrait.width}
               height={portrait.height}
               sizes="(max-width: 43.75rem) 216px, 262px"
-              loading="lazy"
+              priority
             />
           </span>
         ) : null}
