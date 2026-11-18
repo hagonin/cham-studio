@@ -2,7 +2,7 @@
    `index.html`, `hero-contact.css` et `navigation.css` du prototype). Les px et
    les clamp sont ceux du dessin.
 
-   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`),
+   `width: 100%` : <main> est pleine largeur (`page.module.css`) ; `100vw` compterait la barre de défilement et ferait déborder la page,
    comme le hero et la galerie.
 
    SANS JavaScript, ou sous reduced-motion, la section est une page : la scène
@@ -12,8 +12,7 @@
 .section {
   position: relative;
   display: block;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
   background: var(--ink);
 }
 

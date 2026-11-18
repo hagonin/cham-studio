@@ -1,6 +1,7 @@
 .page {
-  width: min(72rem, 100% - 2.5rem);
-  margin-inline: auto;
+  /* Pleine largeur : chaque section porte son propre rembourrage. `100vw` est
+     proscrit ici, il compte la barre de défilement et fait déborder la page. */
+  width: 100%;
 }
 
 .header {

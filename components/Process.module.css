@@ -2,11 +2,10 @@
    prototype). Les px et les clamp sont ceux du dessin ; les jetons ne servent
    que là où ils portent la même valeur.
 
-   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`)
+   `width: 100%` : <main> est pleine largeur (`page.module.css`) ; `100vw` compterait la barre de défilement et ferait déborder la page,
    et porte son propre rembourrage, comme le dessin. */
 .section {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
   min-width: 0;
   padding: 96px 4.45vw;
   /* Le dessin hérite du 16px / `normal` du navigateur ; le corps de ce dépôt est

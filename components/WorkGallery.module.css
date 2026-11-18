@@ -2,11 +2,10 @@
    prototype). Les px et les clamp sont ceux du dessin ; les jetons ne servent que
    là où ils portent la même valeur.
 
-   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`) et
+   `width: 100%` : <main> est pleine largeur (`page.module.css`) ; `100vw` compterait la barre de défilement et ferait déborder la page, et
    la scène sombre va d'un bord à l'autre, comme le dessin. */
 .section {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
   color: var(--ink);
   scroll-margin-top: var(--nav-h);
 }

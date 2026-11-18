@@ -211,9 +211,9 @@ body {
   font-size: var(--text-s);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  /* Le wordmark du hero sort volontairement du conteneur (100vw) : sans ce
-     garde-fou, la largeur de la barre de défilement ajoute un débord
-     horizontal sur les navigateurs qui la réservent (Windows/Firefox). */
+  /* Garde-fou : un élément plus large que l'écran (le carrousel 3D, les mots du
+     hero) ne doit jamais créer de défilement horizontal. Les sections n'utilisent
+     plus `100vw`, qui compte la barre de défilement et décalait toute la page. */
   overflow-x: hidden;
 }
 

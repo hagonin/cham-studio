@@ -2,12 +2,11 @@
    prototype). Les px et les clamp sont ceux du dessin ; les jetons ne servent
    que là où ils portent la même valeur.
 
-   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`)
+   `width: 100%` : <main> est pleine largeur (`page.module.css`) ; `100vw` compterait la barre de défilement et ferait déborder la page,
    et porte son propre rembourrage, comme le dessin. Rien en bas : l'invitation
    ferme la section, bord à bord. */
 .section {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
   padding: 96px 4.45vw 0;
   color: var(--ink);
   background: var(--paper);
@@ -206,8 +205,7 @@
   grid-template-columns: 300px 1fr;
   gap: 64px;
   align-items: start;
-  width: 100vw;
-  margin: 96px 0 0 calc(50% - 50vw);
+  margin: 96px -4.45vw 0;
   padding: 72px 4.45vw;
   background: var(--ink-gallery);
 }

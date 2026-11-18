@@ -5,16 +5,13 @@
    144px en haut : la barre est FIXE et ne tient plus de place dans la page, le
    dessin laisse donc son hauteur (96px) plus 48px avant la première ligne. */
 /* Pleine largeur : le dessin n'a pas de colonne centrée, chaque section porte son
-   propre rembourrage. `<main>` en a encore une (`page.module.css`), dont les
-   sections pas encore reprises dépendent : le hero en sort comme la scène tactile
-   et la galerie, par `100vw`. */
+   propre rembourrage ; `<main>` est pleine largeur (`page.module.css`). */
 .hero {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 44px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
   padding: 144px 64px 72px;
 }
 
@@ -201,7 +198,7 @@
   bottom: calc(-1 * var(--bg-pad));
   left: calc(50% - var(--frame-w) / 2 - var(--bg-pad));
   width: calc(var(--frame-w) + 2 * var(--bg-pad));
-  background: #E3DED2;
+  background: #e3ded2;
 }
 
 .portraitFrame {

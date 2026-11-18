@@ -4,11 +4,10 @@
    #706c63 = --grey-3 (4,51:1 sur papier : il tient le 4,5:1 des petits textes),
    #ef4b2f = --touch-hot.
 
-   `100vw` : la section sort de la colonne centrée de <main> (`page.module.css`)
+   `width: 100%` : <main> est pleine largeur (`page.module.css`) ; `100vw` compterait la barre de défilement et ferait déborder la page,
    et porte son propre rembourrage, comme le dessin. */
 .section {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  width: 100%;
   padding: 120px 4.45vw 24px;
   /* Le dessin hérite du 16px / `normal` du navigateur ; le corps de ce dépôt est
      à 15px / 1,55. Sans cette reprise, un bloc en ligne (le lien de l'e-mail du
