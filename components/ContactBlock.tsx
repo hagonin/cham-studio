@@ -58,8 +58,13 @@ export function ContactBlock({ dict, locale }: { dict: Dictionary; locale: Local
         <div className={styles.middle}>
           <nav className={styles.pages} aria-label={footer.navLabel}>
             {pages.map((key) => (
-              <a key={key} href={sectionHref(key)}>
-                {dict.nav[key]}
+              <a
+                key={key}
+                href={sectionHref(key)}
+                className={rollLink}
+                aria-label={dict.nav[key]}
+              >
+                <RollLabel text={dict.nav[key]} />
               </a>
             ))}
           </nav>
