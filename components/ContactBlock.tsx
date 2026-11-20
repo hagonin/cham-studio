@@ -1,5 +1,6 @@
 import { site } from '@/content/site';
 import { MOUNTED_SECTIONS, sectionHref } from '@/lib/sections';
+import type { Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import { ContactForm } from './ContactForm';
 import { ContactMotion } from './ContactMotion';
@@ -29,7 +30,7 @@ const FOOTER_PAGES = ['about', 'services', 'work'] as const;
  * capitales : la garde `check:html` refuse une capitale posée par le CSS sur un
  * `<p>`, pas du texte déjà en capitales.
  */
-export function ContactBlock({ dict }: { dict: Dictionary }) {
+export function ContactBlock({ dict, locale }: { dict: Dictionary; locale: Locale }) {
   const { contact } = dict.home;
   const { footer } = contact;
   const pages = FOOTER_PAGES.filter((key) => MOUNTED_SECTIONS.includes(key));
@@ -62,13 +63,9 @@ export function ContactBlock({ dict }: { dict: Dictionary }) {
               </a>
             ))}
           </nav>
-          <p>
-            {footer.tagline[0]}
-            <br />
-            {footer.tagline[1]}
-            <br />
-            {footer.tagline[2]}
-          </p>
+          <address>
+            {site.postalCode} {site.city[locale]}
+          </address>
         </div>
         <div className={styles.spread} data-spread>
           {site.social.map(({ label, href }) => (

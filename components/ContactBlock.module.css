@@ -396,3 +396,16 @@
 .socialLink {
   padding: 12px 18px;
 }
+
+/* Le lieu du pied de page est un <address> : même gabarit que `.middle p`,
+   sans l'italique que le navigateur lui donne. */
+.middle address {
+  margin: 0;
+  font: normal 400 12px / 1.5 var(--font-mono-stack);
+}
+
+@media (max-width: 43.75rem) {
+  .middle address {
+    font-size: var(--label-s);
+  }
+}

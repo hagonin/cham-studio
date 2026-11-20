@@ -10,8 +10,10 @@ export const site = {
   name: 'Chạm Studio',
   /** Seule adresse publiée. Ni téléphone ni email personnel — garde CI. */
   email: 'contact@cham-studio.fr',
-  /** Surfaces d'affichage : la ville suffit. L'adresse postale complète
-   *  n'apparaît que sur les mentions légales. */
+  /** Surfaces d'affichage : code postal + ville (pied de page du contact).
+   *  L'adresse postale complète (`legal.postalAddress`) n'apparaît que sur les
+   *  mentions légales. */
+  postalCode: '34080',
   city: { fr: 'Montpellier, France', en: 'Montpellier, France' } satisfies L10n,
   /** Profils publics du pied de page. Un nom de marque et une URL sont des
    *  données, pas de la prose : ils ne passent pas par les dictionnaires et ne

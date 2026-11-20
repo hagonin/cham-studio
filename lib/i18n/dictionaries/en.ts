@@ -198,11 +198,6 @@ export const en = {
       footer: {
         direct: 'A conversation is a good place to start.',
         navLabel: 'Footer navigation',
-        tagline: [
-          'Thoughtful interfaces.',
-          'Working products.',
-          'Design × fullstack development.',
-        ],
         backToTop: '[ BACK TO TOP ↑ ]',
         newTab: '(opens in a new tab)',
         meta: ['DESIGN × CODE', 'DESIGNED & BUILT BY CHẠM'],

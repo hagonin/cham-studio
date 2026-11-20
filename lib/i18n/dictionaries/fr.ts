@@ -250,11 +250,6 @@ export const fr = {
       footer: {
         direct: 'Une conversation, c’est un bon début.',
         navLabel: 'Navigation de pied de page',
-        tagline: [
-          'Des interfaces réfléchies.',
-          'Des produits qui fonctionnent.',
-          'Design × développement fullstack.',
-        ],
         backToTop: '[ HAUT DE PAGE ↑ ]',
         newTab: '(s’ouvre dans un nouvel onglet)',
         meta: ['DESIGN × CODE', 'CONÇU ET DÉVELOPPÉ PAR CHẠM'],
