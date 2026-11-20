@@ -1,9 +1,9 @@
-import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import { PUBLISHED, locales, localeHref, type Locale } from '@/lib/i18n/config';
 import type { Dictionary } from '@/lib/i18n/getDictionary';
 import { SECTION_KEYS, sectionHref, type SectionKey } from '@/lib/sections';
 import { NavMotion } from './NavMotion';
+import { RollLabel, bracketLink, rollLink } from './RollLabel';
 import styles from './SectionNav.module.css';
 
 /**
@@ -37,23 +37,6 @@ import styles from './SectionNav.module.css';
  * dans le HTML servi, donc utilisables sans JavaScript ; `NavMotion` (un enfant
  * client qui ne rend rien) ajoute l'état « section courante » et le menu.
  */
-
-/**
- * Un libellé en lettres séparées. Chacune porte son rang `--i`, qui décale son
- * départ dans le défilement au survol. Le lien porte le libellé en `aria-label`
- * et cache ces lettres aux lecteurs d'écran : elles ne se lisent pas une à une.
- */
-function Letters({ text }: { text: string }) {
-  return (
-    <>
-      {[...text].map((char, index) => (
-        <span key={index} style={{ '--i': index } as CSSProperties}>
-          {char === ' ' ? ' ' : char}
-        </span>
-      ))}
-    </>
-  );
-}
 
 /**
  * La locale courante reste visible, l'autre est inerte tant qu'elle n'est pas
@@ -93,15 +76,13 @@ function NavLinks({ items }: { items: { href: string; label: string }[] }) {
   return (
     <>
       {items.map(({ href, label }) => (
-        <a key={href} href={href} className={styles.navLink} aria-label={label}>
-          <span className={styles.navWindow} aria-hidden="true">
-            <span className={styles.navOriginal}>
-              <Letters text={label} />
-            </span>
-            <span className={styles.navClone}>
-              <Letters text={label} />
-            </span>
-          </span>
+        <a
+          key={href}
+          href={href}
+          className={`${rollLink} ${bracketLink} ${styles.navLink}`}
+          aria-label={label}
+        >
+          <RollLabel text={label} />
         </a>
       ))}
     </>

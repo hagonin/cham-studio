@@ -4,6 +4,7 @@ import type { Dictionary } from '@/lib/i18n/getDictionary';
 import { ContactForm } from './ContactForm';
 import { ContactMotion } from './ContactMotion';
 import { LetterLine } from './LetterLine';
+import { RollLabel, bracketLink, rollLink } from './RollLabel';
 import styles from './ContactBlock.module.css';
 
 // L'ordre du pied de page est celui du dessin (à propos, services, travaux),
@@ -70,8 +71,18 @@ export function ContactBlock({ dict }: { dict: Dictionary }) {
           </p>
         </div>
         <div className={styles.spread} data-spread>
-          <span>{footer.spread[0]}</span>
-          <span>{footer.spread[1]}</span>
+          {site.social.map(({ label, href }) => (
+            <a
+              key={label}
+              className={`${rollLink} ${bracketLink} ${styles.socialLink}`}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`${label} ${footer.newTab}`}
+            >
+              <RollLabel text={label} />
+            </a>
+          ))}
           <a href="#top">{footer.backToTop}</a>
         </div>
         <div className={styles.signature} data-signature>

@@ -164,8 +164,6 @@ describe('copie française', () => {
     'home.work.meta[2]',
     'home.work.caseStudy.design',
     'home.work.caseStudy.code',
-    'home.contact.footer.spread[0]',
-    'home.contact.footer.spread[1]',
     'home.contact.footer.meta[0]',
     'home.contact.footer.signature',
     'pricing.estimator.scales.simple',

@@ -1,0 +1,91 @@
+/* Le défilement de lettres partagé entre la barre (`SectionNav.module.css`) et
+   le pied de page (`ContactBlock.module.css`). Deux classes, à poser ensemble ou
+   non : `.link` porte le défilement et la capitale ; `.brackets` ajoute les
+   crochets, que les liens de page du pied de page n'ont pas. Le rembourrage, la
+   police et la taille restent à l'appelant ; les crochets se posent à 12px du
+   haut, donc un lien à crochets reçoit 12px de rembourrage vertical. */
+.link {
+  position: relative;
+  text-transform: uppercase;
+}
+
+.brackets {
+  --roll-shift: 7px;
+}
+
+/* Les crochets entrent d'un cran au survol. */
+.brackets::before,
+.brackets::after {
+  position: absolute;
+  top: 12px;
+  transition: transform 0.25s;
+}
+
+.brackets::before {
+  content: '[';
+  left: 0;
+}
+
+.brackets::after {
+  content: ']';
+  right: 0;
+}
+
+.brackets:hover::before {
+  transform: translateX(var(--roll-shift));
+}
+
+.brackets:hover::after {
+  transform: translateX(calc(var(--roll-shift) * -1));
+}
+
+/* Le défilement de lettres : le libellé est dupliqué ; au survol et au focus
+   clavier l'original sort par le haut et le double monte du bas, lettre après
+   lettre. */
+.window {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 3px;
+}
+
+.original,
+.clone {
+  display: flex;
+}
+
+.clone {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.original > span,
+.clone > span {
+  display: inline-block;
+  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--i) * 18ms);
+}
+
+.clone > span {
+  transform: translateY(125%);
+}
+
+.link:hover .original > span,
+.link:focus-visible .original > span {
+  transform: translateY(-125%);
+}
+
+.link:hover .clone > span,
+.link:focus-visible .clone > span {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .original > span,
+  .clone > span,
+  .brackets::before,
+  .brackets::after {
+    transition: none;
+  }
+}

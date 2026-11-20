@@ -13,6 +13,13 @@ export const site = {
   /** Surfaces d'affichage : la ville suffit. L'adresse postale complète
    *  n'apparaît que sur les mentions légales. */
   city: { fr: 'Montpellier, France', en: 'Montpellier, France' } satisfies L10n,
+  /** Profils publics du pied de page. Un nom de marque et une URL sont des
+   *  données, pas de la prose : ils ne passent pas par les dictionnaires et ne
+   *  se traduisent pas (le test `copie française` n'a donc rien à y signaler). */
+  social: [
+    { label: 'GitHub', href: 'https://github.com/hagonin' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/hagonin/' },
+  ],
   /** Portrait du hero, `null` tant que la
    *  photo n'existe pas. Même règle que les champs légaux : l'absence se rend
    *  en ne rendant rien, pas en réservant un rectangle gris. Dans le hero il

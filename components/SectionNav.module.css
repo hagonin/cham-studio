@@ -41,87 +41,29 @@
   width: min(650px, 55vw);
 }
 
+/* Les crochets, la capitale et le défilement de lettres sont partagés
+   (`RollLabel.module.css`, classes `rollLink` et `bracketLink` posées en plus de `.navLink`) : ici
+   ne restent que le rembourrage, la police et l'état « lien courant ». */
 .navLink {
-  position: relative;
   padding: 12px 22px;
   font: 300 1rem/1.1 var(--font-mono-stack);
-  text-transform: uppercase;
 }
 
-/* Les crochets entrent d'un cran au survol et sur le lien courant. */
-.navLink::before,
-.navLink::after {
-  position: absolute;
-  top: 12px;
-  transition: transform 0.25s;
-}
-
-.navLink::before {
-  content: '[';
-  left: 0;
-}
-
-.navLink::after {
-  content: ']';
-  right: 0;
-}
-
-.navLink:hover::before,
+/* Les crochets restent d'un cran à l'intérieur sur le lien courant. */
 .navLink[aria-current]::before {
-  transform: translateX(7px);
+  transform: translateX(var(--roll-shift));
 }
 
-.navLink:hover::after,
 .navLink[aria-current]::after {
-  transform: translateX(-7px);
+  transform: translateX(calc(var(--roll-shift) * -1));
 }
 
 /* Le lien courant est souligné, pas pointé. `aria-current` et non une classe :
    l'information est d'abord sémantique — un lecteur d'écran annonce « position
-   actuelle ». C'est `NavMotion` qui garantit un seul lien à la fois. */
-.navLink[aria-current] .navWindow {
+   actuelle ». C'est `NavMotion` qui garantit un seul lien à la fois. La fenêtre
+   de lettres est l'unique enfant du lien. */
+.navLink[aria-current] > span {
   border-bottom: 1px solid currentColor;
-}
-
-/* Le défilement de lettres : le libellé est dupliqué ; au survol l'original
-   sort par le haut et le double monte du bas, lettre après lettre. */
-.navWindow {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  padding-bottom: 3px;
-}
-
-.navOriginal,
-.navClone {
-  display: flex;
-}
-
-.navClone {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-
-.navOriginal > span,
-.navClone > span {
-  display: inline-block;
-  transition: transform 0.38s cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(var(--i) * 18ms);
-}
-
-.navClone > span {
-  transform: translateY(125%);
-}
-
-.navLink:hover .navOriginal > span,
-.navLink:focus-visible .navOriginal > span {
-  transform: translateY(-125%);
-}
-
-.navLink:hover .navClone > span,
-.navLink:focus-visible .navClone > span {
-  transform: translateY(0);
 }
 
 .navContact {
@@ -309,10 +251,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .navOriginal > span,
-  .navClone > span,
-  .navLink::before,
-  .navLink::after,
   .navContact span {
     transition: none;
   }

@@ -389,3 +389,10 @@
     transition: none !important;
   }
 }
+
+/* Liens externes « [ GITHUB ] [ LINKEDIN ] » : le défilement et les crochets
+   viennent de `RollLabel.module.css`. Les crochets se posent à 12px du haut et
+   sortent du texte de 18px : le rembourrage leur laisse la place. */
+.socialLink {
+  padding: 12px 18px;
+}
