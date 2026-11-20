@@ -114,7 +114,7 @@ export const fr = {
         eyebrow: 'MAINTENANT · EN COURS',
         line: ['Apprendre fait partie', 'de la pratique.'],
         paragraph:
-          'Ce qui me motive n’a pas changé\u202f: construire quelque chose de vraiment utile aux personnes qui s’en servent, avec un code propre et une interface soignée. Le web bouge vite, alors je continue d’apprendre des deux côtés, pour que votre produit repose sur des pratiques actuelles.',
+          'Ce qui me motive n’a pas changé\u202f: construire quelque chose de vraiment utile aux personnes qui s’en servent, avec un code propre et une interface soignée. En quatre ans, je suis passée de Python à React, puis à Java et Angular. Le web bouge vite, et j’apprends à son rythme, pour que votre produit repose sur des pratiques actuelles.',
         // La place des anciennes pastilles d'outils (owner, 2026-10-12) : un
         // client n'a pas besoin des noms de marque, il a besoin de la méthode UX.
         design:
@@ -193,15 +193,15 @@ export const fr = {
       steps: [
         {
           title: 'Design produit et UX',
-          body: 'Des parcours, des prototypes et des interfaces pensés pour la façon dont on utilise vraiment un produit.',
+          body: 'Des parcours, des prototypes Figma et un design system, pensés pour la façon dont on utilise vraiment un produit.',
         },
         {
           title: 'Développement fullstack',
-          body: 'Des interfaces responsives, des API et les systèmes qui font d’un design réfléchi un produit qui fonctionne.',
+          body: 'Des interfaces en React et Next.js, des API en Django ou Spring Boot, et tout ce qui fait d’un design réfléchi un produit qui fonctionne.',
         },
         {
           title: 'Interaction et finitions',
-          body: 'Le mouvement, l’accessibilité et les petites réactions qui rendent une interface attentive.',
+          body: 'Le mouvement, l’accessibilité et les petites réactions qui rendent une interface attentive, comme sur ce site\u202f: contrastes testés, navigation au clavier.',
         },
       ],
       // Le bloc d'outils sous les disciplines. Les groupes et les outils sont

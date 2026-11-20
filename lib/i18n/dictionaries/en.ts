@@ -93,7 +93,7 @@ export const en = {
         eyebrow: 'NOW · ONGOING',
         line: ['Learning is part', 'of the practice.'],
         paragraph:
-          'What drives me hasn’t changed: building something genuinely useful for the people who use it, with clean code and a polished interface. The web moves fast, so I keep learning on both sides, and your product rests on current practice.',
+          'What drives me hasn’t changed: building something genuinely useful for the people who use it, with clean code and a polished interface. In four years I’ve gone from Python to React, then to Java and Angular. The web moves fast, and I learn at its pace, so your product rests on current practice.',
         design:
           'Before writing any code, I start from your users: what they’re looking for, where they get stuck. I map the journey, prototype it in Figma and build it into a design system, so every screen stays consistent. Dense information becomes readable, and a raw interface becomes pleasant to use.',
         tooling:
@@ -152,15 +152,15 @@ export const en = {
       steps: [
         {
           title: 'Product & UX design',
-          body: 'Flows, prototypes, and interfaces shaped around how people actually use a product.',
+          body: 'Flows, Figma prototypes, and a design system, shaped around how people actually use a product.',
         },
         {
           title: 'Fullstack development',
-          body: 'Responsive frontends, APIs, and the systems that turn a considered design into a working product.',
+          body: 'Interfaces in React and Next.js, APIs in Django or Spring Boot, and everything that turns a considered design into a working product.',
         },
         {
           title: 'Interaction & refinement',
-          body: 'Motion, accessibility, and the small responses that make an interface feel considered.',
+          body: 'Motion, accessibility, and the small responses that make an interface feel considered, as on this site: tested contrast, keyboard navigation.',
         },
       ],
       tools: { title: 'Tools' },
