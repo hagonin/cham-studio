@@ -305,13 +305,14 @@
   transform: rotate(45deg);
 }
 
+/* Volontairement d'un cran sous la maquette (30px, en capitales) : le
+   propriétaire veut le courriel plus discret, en minuscules comme on l'écrit. */
 .collabEmail {
   position: relative;
   display: block;
   padding-bottom: 5px;
-  font: 600 clamp(1.25rem, 2.1vw, 1.875rem) / 1 var(--font-sans-stack);
+  font: 600 var(--display-2xs) / 1 var(--font-sans-stack);
   letter-spacing: -0.02em;
-  text-transform: uppercase;
   white-space: nowrap;
   transition: color 0.3s;
 }
