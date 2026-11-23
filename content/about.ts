@@ -46,8 +46,8 @@ export type AboutPhoto = {
 
 export const photos: { lead: AboutPhoto; pair: readonly [AboutPhoto, AboutPhoto] } = {
   lead: {
-    src: '/about/in-the-making.webp',
-    position: '42% 40%',
+    src: '/about/desk-sketchbook.webp',
+    position: '70% 40%',
     alt: {
       fr: 'À son bureau, elle esquisse des wireframes dans un carnet, avec une maquette et du code sur les écrans',
       en: 'At her desk, sketching wireframes in a notebook, with a mockup and code on the screens',
