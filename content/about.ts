@@ -15,18 +15,18 @@ export type TimelineEntry = {
 export const timeline: readonly TimelineEntry[] = [
   {
     year: '2008',
-    label: { fr: 'LES PREMIÈRES PAGES', en: 'THE FIRST PAGES' },
+    label: { fr: 'MON PREMIER SITE', en: 'MY FIRST WEBSITE' },
     body: {
-      fr: 'J’ai commencé à coder à 17 ans, en bricolant mes premières pages. Aujourd’hui, quand je dessine un écran, je sais déjà comment il sera construit. Vous ne recevez pas une belle maquette impossible à livrer.',
-      en: 'I started coding at 17, tinkering with my first pages. Today, when I design a screen, I already know how it will be built. You won’t get a beautiful mockup that can’t ship.',
+      fr: 'À 17 ans, avec deux autres filles, j’ai construit mon premier site pour le concours Design & Build Website\u202f: infos de l’école, vie étudiante et musique. Nous avons remporté le deuxième prix.',
+      en: 'At 17, with two other girls, I built my first website for the Design & Build Website competition: school information, student life and music. We won second prize.',
     },
   },
   {
     year: '2021',
-    label: { fr: 'UN MÉTIER PREND FORME', en: 'A CAREER TAKES SHAPE' },
+    label: { fr: 'LE RETOUR AU CODE', en: 'BACK TO CODE' },
     body: {
-      fr: 'Une formation intensive, puis des projets menés jusqu’au bout, seule ou à la tête d’une équipe. J’y ai appris ce qui compte le plus pour un client\u202f: finir, c’est-à-dire tester, corriger et livrer, pas seulement prototyper.',
-      en: 'Intensive training, then projects carried all the way through, on my own or leading a team. That’s where I learned what matters most to a client: finishing. Testing, fixing and shipping, not just prototyping.',
+      fr: 'Un cours de PHP à WIS Montpellier en 2017, puis le retour au code en 2021\u202f: Python avec une application de gestion d’élèves, puis un bootcamp front-end en mini-projets. Je sais comment un écran sera construit. Vous ne recevez pas une belle maquette impossible à livrer.',
+      en: 'A PHP course at WIS Montpellier in 2017, then back to code in 2021: Python with a school student-management app, then a front-end bootcamp of mini-projects. I know how a screen will be built. You won’t get a beautiful mockup that can’t ship.',
     },
   },
 ];
