@@ -23,7 +23,8 @@ export function Faq({ dict }: { dict: Dictionary }) {
       <h2 id="faq-title" className={styles.heading}>
         {faq.title}
       </h2>
-      <ul className={styles.list}>
+      {/* role="list" : Safari/VoiceOver retire la sémantique de liste d'un `<ul>` sans puces. */}
+      <ul className={styles.list} role="list">
         {faq.items.map(({ question, answer }) => (
           <li key={question}>
             <details className={styles.item}>

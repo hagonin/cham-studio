@@ -432,7 +432,7 @@ export function WorkGallery({
                   <p className={styles.role}>{project.role}</p>
                   <p className={styles.description}>{project.description}</p>
                   {project.links?.length ? (
-                    <ul className={styles.projectLinks}>
+                    <ul className={styles.projectLinks} role="list">
                       {project.links.map(({ label, href }) => (
                         <li key={href}>
                           <a
