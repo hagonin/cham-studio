@@ -99,6 +99,9 @@ describe('projects', () => {
     for (const { slug, stack, caseStudy } of projects) {
       if (!caseStudy) continue;
       expect(everyLocaleFilled(caseStudy.problem), slug).toBe(true);
+      if (caseStudy.contribution) {
+        expect(everyLocaleFilled(caseStudy.contribution), slug).toBe(true);
+      }
       expect(everyLocaleFilled(caseStudy.approach), slug).toBe(true);
       expect(everyLocaleFilled(caseStudy.result), slug).toBe(true);
       expect(caseStudy.designTools.length, slug).toBeGreaterThan(0);
@@ -112,7 +115,13 @@ describe('projects', () => {
   it('met une espace insécable avant ? ! : ; dans les études françaises', () => {
     for (const { slug, caseStudy } of projects) {
       if (!caseStudy) continue;
-      for (const prose of [caseStudy.problem, caseStudy.approach, caseStudy.result]) {
+      for (const prose of [
+        caseStudy.problem,
+        caseStudy.contribution,
+        caseStudy.approach,
+        caseStudy.result,
+      ]) {
+        if (!prose) continue;
         expect(prose.fr, slug).not.toMatch(/[^\s  ][?!:;]| [?!:;]/);
       }
     }

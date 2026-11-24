@@ -68,15 +68,18 @@ export type Project = {
 };
 
 /**
- * L'étude de cas d'un projet, ouverte en modale depuis sa fiche. Trois
- * rubriques de prose, puis la rubrique « Stack tech & design » en deux LISTES :
+ * L'étude de cas d'un projet, ouverte en modale depuis sa fiche. Quatre
+ * rubriques de prose (`contribution` est facultative), puis la rubrique « Stack tech & design » en deux LISTES :
  * `designTools` ici, `stack` sur le projet. Les réponses de l'owner sont des
  * listes, pas des phrases — aucune prose à inventer pour les relier.
  * `tests/content.test.ts` échoue sur une rubrique vide dans une locale.
  */
 export type CaseStudy = {
   problem: L10n;
+  /** Ce que j'ai fait moi-même, par opposition à l'équipe. Facultative : une étude sans réponse de l'owner n'invente rien. */
+  contribution?: L10n;
   approach: L10n;
+  /** Ce qui est fait, testé ou mesuré : rubrique « Ce que j'ai validé ». */
   result: L10n;
   /** Non traduit, comme `stack`. */
   designTools: string[];

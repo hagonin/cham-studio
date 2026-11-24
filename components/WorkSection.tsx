@@ -26,6 +26,7 @@ export function WorkSection({ locale, dict }: { locale: Locale; dict: Dictionary
     },
     caseStudy: project.caseStudy && {
       problem: project.caseStudy.problem[locale],
+      contribution: project.caseStudy.contribution?.[locale],
       approach: project.caseStudy.approach[locale],
       result: project.caseStudy.result[locale],
       designTools: project.caseStudy.designTools,

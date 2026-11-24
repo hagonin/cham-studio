@@ -131,11 +131,12 @@ export const en = {
         open: 'Read the case study',
         closeLabel: 'Close the case study',
         problem: 'The problem',
+        contribution: 'My contribution',
         approach: 'The design × code approach',
         stack: 'Tech & design stack',
         design: 'Design',
         code: 'Code',
-        result: 'Result',
+        result: 'What I validated',
       },
     },
     services: {

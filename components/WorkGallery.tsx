@@ -29,6 +29,7 @@ export type WorkProject = {
 
 export type WorkCaseStudy = {
   problem: string;
+  contribution?: string;
   approach: string;
   result: string;
   designTools: string[];
@@ -61,6 +62,7 @@ export type WorkCopy = {
     open: string;
     closeLabel: string;
     problem: string;
+    contribution: string;
     approach: string;
     stack: string;
     design: string;
@@ -71,7 +73,7 @@ export type WorkCopy = {
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
-/** Les quatre rubriques, en `<h4>` sous le `<h3>` du projet : la même copie sert
+/** Les cinq rubriques (« Ma contribution » seulement si elle est renseignée), en `<h4>` sous le `<h3>` du projet : la même copie sert
  *  au repli en ligne (sans JavaScript) et à la modale. */
 function CaseStudyBody({
   study,
@@ -86,6 +88,12 @@ function CaseStudyBody({
         <h4>{copy.problem}</h4>
         <p>{study.problem}</p>
       </section>
+      {study.contribution && (
+        <section>
+          <h4>{copy.contribution}</h4>
+          <p>{study.contribution}</p>
+        </section>
+      )}
       <section>
         <h4>{copy.approach}</h4>
         <p>{study.approach}</p>

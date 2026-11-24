@@ -57,13 +57,17 @@ const realProjects: Project[] = [
         fr: 'Do&go avait déjà son application événementielle sur iOS, Android et le web. Mais l’interface paraissait brute et datée, l’ergonomie n’avait jamais vraiment été pensée, et les mises à jour ramenaient régulièrement leur lot d’erreurs.',
         en: 'Do&go’s event app was already live on iOS, Android and the web. The interface looked raw and dated, the UX had never been properly thought through, and updates kept bringing errors back.',
       },
+      contribution: {
+        fr: 'L’équipe avait déjà publié IMIN. J’ai proposé et mené la refonte de l’interface pour qu’elle paraisse plus professionnelle. J’ai construit un tableau de bord d’administration avec de nombreux graphiques, puis écrit les tests et mis en place leur automatisation, côté back-end et front-end, avec Swagger et Postman, ainsi que des tests de performance pour le back-end et le front-end. Le reste de l’application est le travail de l’équipe existante.',
+        en: 'The team had already released IMIN. I proposed and carried out a redesign of the interface to make it look more professional. I built an admin dashboard with many charts, then wrote the tests and set up test automation for the backend and the frontend with Swagger and Postman, plus benchmark tests for both. The rest of the app is the existing team’s work.',
+      },
       approach: {
         fr: 'J’ai repris seule le design dans Figma, en posant un design system, puis je l’ai intégré moi-même en Flutter\u202f; l’équipe a relu la maquette. En parallèle, nous avons mis en place à plusieurs des tests, des mesures de performance et un back-office web pour suivre l’application et repérer les erreurs d’une version à l’autre.',
         en: 'I handled the redesign on my own: Figma first, with a design system, then the Flutter build, which I also did myself. The team reviewed the design. Alongside that, we built tests, benchmarks and a web admin dashboard together, so we could monitor the app and catch errors between releases.',
       },
       result: {
-        fr: 'L’application, refondue et refactorisée, est en pleine phase de tests avant sa mise à jour. Les premiers retours parlent d’une interface plus agréable et d’une expérience améliorée.',
-        en: 'The redesigned and refactored app is now going through extensive testing before the update ships. Early feedback says the interface is nicer and the experience has improved.',
+        fr: 'Le tableau de bord d’administration fonctionne, avec ses graphiques, et les tests sont en place dans le back-office.',
+        en: 'The admin dashboard works, charts included, and the tests are set up in the back-office.',
       },
       designTools: ['Figma', 'Design system'],
     },

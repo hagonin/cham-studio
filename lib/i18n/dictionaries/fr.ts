@@ -170,11 +170,12 @@ export const fr = {
         open: 'Lire l’étude de cas',
         closeLabel: 'Fermer l’étude de cas',
         problem: 'Le problème',
+        contribution: 'Ma contribution',
         approach: 'L’approche design × code',
         stack: 'Stack tech & design',
         design: 'Design',
         code: 'Code',
-        result: 'Résultat',
+        result: 'Ce que j’ai validé',
       },
     },
     services: {
