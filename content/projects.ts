@@ -2,7 +2,8 @@ import { type Project } from './types';
 
 /**
  * Les trois projets, avec leurs vrais visuels. Le texte des cartes (rôle,
- * description, légende de l'image) est celui du DESSIN, mot pour mot. L'étude de
+ * description, légende de l'image) est celui du DESSIN, mot pour mot, sauf Homecook,
+ * absent du dessin : son texte vient des réponses de l'owner. L'étude de
  * cas (`caseStudy`) et la pile (`stack`) viennent des réponses de l'owner,
  * réécrites par langue et validées : rien n'y est ajouté. Le français porte
  * l'espace fine insécable (`\u202f`) avant « ; » et dans « 35 000 ».
@@ -17,8 +18,7 @@ import { type Project } from './types';
  * gagne son ancre et la route entre au sitemap — sans interrupteur ailleurs.
  *
  * L'ordre écrit ici ne décide de rien : `projectsNewestFirst()` trie sur
- * `year`. IMIN et Copilot partagent 2026 ; `sort` étant stable, c'est l'ordre
- * de ce tableau qui les départage.
+ * `year`. Homecook (2023) passe en dernier.
  */
 const realProjects: Project[] = [
   {
@@ -78,41 +78,49 @@ const realProjects: Project[] = [
     },
   },
   {
-    slug: 'conversation-copilot',
-    year: 2026,
+    slug: 'homecook',
+    year: 2023,
     cover: {
-      src: '/work/copilot.png',
+      src: '/work/homecook.png',
       width: 1707,
       height: 1067,
       alt: {
-        fr: 'Aperçu de l’interface Conversation Copilot',
-        en: 'Conversation Copilot interface preview',
+        fr: 'Page d’accueil de l’application Homecook\u202f: recherche, menu de navigation et carrousel de recettes',
+        en: 'Home page of the Homecook app: search bar, navigation menu and recipe carousel',
       },
     },
-    title: { fr: 'Conversation Copilot', en: 'Conversation Copilot' },
+    title: { fr: 'Homecook', en: 'Homecook' },
     role: {
-      fr: 'DESIGN D’INTERFACE / DÉVELOPPEMENT',
-      en: 'INTERFACE DESIGN / DEVELOPMENT',
+      fr: 'DÉVELOPPEMENT BACKEND / API',
+      en: 'BACKEND / API DEVELOPMENT',
     },
     summary: {
-      fr: 'Une interface pour des conversations plus claires. Comment un design réfléchi fait entrer l’IA dans le travail de tous les jours.',
-      en: 'An interface for clearer conversations. Exploring how considered design brings AI into everyday work.',
+      fr: 'Une application de recettes réalisée à deux. J’ai développé le backend et l’API.',
+      en: 'A recipe app built as a pair. I developed the backend and the API.',
     },
-    stack: ['React', 'TypeScript', 'Python (FastAPI)', 'PostgreSQL', 'Deepgram'],
+    stack: ['Django REST', 'Next.js'],
+    links: [
+      { kind: 'demo', href: 'https://homecook-iota.vercel.app/' },
+      { kind: 'code', href: 'https://github.com/hagonin/Recipe-Django-NextJs' },
+    ],
     caseStudy: {
       problem: {
-        fr: 'Un outil que je me suis construit, surtout pour mes réunions. Les solutions existantes ne couvraient pas tout ce dont j’avais besoin, et leur ergonomie laissait à désirer.',
-        en: 'A tool I built for myself, mostly for meetings. The existing options were missing features I needed, and their UI and UX got in the way.',
+        fr: 'Une application de recettes, construite à deux avec un autre développeur.',
+        en: 'A recipe app, built with one other developer.',
+      },
+      contribution: {
+        fr: 'J’ai développé le backend et l’API. L’interface visible sur l’image est le travail de l’autre développeur.',
+        en: 'I developed the backend and the API. The interface shown in the image is the other developer’s work.',
       },
       approach: {
-        fr: 'Comme j’en suis à la fois la conceptrice et la seule utilisatrice, je passe directement de l’idée au concept, puis au code. Pour la transcription en temps réel, j’ai choisi d’afficher un maximum d’erreurs plutôt que de les cacher. Quand quelque chose casse, je vois tout de suite quoi corriger. Un mois de travail jusqu’ici, et le chantier continue.',
-        en: 'Since I’m both the designer and the only user, I go straight from idea to concept to code. For real-time transcription, I show as many errors as possible instead of hiding them, so when something breaks I know right away what to fix. One month in, and still going.',
+        fr: 'J’ai construit l’API en Django REST, utilisée par le front en Next.js.',
+        en: 'I built the API with Django REST, used by the Next.js frontend.',
       },
       result: {
-        fr: 'Pas encore en production. L’application est en phase de test et je n’ai pas encore de chiffres à partager.',
-        en: 'Not in production yet. The app is still being tested, and there are no numbers to share so far.',
+        fr: 'L’application est en ligne et utilisable\u202f: la démo répond.',
+        en: 'The app is online and usable: the demo responds.',
       },
-      designTools: ['Figma', 'Design system'],
+      designTools: ['REST API'],
     },
   },
   {

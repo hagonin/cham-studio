@@ -10,7 +10,7 @@ import { WorkGallery } from './WorkGallery';
  * sans JavaScript.
  *
  * L'ordre est celui de `projectsNewestFirst()` : le plus récent d'abord, dérivé de
- * `year`. C'est aussi celui du dessin (IMIN, Conversation Copilot, Airsen).
+ * `year`. Homecook (2023) passe donc en dernier.
  */
 export function WorkSection({ locale, dict }: { locale: Locale; dict: Dictionary }) {
   const projects = projectsNewestFirst().map((project) => ({
