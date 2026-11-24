@@ -172,6 +172,31 @@ export const en = {
       ],
       tools: { title: 'Tools' },
     },
+    faq: {
+      title: 'Common questions',
+      items: [
+        {
+          question: 'How is the price set?',
+          answer:
+            'After a free first call, I send a fixed-price quote. A 30% deposit is due at signature; the rest is paid by milestones.',
+        },
+        {
+          question: 'How long does it take?',
+          answer:
+            'Allow about 2 to 4 weeks for a marketing site and 6 to 10 weeks for an MVP. For changes to an existing product, the timeline is estimated in the quote.',
+        },
+        {
+          question: 'What happens after launch?',
+          answer:
+            'Bug fixes are included for 30 days. After that, maintenance is quoted separately. I hand over the code, the accesses and a short documentation, and hosting stays on your own accounts.',
+        },
+        {
+          question: 'Where do I start?',
+          answer:
+            'Write to me through the contact form: what you want to build, for whom and by when. I reply within 48 hours on working days.',
+        },
+      ],
+    },
     contact: {
       eyebrow: 'LET’S START THE CONVERSATION',
       title: {

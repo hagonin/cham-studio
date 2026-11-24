@@ -216,6 +216,35 @@ export const fr = {
       // des données (`content/tools.ts`) : les marques ne se traduisent pas.
       tools: { title: 'Outils' },
     },
+    faq: {
+      // Les questions d'un client avant d’écrire. Le bloc n'est PAS dans la nav
+      // (`SECTION_KEYS`) et n'a pas de numéro : les « / 05 » de la page restent
+      // justes. Les réponses ne donnent aucun chiffre de prix, pour ne pas
+      // contredire les tranches du formulaire de contact.
+      title: 'Questions fréquentes',
+      items: [
+        {
+          question: 'Comment le prix est-il fixé\u202f?',
+          answer:
+            'Après un premier appel gratuit, je vous envoie un devis à prix fixe. À la signature, vous versez un acompte de 30\u202f%\u202f; le reste se règle par étapes, au fil du projet.',
+        },
+        {
+          question: 'Combien de temps faut-il\u202f?',
+          answer:
+            'Comptez environ 2 à 4 semaines pour un site vitrine et 6 à 10 semaines pour un MVP. Pour l’évolution d’un produit existant, la durée est estimée dans le devis.',
+        },
+        {
+          question: 'Que se passe-t-il après la mise en ligne\u202f?',
+          answer:
+            'Les corrections de bugs sont incluses pendant 30 jours. Ensuite, la maintenance se fait sur devis. Je vous remets le code, les accès et une courte documentation, et l’hébergement reste sur vos propres comptes.',
+        },
+        {
+          question: 'Par où commencer\u202f?',
+          answer:
+            'Écrivez-moi avec le formulaire de contact\u202f: ce que vous voulez construire, pour qui et pour quand. Je réponds sous 48 heures, les jours ouvrés.',
+        },
+      ],
+    },
     contact: {
       // La section contact et son pied de page, tels que le dessin les écrit
       // (copy-fr.md). Les libellés en capitales sont LITTÉRAUX : un `<p>` en

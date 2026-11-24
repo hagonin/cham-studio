@@ -29,6 +29,11 @@ import { workSectionIsReady } from '@/content/projects';
  * `services` est le bloc de `Process.tsx` (`<h2 id="services-title">`) : il n'y
  * a plus de section « méthode » à part.
  *
+ * La FAQ (`components/Faq.tsx`, `<h2 id="faq-title">`) est montée entre
+ * `services` et `contact` mais ABSENTE de cette liste, volontairement : la barre
+ * garde les quatre liens du dessin à toutes les largeurs, et la FAQ n'a pas de
+ * numéro, donc les « / 05 » restent justes.
+ *
  * Cet ordre vit à deux endroits, qui doivent bouger ensemble : cette liste (la
  * nav) et le JSX de `app/[locale]/page.tsx`. Les numéros que le dessin affiche
  * à l'écran — 02 / 05 sur la scène tactile, 03 pour « à propos », 04 / 05 pour

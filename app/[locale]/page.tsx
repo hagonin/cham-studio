@@ -9,6 +9,7 @@ import { Hero } from '@/components/Hero';
 import { TouchPhilosophy } from '@/components/TouchPhilosophy';
 import { AboutBlock } from '@/components/AboutBlock';
 import { Process } from '@/components/Process';
+import { Faq } from '@/components/Faq';
 import { ContactBlock } from '@/components/ContactBlock';
 import { WorkSection } from '@/components/WorkSection';
 import { workSectionIsReady } from '@/content/projects';
@@ -41,7 +42,7 @@ export async function generateMetadata({
  * arrivent directement dessus.
  *
  * Ordre de lecture, celui du dessin : nav → hero → scène tactile → à propos →
- * travaux → prestations → contact. La personne vient avant la preuve ; l'ancien
+ * travaux → prestations → FAQ → contact. La personne vient avant la preuve ; l'ancien
  * ordre (preuve, offre, méthode, personne en dernier) est abandonné, parce que
  * le dessin le contredit. Cet ordre vit à deux endroits qui bougent ensemble :
  * ce JSX et `SECTION_KEYS` dans `lib/sections.ts`, d'où la nav tire le sien.
@@ -82,6 +83,9 @@ export default async function ServicesPage({
             travail testé qui vaut comme preuve de métier, pas comme section de
             page. Les monter à côté de `Process` dupliquerait `services-title`. */}
         <Process locale={locale} dict={dict} />
+        {/* La FAQ n'est ni dans la nav ni numérotée (`lib/sections.ts`) : elle
+            précède le contact pour être lue juste avant le formulaire. */}
+        <Faq dict={dict} />
         <ContactBlock dict={dict} locale={locale} />
       </main>
     </>

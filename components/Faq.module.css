@@ -1,0 +1,112 @@
+/* La FAQ reprend le langage des prestations (`Process.module.css`) : même
+   rembourrage latéral, filets `--line` entre les lignes, intitulé au pas
+   `--display-2xs`. Les filets sont décoratifs ; la bascule se voit par le
+   marqueur et par l'anneau de focus global (`:focus-visible`, `globals.css`).
+   Aucune transition : rien à neutraliser sous reduced-motion.
+
+   `width: 100%` : <main> est pleine largeur (`page.module.css`) ; `100vw`
+   compterait la barre de défilement. Le haut est à 0 : la section précédente
+   porte déjà son rembourrage bas. */
+.section {
+  width: 100%;
+  min-width: 0;
+  padding: 0 4.45vw 48px;
+  font-size: 16px;
+  line-height: normal;
+  color: var(--ink);
+  background: var(--paper);
+}
+
+.heading {
+  margin: 0 0 40px;
+  font-size: clamp(30px, 3.9vw, 56px);
+  line-height: 1.14;
+  letter-spacing: -0.036em;
+  font-weight: 600;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.item {
+  border-top: 1px solid var(--line);
+}
+
+/* Le `<summary>` est toute la ligne : sa hauteur (≥ 44px) est la cible tactile. */
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 44px;
+  padding: 28px 0;
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--display-2xs);
+  line-height: 1.2;
+  letter-spacing: -0.038em;
+  font-weight: 600;
+}
+
+.question::-webkit-details-marker {
+  display: none;
+}
+
+.marker {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--ink-2);
+}
+
+.marker::before,
+.marker::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1.5px;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+
+.marker::after {
+  transform: translateY(-50%) rotate(90deg);
+}
+
+.item[open] .marker::after {
+  display: none;
+}
+
+.answer {
+  max-width: 62ch;
+  margin: 0;
+  padding: 0 0 32px;
+  font-size: clamp(15px, 1.18vw, 17px);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+
+@media (max-width: 56.25rem) {
+  .section {
+    padding: 0 24px 24px;
+  }
+
+  .heading {
+    margin-bottom: 28px;
+  }
+
+  .question {
+    padding: 22px 0;
+  }
+
+  .answer {
+    padding-bottom: 24px;
+  }
+}
