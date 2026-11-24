@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { locales } from '../lib/i18n/config';
-import { SERVICE_KEYS, type L10n, type Project } from '../content/types';
+import {
+  PROJECT_LINK_KINDS,
+  SERVICE_KEYS,
+  type L10n,
+  type Project,
+} from '../content/types';
 import { services } from '../content/services';
 import {
   projects,
@@ -186,5 +191,16 @@ describe('identité du site', () => {
       Boolean(site.legal.postalAddress && site.legal.siret && site.legal.statut),
     );
     expect(site.legal.siret).not.toBe('000 000 000 00000');
+  });
+});
+
+describe('liens de projet', () => {
+  it('donne à chaque lien une clé connue et une adresse https', () => {
+    for (const project of projects) {
+      for (const link of project.links ?? []) {
+        expect(PROJECT_LINK_KINDS, project.slug).toContain(link.kind);
+        expect(link.href, project.slug).toMatch(/^https:\/\//);
+      }
+    }
   });
 });

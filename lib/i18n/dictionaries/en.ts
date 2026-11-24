@@ -127,6 +127,12 @@ export const en = {
       lightbox: 'Project preview',
       close: 'CLOSE ×',
       closeLabel: 'Close preview',
+      links: {
+        appStore: 'View on the App Store',
+        googlePlay: 'View on Google Play',
+        demo: 'View the live demo',
+        code: 'View the code',
+      },
       caseStudy: {
         open: 'Read the case study',
         closeLabel: 'Close the case study',

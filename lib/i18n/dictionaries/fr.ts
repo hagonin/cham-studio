@@ -166,6 +166,12 @@ export const fr = {
       // L'étude de cas en modale. La dialog est nommée par son `<h3>` (le titre
       // du projet), pas par un libellé : aucun `dialogLabel` ici. « FERMER × »
       // visible est celui de la visionneuse, `close` ci-dessus.
+      links: {
+        appStore: 'Voir sur l’App Store',
+        googlePlay: 'Voir sur Google Play',
+        demo: 'Voir la démo en ligne',
+        code: 'Voir le code',
+      },
       caseStudy: {
         open: 'Lire l’étude de cas',
         closeLabel: 'Fermer l’étude de cas',

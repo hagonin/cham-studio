@@ -53,6 +53,10 @@ export type Cover = {
   alt: L10n;
 };
 
+export const PROJECT_LINK_KINDS = ['appStore', 'googlePlay', 'demo', 'code'] as const;
+export type ProjectLinkKind = (typeof PROJECT_LINK_KINDS)[number];
+export type ProjectLink = { kind: ProjectLinkKind; href: string };
+
 export type Project = {
   slug: string;
   year: number;
@@ -62,7 +66,8 @@ export type Project = {
   summary: L10n;
   /** Non traduit — React reste React. Rendu dans l'étude de cas, liste « Code ». */
   stack: string[];
-  url?: string;
+  /** Liens publics du projet, rendus dans la fiche. Libellés : `home.work.links[kind]`. */
+  links?: ProjectLink[];
   /** Optionnel : sans lui, la fiche n'a pas de bouton « étude de cas ». */
   caseStudy?: CaseStudy;
 };

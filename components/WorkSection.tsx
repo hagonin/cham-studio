@@ -24,6 +24,10 @@ export function WorkSection({ locale, dict }: { locale: Locale; dict: Dictionary
       height: project.cover.height,
       alt: project.cover.alt[locale],
     },
+    links: project.links?.map(({ kind, href }) => ({
+      label: dict.home.work.links[kind],
+      href,
+    })),
     caseStudy: project.caseStudy && {
       problem: project.caseStudy.problem[locale],
       contribution: project.caseStudy.contribution?.[locale],
@@ -34,5 +38,10 @@ export function WorkSection({ locale, dict }: { locale: Locale; dict: Dictionary
     },
   }));
 
-  return <WorkGallery projects={projects} copy={dict.home.work} />;
+  return (
+    <WorkGallery
+      projects={projects}
+      copy={{ ...dict.home.work, newTab: dict.home.contact.footer.newTab }}
+    />
+  );
 }

@@ -51,7 +51,12 @@ const realProjects: Project[] = [
       'Firebase',
       'Material 3',
     ],
-    url: 'https://apps.apple.com/fr/app/imin-event/id6742787345',
+    links: [
+      {
+        kind: 'appStore',
+        href: 'https://apps.apple.com/fr/app/imin-event/id6742787345',
+      },
+    ],
     caseStudy: {
       problem: {
         fr: 'Do&go avait déjà son application événementielle sur iOS, Android et le web. Mais l’interface paraissait brute et datée, l’ergonomie n’avait jamais vraiment été pensée, et les mises à jour ramenaient régulièrement leur lot d’erreurs.',

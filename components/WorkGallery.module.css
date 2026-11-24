@@ -362,7 +362,8 @@
 }
 
 /* --- Étude de cas ------------------------------------------------------------------ */
-.caseOpen {
+.caseOpen,
+.projectLink {
   display: inline-block;
   margin-top: 28px;
   padding: 6px 0;
@@ -375,7 +376,22 @@
   letter-spacing: 0.08em;
 }
 
-.caseOpen:hover {
+.projectLink {
+  text-decoration: none;
+}
+
+.projectLinks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.projectLinks li {
+  display: block;
+}
+
+.caseOpen:hover,
+.projectLink:hover {
   color: var(--touch);
 }
 

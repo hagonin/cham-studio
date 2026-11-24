@@ -14,6 +14,7 @@ import {
 } from '@/lib/gallery/carousel';
 import { prefersReducedMotion } from '@/lib/motion/prefs';
 import { fill } from '@/lib/i18n/fill';
+import type { ProjectLinkKind } from '@/content/types';
 import styles from './WorkGallery.module.css';
 
 export type WorkCover = { src: string; width: number; height: number; alt: string };
@@ -24,6 +25,7 @@ export type WorkProject = {
   role: string;
   description: string;
   cover: WorkCover;
+  links?: { label: string; href: string }[];
   caseStudy?: WorkCaseStudy;
 };
 
@@ -58,6 +60,8 @@ export type WorkCopy = {
   lightbox: string;
   close: string;
   closeLabel: string;
+  newTab: string;
+  links: Record<ProjectLinkKind, string>;
   caseStudy: {
     open: string;
     closeLabel: string;
@@ -423,6 +427,23 @@ export function WorkGallery({
                   <h3 id={`project-title-${index}`}>{project.title}</h3>
                   <p className={styles.role}>{project.role}</p>
                   <p className={styles.description}>{project.description}</p>
+                  {project.links?.length ? (
+                    <ul className={styles.projectLinks}>
+                      {project.links.map(({ label, href }) => (
+                        <li key={href}>
+                          <a
+                            className={styles.projectLink}
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${label} ${copy.newTab}`}
+                          >
+                            {label} <span aria-hidden="true">↗</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                   {project.caseStudy && enhanced ? (
                     <button
                       className={styles.caseOpen}
