@@ -10,7 +10,7 @@ export const fr = {
   meta: {
     title: 'Chạm Studio — design et développement web',
     description:
-      'Studio indépendant à Montpellier. Sites vitrines, identités et applications web, conçus et développés de bout en bout.',
+      'Studio indépendant à Montpellier. Sites vitrines et applications web, conçus et développés de bout en bout.',
   },
   nav: {
     label: 'Navigation principale',
@@ -192,23 +192,24 @@ export const fr = {
       close: 'Replier',
     },
     process: {
-      // Le bloc « prestations » du dessin : trois disciplines, pas les offres de
-      // `content/services.ts`, qui n'ont plus de place sur la page. Le composant
-      // s'appelle encore `Process`. Le titre tient sur deux lignes, comme
+      // Le bloc « prestations » : trois situations de client, pas les offres de
+      // `content/services.ts`, qui n'ont plus de place sur la page. Aucune pile
+      // technique n'est nommée ici : la liste d'outils plus bas la porte seule.
+      // Le composant s'appelle encore `Process`. Le titre tient sur deux lignes, comme
       // « Derrière / Chạm » — deux éléments distincts, pas une phrase coupée.
       title: ['De la première idée', 'au dernier détail'],
       steps: [
         {
-          title: 'Design produit et UX',
-          body: 'Des parcours, des prototypes Figma et un design system, pensés pour la façon dont on utilise vraiment un produit.',
+          title: 'Lancer votre MVP',
+          body: 'Je structure l’idée, je dessine les écrans clés, je développe le front, le back et l’API, puis je mets en ligne une première version testable.',
         },
         {
-          title: 'Développement fullstack',
-          body: 'Des interfaces en React et Next.js, des API en Django ou Spring Boot, et tout ce qui fait d’un design réfléchi un produit qui fonctionne.',
+          title: 'Créer votre site ou votre application web',
+          body: 'Un site vitrine, un site produit ou une application\u202f: interface responsive, développement front et back, bases du référencement (SEO).',
         },
         {
-          title: 'Interaction et finitions',
-          body: 'Le mouvement, l’accessibilité et les petites réactions qui rendent une interface attentive, comme sur ce site\u202f: contrastes testés, navigation au clavier.',
+          title: 'Faire évoluer un produit existant',
+          body: 'Refonte de l’interface, nouvelles fonctionnalités, tableaux de bord, intégrations d’API et tests automatisés sur une application déjà en ligne.',
         },
       ],
       // Le bloc d'outils sous les disciplines. Les groupes et les outils sont

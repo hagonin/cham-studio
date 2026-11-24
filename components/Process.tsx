@@ -6,9 +6,9 @@ import { ServicesMotion } from './ServicesMotion';
 import styles from './Process.module.css';
 
 /**
- * LE bloc de prestations de la page : les trois disciplines du dessin
- * (`dict.home.process`; `index.html`, `services.css` et `services.js` du
- * prototype), sous `<h2 id="services-title">` — l'ancre que la nav cible pour
+ * LE bloc de prestations de la page : trois situations de client
+ * (`dict.home.process`; mise en page de `index.html`, `services.css` et
+ * `services.js` du prototype), sous `<h2 id="services-title">` — l'ancre que la nav cible pour
  * « services » (`lib/sections.ts`). Le nom du composant est resté celui de
  * l'ancien bloc « méthode » ; son contenu est celui du dessin.
  *
@@ -21,7 +21,7 @@ import styles from './Process.module.css';
  * les précède, aucun niveau n'est sauté (`check:html`).
  *
  * Sous la liste, les outils (`content/tools.ts`) : un `<h3>` au niveau des
- * disciplines, un `<h4>` par groupe. Le logo est décoratif (`aria-hidden`) ; le
+ * situations, un `<h4>` par groupe. Le logo est décoratif (`aria-hidden`) ; le
  * nom visible est le nom accessible. Pas de `data-row` ici : le bloc ne fait
  * pas partie de la liste qui se trace, il reste tel que livré.
  */

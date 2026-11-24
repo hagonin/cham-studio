@@ -15,7 +15,7 @@ export const en = {
   meta: {
     title: 'Chạm Studio — web design and development',
     description:
-      'Independent studio in Montpellier, France. Marketing sites, brand identities and web applications, designed and built end to end.',
+      'Independent studio in Montpellier, France. Marketing sites and web applications, designed and built end to end.',
   },
   nav: {
     label: 'Main navigation',
@@ -158,16 +158,16 @@ export const en = {
       title: ['From first thought', 'to final detail'],
       steps: [
         {
-          title: 'Product & UX design',
-          body: 'Flows, Figma prototypes, and a design system, shaped around how people actually use a product.',
+          title: 'Launch your MVP',
+          body: 'I structure the idea, design the key screens, build the front end, the back end and the API, and put a first testable version online.',
         },
         {
-          title: 'Fullstack development',
-          body: 'Interfaces in React and Next.js, APIs in Django or Spring Boot, and everything that turns a considered design into a working product.',
+          title: 'Build your website or web application',
+          body: 'A marketing site, a product site or an application: responsive interface, front-end and back-end development, SEO foundations.',
         },
         {
-          title: 'Interaction & refinement',
-          body: 'Motion, accessibility, and the small responses that make an interface feel considered, as on this site: tested contrast, keyboard navigation.',
+          title: 'Evolve an existing product',
+          body: 'Interface redesign, new features, dashboards, API integrations and automated tests on an application that is already online.',
         },
       ],
       tools: { title: 'Tools' },
