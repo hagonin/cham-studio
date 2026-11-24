@@ -73,7 +73,7 @@ export const fr = {
       eyebrow: ['CHẠM / VERBE / TOUCHER', 'UNE IDÉE DEVIENT UN PRODUIT AU CONTACT'],
       contactLabel: 'Établir le contact',
       // La phrase du dessin : c'est le <h1> de la page, sur deux lignes.
-      title: ['Une touche humaine,', 'de l’idée au produit.'],
+      title: ['Une touche humaine,', 'de l’idée au produit'],
       // Le chapeau (gras, lecture d'abord) et le corps (le parcours) : deux
       // paragraphes, pas un <strong> dans une seule phrase longue.
       intro: {
@@ -94,9 +94,9 @@ export const fr = {
       lines: [
         'JE CONÇOIS DES INTERFACES',
         'RÉFLÉCHIES ET J’EN FAIS',
-        'DE VRAIS PRODUITS.',
-        'ON NE FAIT PAS QUE LIRE CHẠM.',
-        'ON LE TOUCHE.',
+        'DE VRAIS PRODUITS',
+        'ON NE FAIT PAS QUE LIRE CHẠM',
+        'ON LE TOUCHE',
       ],
     },
     about: {
@@ -155,8 +155,8 @@ export const fr = {
         '{n} sur {total}\u202f: {title}. Sélectionnez pour déplier les détails.',
       title: 'Projets choisis',
       lead: [
-        'Quelques projets choisis.',
-        'De la première idée au produit qui fonctionne.',
+        'Quelques projets choisis',
+        'De la première idée au produit qui fonctionne',
       ],
       explore: 'EXPLORER L’INTERFACE ↗',
       enlarge: 'Agrandir l’aperçu de {title}',
@@ -248,7 +248,7 @@ export const fr = {
         },
       },
       footer: {
-        direct: 'Une conversation, c’est un bon début.',
+        direct: 'Une conversation, c’est un bon début',
         navLabel: 'Navigation de pied de page',
         backToTop: '[ HAUT DE PAGE ↑ ]',
         newTab: '(s’ouvre dans un nouvel onglet)',

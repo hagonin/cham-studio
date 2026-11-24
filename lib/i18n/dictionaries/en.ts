@@ -73,18 +73,18 @@ export const en = {
     },
     touchPhilosophy: {
       meta: ['02 / 05', 'DESIGN × CODE', 'MOVE · SCROLL · TOUCH'],
-      hint: 'MOVE CLOSER. PUSH THE WORDS.',
+      hint: 'MOVE CLOSER. PUSH THE WORDS',
       lines: [
         'I DESIGN THOUGHTFUL',
         'INTERFACES AND BUILD THEM',
-        'INTO REAL PRODUCTS.',
-        'YOU DON’T ONLY READ CHẠM.',
-        'YOU TOUCH IT.',
+        'INTO REAL PRODUCTS',
+        'YOU DON’T ONLY READ CHẠM',
+        'YOU TOUCH IT',
       ],
     },
     about: {
       eyebrow: ['03 · ABOUT ME', 'DESIGN × CODE'],
-      title: ['I build where visual craft', 'meets what’s under the hood.'],
+      title: ['I build where visual craft', 'meets what’s under the hood'],
       lede: 'I design interfaces and I build them myself. For you, that means one person to talk to, and nothing lost between the mockup and the shipped product: what you approve on screen is what your users get.',
       photoLead: {
         caption: 'A moment from the process — sketching, prototyping, or building.',
@@ -101,7 +101,7 @@ export const en = {
       },
       invite: {
         eyebrow: ['THE NEXT CHAPTER', 'COULD BE OURS.'],
-        headline: ['Meaningful work.', 'Ambitious ideas.', 'Clear communication.'],
+        headline: ['Meaningful work', 'Ambitious ideas', 'Clear communication'],
         paragraph:
           'I’m keen to collaborate on projects that have meaning and ambition, with clear communication at every step. If that’s yours,',
         link: 'get in touch',
@@ -148,7 +148,7 @@ export const en = {
       close: 'Collapse',
     },
     process: {
-      title: ['From first thought', 'to final detail.'],
+      title: ['From first thought', 'to final detail'],
       steps: [
         {
           title: 'Product & UX design',
@@ -196,7 +196,7 @@ export const en = {
         },
       },
       footer: {
-        direct: 'A conversation is a good place to start.',
+        direct: 'A conversation is a good place to start',
         navLabel: 'Footer navigation',
         backToTop: '[ BACK TO TOP ↑ ]',
         newTab: '(opens in a new tab)',
