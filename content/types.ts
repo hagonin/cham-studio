@@ -86,6 +86,8 @@ export type CaseStudy = {
   approach: L10n;
   /** Ce qui est fait, testé ou mesuré : rubrique « Ce que j'ai validé ». */
   result: L10n;
-  /** Non traduit, comme `stack`. */
+  /** Non traduit, comme `stack`. Vide pour un projet sans part de design de
+   *  l'owner (Homecook : back-end seul) : le sous-titre « Design » n'est alors
+   *  pas rendu, plutôt qu'un outil de code rangé sous ce titre. */
   designTools: string[];
 };

@@ -104,12 +104,16 @@ function CaseStudyBody({
       </section>
       <section>
         <h4>{copy.stack}</h4>
-        <h5>{copy.design}</h5>
-        <ul className={styles.caseList}>
-          {study.designTools.map((tool) => (
-            <li key={tool}>{tool}</li>
-          ))}
-        </ul>
+        {study.designTools.length > 0 && (
+          <>
+            <h5>{copy.design}</h5>
+            <ul className={styles.caseList}>
+              {study.designTools.map((tool) => (
+                <li key={tool}>{tool}</li>
+              ))}
+            </ul>
+          </>
+        )}
         <h5>{copy.code}</h5>
         <ul className={styles.caseList}>
           {study.stack.map((tool) => (

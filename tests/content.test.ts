@@ -109,7 +109,8 @@ describe('projects', () => {
       }
       expect(everyLocaleFilled(caseStudy.approach), slug).toBe(true);
       expect(everyLocaleFilled(caseStudy.result), slug).toBe(true);
-      expect(caseStudy.designTools.length, slug).toBeGreaterThan(0);
+      // `designTools` peut être vide (projet sans part de design) ; la pile de
+      // code, elle, ne l'est jamais.
       expect(stack.length, slug).toBeGreaterThan(0);
     }
   });

@@ -120,7 +120,7 @@ const realProjects: Project[] = [
         fr: 'L’application est en ligne et utilisable\u202f: la démo répond.',
         en: 'The app is online and usable: the demo responds.',
       },
-      designTools: ['REST API'],
+      designTools: [],
     },
   },
   {
