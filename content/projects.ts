@@ -145,14 +145,24 @@ const realProjects: Project[] = [
       'Redis',
       'Docker',
     ],
+    links: [
+      {
+        kind: 'code',
+        href: 'https://github.com/Diginamic-Fil-rouge/Airsen-springboot-angular',
+      },
+    ],
     caseStudy: {
       problem: {
-        fr: 'Les informations sur la qualité de l’air sont éparpillées entre trois API. Airsen les trie et les rassemble dans une seule application, avec une carte interactive de plus de 35\u202f000 communes, des alertes personnalisables et un forum communautaire.',
-        en: 'Air-quality data is spread across three different APIs. Airsen filters it, keeps what’s useful and puts it in one app: an interactive map of 35,000+ French municipalities, alerts you can customize, and a community forum.',
+        fr: 'Airsen est le projet fil rouge de ma formation CDA chez Diginamic, réalisé en équipe de trois. Les informations sur la qualité de l’air sont éparpillées entre trois API. Airsen les trie et les rassemble dans une seule application, avec une carte interactive de plus de 35\u202f000 communes, des alertes personnalisables et un forum communautaire.',
+        en: 'Airsen is the capstone project of my CDA training at Diginamic, built in a team of three. Air-quality data is spread across three different APIs. Airsen filters it, keeps what’s useful and puts it in one app: an interactive map of 35,000+ French municipalities, alerts you can customize, and a community forum.',
+      },
+      contribution: {
+        fr: 'J’ai réalisé les wireframes et organisé le travail de l’équipe dans GitHub Projects.',
+        en: 'I made the wireframes and organized the team’s work in GitHub Projects.',
       },
       approach: {
-        fr: 'J’ai encadré une équipe de trois développeurs. Tout l’enjeu UX était de rendre lisible une information très dense, sur des écrans concrets. Passer d’abord par Figma, avec un design system, a aidé l’équipe à cerner le périmètre avant d’écrire la moindre ligne de code.',
-        en: 'I was team lead for three developers. The main UX problem was density: a lot of information that still had to read clearly on real screens. Starting in Figma, with a design system, gave the team a clear view of the scope before anyone wrote code.',
+        fr: 'Tout l’enjeu UX était de rendre lisible une information très dense, sur des écrans concrets. Passer d’abord par Figma, avec un design system, a aidé l’équipe à cerner le périmètre avant d’écrire la moindre ligne de code.',
+        en: 'The main UX problem was density: a lot of information that still had to read clearly on real screens. Starting in Figma, with a design system, gave the team a clear view of the scope before anyone wrote code.',
       },
       result: {
         fr: 'Pas encore lancée. L’application est toujours en développement.',
