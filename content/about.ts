@@ -14,7 +14,7 @@ export type TimelineEntry = {
 
 export const timeline: readonly TimelineEntry[] = [
   {
-    year: '2017',
+    year: '2008',
     label: { fr: 'LES PREMIÈRES PAGES', en: 'THE FIRST PAGES' },
     body: {
       fr: 'J’ai commencé à coder à 17 ans, en bricolant mes premières pages. Aujourd’hui, quand je dessine un écran, je sais déjà comment il sera construit. Vous ne recevez pas une belle maquette impossible à livrer.',
