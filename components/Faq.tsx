@@ -1,4 +1,5 @@
 import type { Dictionary } from '@/lib/i18n/getDictionary';
+import { FaqMotion } from './FaqMotion';
 import styles from './Faq.module.css';
 
 /**
@@ -18,7 +19,7 @@ export function Faq({ dict }: { dict: Dictionary }) {
   const { faq } = dict.home;
 
   return (
-    <section className={styles.section} aria-labelledby="faq-title">
+    <section className={styles.section} aria-labelledby="faq-title" data-faq>
       <h2 id="faq-title" className={styles.heading}>
         {faq.title}
       </h2>
@@ -35,6 +36,7 @@ export function Faq({ dict }: { dict: Dictionary }) {
           </li>
         ))}
       </ul>
+      <FaqMotion />
     </section>
   );
 }
