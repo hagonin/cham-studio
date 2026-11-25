@@ -105,11 +105,11 @@ const realProjects: Project[] = [
     ],
     caseStudy: {
       problem: {
-        fr: 'Une application de recettes, construite avec un autre développeur\u202f: on y partage des recettes, on les note, on les commente et on les met en favoris.',
+        fr: 'Une application de recettes, construite avec une autre développeuse\u202f: on y partage des recettes, on les note, on les commente et on les met en favoris.',
         en: 'A recipe app, built with one other developer: you share recipes, rate them, review them and bookmark them.',
       },
       contribution: {
-        fr: 'J’ai développé le back-end et l’API. L’autre développeur a réalisé l’interface que montre l’image.',
+        fr: 'J’ai développé le back-end et l’API. L’autre développeuse a réalisé l’interface que montre l’image.',
         en: 'I developed the backend and the API. The other developer built the interface shown in the image.',
       },
       approach: {
