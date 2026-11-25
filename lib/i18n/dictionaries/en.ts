@@ -121,7 +121,7 @@ export const en = {
       announceOpen: '{n} of {total}: {title}. Details open.',
       announceClosed: '{n} of {total}: {title}. Select to unfold details.',
       title: 'Selected works',
-      lead: ['A few selected projects.', 'From the first idea to the working product.'],
+      lead: ['A few selected projects', 'From the first idea to the working product'],
       explore: 'EXPLORE THE INTERFACE ↗',
       enlarge: 'Enlarge {title} preview',
       lightbox: 'Project preview',
