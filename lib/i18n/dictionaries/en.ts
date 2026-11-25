@@ -159,7 +159,7 @@ export const en = {
       steps: [
         {
           title: 'Launch your MVP',
-          body: 'I structure the idea, design the key screens, build the front end, the back end and the API, and put a first testable version online.',
+          body: 'I scope the idea, design the key screens, build the front end, the back end and the API, and put a first testable version online.',
         },
         {
           title: 'Build your website or web application',

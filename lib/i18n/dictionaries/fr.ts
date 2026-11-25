@@ -201,7 +201,7 @@ export const fr = {
       steps: [
         {
           title: 'Lancer votre MVP',
-          body: 'Je structure l’idée, je dessine les écrans clés, je développe le front, le back et l’API, puis je mets en ligne une première version testable.',
+          body: 'Je cadre l’idée, je dessine les écrans clés, je développe le front, le back et l’API, puis je mets en ligne une première version testable.',
         },
         {
           title: 'Créer votre site ou votre application web',
