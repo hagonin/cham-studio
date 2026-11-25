@@ -178,12 +178,12 @@ export const en = {
         {
           question: 'How is the price set?',
           answer:
-            'After a free first call, I send a fixed-price quote. A 30% deposit is due at signature; the rest is paid by milestones.',
+            'After a free first call, I send a fixed-price quote. You pay a 30% deposit at signature and the rest by milestones.',
         },
         {
           question: 'How long does it take?',
           answer:
-            'Allow about 2 to 4 weeks for a marketing site and 6 to 10 weeks for an MVP. For changes to an existing product, the timeline is estimated in the quote.',
+            'Allow about 2 to 4 weeks for a marketing site and 6 to 10 weeks for an MVP, depending on your project. For changes to an existing product, I estimate the timeline in the quote.',
         },
         {
           question: 'What happens after launch?',

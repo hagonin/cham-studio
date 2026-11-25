@@ -226,12 +226,12 @@ export const fr = {
         {
           question: 'Comment le prix est-il fixé\u202f?',
           answer:
-            'Après un premier appel gratuit, je vous envoie un devis à prix fixe. À la signature, vous versez un acompte de 30\u202f%\u202f; le reste se règle par étapes, au fil du projet.',
+            'Après un premier appel gratuit, je vous envoie un devis à prix fixe. À la signature, vous versez un acompte de 30\u202f%\u202f; le reste se règle par étapes.',
         },
         {
           question: 'Combien de temps faut-il\u202f?',
           answer:
-            'Comptez environ 2 à 4 semaines pour un site vitrine et 6 à 10 semaines pour un MVP. Pour l’évolution d’un produit existant, la durée est estimée dans le devis.',
+            'Comptez environ 2 à 4 semaines pour un site vitrine et 6 à 10 semaines pour un MVP, selon votre projet. Pour faire évoluer un produit existant, j’estime la durée dans le devis.',
         },
         {
           question: 'Que se passe-t-il après la mise en ligne\u202f?',
@@ -241,7 +241,7 @@ export const fr = {
         {
           question: 'Par où commencer\u202f?',
           answer:
-            'Écrivez-moi avec le formulaire de contact\u202f: ce que vous voulez construire, pour qui et pour quand. Je réponds sous 48 heures, les jours ouvrés.',
+            'Écrivez-moi par le formulaire de contact\u202f: ce que vous voulez construire, pour qui et pour quand. Je réponds sous 48 heures, les jours ouvrés.',
         },
       ],
     },
