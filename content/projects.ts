@@ -63,12 +63,12 @@ const realProjects: Project[] = [
         en: 'Do&go’s event app was already live on iOS, Android and the web. The interface looked raw and dated, the UX had never been properly thought through, and updates kept bringing errors back.',
       },
       contribution: {
-        fr: 'L’équipe avait déjà publié IMIN. J’ai proposé et mené la refonte de l’interface pour qu’elle paraisse plus professionnelle. J’ai construit un tableau de bord d’administration avec de nombreux graphiques, puis écrit les tests et mis en place leur automatisation, côté back-end et front-end, avec Swagger et Postman, ainsi que des tests de performance pour le back-end et le front-end. Le reste de l’application est le travail de l’équipe existante.',
-        en: 'The team had already released IMIN. I proposed and carried out a redesign of the interface to make it look more professional. I built an admin dashboard with many charts, then wrote the tests and set up test automation for the backend and the frontend with Swagger and Postman, plus benchmark tests for both. The rest of the app is the existing team’s work.',
+        fr: 'L’équipe avait déjà publié IMIN. J’ai proposé et mené la refonte de l’interface, puis redessiné le tableau de bord d’administration et ajouté de nombreux graphiques. J’ai écrit seule les tests back-end et leur automatisation (Swagger, Postman), ainsi que les tests de performance du back-end et du tableau de bord. Les tests de l’interface, nous les avons faits avec l’équipe. Le reste de l’application est le travail de l’équipe existante.',
+        en: 'The team had already released IMIN. I proposed and led the interface redesign, then redesigned the admin dashboard and added many charts. I wrote the backend tests and their automation alone (Swagger, Postman), plus benchmark tests for the backend and the dashboard. We did the interface tests with the team. The rest of the app is the existing team’s work.',
       },
       approach: {
-        fr: 'J’ai repris seule le design dans Figma, en posant un design system, puis je l’ai intégré moi-même en Flutter\u202f; l’équipe a relu la maquette. En parallèle, nous avons mis en place à plusieurs des tests, des mesures de performance et un back-office web pour suivre l’application et repérer les erreurs d’une version à l’autre.',
-        en: 'I handled the redesign on my own: Figma first, with a design system, then the Flutter build, which I also did myself. The team reviewed the design. Alongside that, we built tests, benchmarks and a web admin dashboard together, so we could monitor the app and catch errors between releases.',
+        fr: 'J’ai repris seule le design dans Figma, en posant un design system, puis je l’ai intégré en Flutter\u202f; l’équipe a relu la maquette. Un back-office web, avec les tests de l’interface faits à plusieurs, sert à suivre l’application et à repérer les erreurs d’une version à l’autre.',
+        en: 'I handled the redesign on my own: Figma first, with a design system, then the Flutter build. The team reviewed the design. A web admin dashboard, with interface tests we wrote together, lets us monitor the app and catch errors between releases.',
       },
       result: {
         fr: 'Le tableau de bord d’administration fonctionne, avec ses graphiques, et les tests sont en place dans le back-office.',
@@ -95,7 +95,7 @@ const realProjects: Project[] = [
       en: 'BACKEND / API DEVELOPMENT',
     },
     summary: {
-      fr: 'Une application de recettes réalisée à deux. J’ai développé le backend et l’API.',
+      fr: 'Une application de recettes réalisée à deux. J’ai développé le back-end et l’API.',
       en: 'A recipe app built as a pair. I developed the backend and the API.',
     },
     stack: ['Django REST', 'Next.js'],
@@ -105,20 +105,20 @@ const realProjects: Project[] = [
     ],
     caseStudy: {
       problem: {
-        fr: 'Une application de recettes, construite à deux avec un autre développeur.',
-        en: 'A recipe app, built with one other developer.',
+        fr: 'Une application de recettes, construite avec un autre développeur\u202f: on y partage des recettes, on les note, on les commente et on les met en favoris.',
+        en: 'A recipe app, built with one other developer: you share recipes, rate them, review them and bookmark them.',
       },
       contribution: {
-        fr: 'J’ai développé le backend et l’API. L’interface visible sur l’image est le travail de l’autre développeur.',
-        en: 'I developed the backend and the API. The interface shown in the image is the other developer’s work.',
+        fr: 'J’ai développé le back-end et l’API. L’autre développeur a réalisé l’interface que montre l’image.',
+        en: 'I developed the backend and the API. The other developer built the interface shown in the image.',
       },
       approach: {
         fr: 'J’ai construit l’API en Django REST, utilisée par le front en Next.js.',
         en: 'I built the API with Django REST, used by the Next.js frontend.',
       },
       result: {
-        fr: 'L’application est en ligne et utilisable\u202f: la démo répond.',
-        en: 'The app is online and usable: the demo responds.',
+        fr: 'L’application est en ligne, sa démo est accessible et l’API publie sa documentation Swagger.',
+        en: 'The app is online, its demo is accessible and the API publishes its Swagger documentation.',
       },
       designTools: [],
     },
@@ -165,16 +165,16 @@ const realProjects: Project[] = [
         en: 'Airsen is the capstone project of my CDA training at Diginamic, built in a team of three. Air-quality data is spread across three different APIs. Airsen filters it, keeps what’s useful and puts it in one app: an interactive map of 35,000+ French municipalities, alerts you can customize, and a community forum.',
       },
       contribution: {
-        fr: 'J’ai réalisé les wireframes et organisé le travail de l’équipe dans GitHub Projects.',
-        en: 'I made the wireframes and organized the team’s work in GitHub Projects.',
+        fr: 'J’ai réalisé les wireframes avec Lovable et organisé le travail de l’équipe dans GitHub Projects.',
+        en: 'I made the wireframes with Lovable and organized the team’s work in GitHub Projects.',
       },
       approach: {
-        fr: 'Tout l’enjeu UX était de rendre lisible une information très dense, sur des écrans concrets. Passer d’abord par Figma, avec un design system, a aidé l’équipe à cerner le périmètre avant d’écrire la moindre ligne de code.',
-        en: 'The main UX problem was density: a lot of information that still had to read clearly on real screens. Starting in Figma, with a design system, gave the team a clear view of the scope before anyone wrote code.',
+        fr: 'Le défi UX était de rendre lisible une information très dense, sur des écrans concrets. Les wireframes, puis Figma avec un design system, ont aidé l’équipe à cerner le périmètre avant d’écrire du code.',
+        en: 'The main UX problem was density: a lot of information that still had to read clearly on real screens. The wireframes, then Figma with a design system, gave the team a clear view of the scope before anyone wrote code.',
       },
       result: {
-        fr: 'Pas encore lancée. L’application est toujours en développement.',
-        en: 'Not launched yet. The app is still in development.',
+        fr: 'L’application fonctionne\u202f; il reste à la mettre en ligne.',
+        en: 'The app works; it still has to be put online.',
       },
       designTools: ['Figma', 'Design system'],
     },
