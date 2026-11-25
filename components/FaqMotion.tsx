@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 /**
@@ -21,6 +22,9 @@ export function FaqMotion() {
   useEffect(() => {
     const section = document.querySelector<HTMLElement>('[data-faq]');
     if (!section) return;
+    // Inscription idempotente, comme dans les autres composants de mouvement :
+    // `refresh()` ne doit pas dépendre de l'ordre dans lequel ils se montent.
+    gsap.registerPlugin(ScrollTrigger);
     const refresh = () => ScrollTrigger.refresh();
     section.addEventListener('toggle', refresh, true);
     return () => section.removeEventListener('toggle', refresh, true);
