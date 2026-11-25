@@ -226,7 +226,9 @@
 
 .inviteHeadline {
   margin: 0;
-  font-size: clamp(28px, 3.2vw, 46px);
+  /* Un cran sous le design (clamp(28px, 3.2vw, 46px)), voulu par la
+     propriétaire : à 1440px les 46px dépassaient le h1 (38px). */
+  font-size: var(--display-xs);
   line-height: 1.2;
   letter-spacing: -0.024em;
   font-weight: 600;
