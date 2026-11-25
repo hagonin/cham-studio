@@ -192,6 +192,9 @@
   font-size: clamp(15px, 1.18vw, 17px);
   line-height: 1.6;
   color: var(--muted);
+  /* Lecture confortable : 45–75 caractères par ligne ; 68ch comme le texte
+     des études de cas (WorkGallery). */
+  max-width: 68ch;
 }
 
 /* --- L'invitation, sur fond sombre ------------------------------------------ *
