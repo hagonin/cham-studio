@@ -188,7 +188,7 @@ export const en = {
         {
           question: 'What happens after launch?',
           answer:
-            'Bug fixes are included for 30 days. After that, maintenance is quoted separately. I hand over the code, the accesses and a short documentation, and hosting stays on your own accounts.',
+            'Bug fixes are included for 30 days. After that, maintenance is quoted separately. I hand over the code, the access credentials and short documentation, and hosting stays on your own accounts.',
         },
         {
           question: 'Where do I start?',
