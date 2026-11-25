@@ -162,7 +162,7 @@ const realProjects: Project[] = [
     caseStudy: {
       problem: {
         fr: 'Airsen est le projet fil rouge de ma formation CDA chez Diginamic, réalisé en équipe de trois. Les informations sur la qualité de l’air sont éparpillées entre trois API. Airsen les trie et les rassemble dans une seule application, avec une carte interactive de plus de 35\u202f000 communes, des alertes personnalisables et un forum communautaire.',
-        en: 'Airsen is the capstone project of my CDA training at Diginamic, built in a team of three. Air-quality data is spread across three different APIs. Airsen filters it, keeps what’s useful and puts it in one app: an interactive map of 35,000+ French municipalities, alerts you can customize, and a community forum.',
+        en: 'Airsen is the capstone project of my CDA (application developer) training at Diginamic, built in a team of three. Air-quality data is spread across three different APIs. Airsen filters it, keeps what’s useful and puts it in one app: an interactive map of 35,000+ French municipalities, alerts you can customize, and a community forum.',
       },
       contribution: {
         fr: 'J’ai réalisé les wireframes avec Lovable et organisé le travail de l’équipe dans GitHub Projects.',
